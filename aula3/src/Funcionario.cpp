@@ -4,7 +4,7 @@
  *    Luiz Eduardo Sol      8586861
  *    Augusto Ruy Machado   7576829
  *
- * Versao: 1
+ * Versao: 2
  */
 
 #include "Funcionario.h"
@@ -69,13 +69,4 @@ string Funcionario::getCargo(){
 }
 void Funcionario::setCargo(string cargo){
   this->cargo = cargo;
-}
-
-void Funcionario::obterDadosFunc(){
-  cout << "Id Funcional: \t" << Funcionario::getId() << endl;
-  cout << "Nome:\t\t" << Funcionario::getNome() << endl;
-  cout << "Endereco:\t" << Funcionario::getEndereco() << endl;
-  cout << "Profissao:\t" << Funcionario::getProfissao() << endl;
-  cout << "Funcao:\t\t" << Funcionario::getFuncao() << endl;
-  cout << "Cargo:\t\t" << Funcionario::getCargo() << endl;
 }

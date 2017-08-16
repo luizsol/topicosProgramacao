@@ -4,7 +4,7 @@
  *    Luiz Eduardo Sol      8586861
  *    Augusto Ruy Machado   7576829
  *
- * Versao: 1
+ * Versao: 2
  */
 
 #pragma once
@@ -43,7 +43,5 @@ public:
 
   string getCargo();
   void setCargo(string cargo);
-
-  void obterDadosFunc();
 
 };

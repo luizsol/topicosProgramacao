@@ -18,21 +18,21 @@ CFLAGS += -Wpedantic
 TDIR = test
 
 # Goals
-.DEFAULT_GOAL := main
+.DEFAULT_GOAL := lab2
 
 # Object files
 Funcionario.o: src/Funcionario.cpp src/Funcionario.h
 	$(CC) $(CFLAGS) -c src/Funcionario.cpp
 
-lab1-4.o: src/lab1-4.cpp
-	$(CC) $(CFLAGS) -c src/lab1-4.cpp
+Empresa.o: src/Empresa.cpp src/Empresa.h
+	$(CC) $(CFLAGS) -c src/Empresa.cpp
+
+lab2.o: src/lab2.cpp
+	$(CC) $(CFLAGS) -c src/lab2.cpp
 
 # All
-lab1-4: Funcionario.o lab1-4.o
-	$(CC) $(CFLAGS) Funcionario.o lab1-4.o -o lab1-4 # $(LIBS)
-
-# all main: main.o lumiar.o pwm.o queue.o web.o ldr.o
-# 	$(CC) $(CFLAGS) queue.o web.o pwm.o main.o lumiar.o ldr.o -o web $(LIBS)
+lab2: Funcionario.o Empresa.o lab2.o
+	$(CC) $(CFLAGS) Funcionario.o Empresa.o lab2.o -o lab2 # $(LIBS)
 
 clean:
-	rm -f *.o lab1-4
+	rm -f *.o lab2
