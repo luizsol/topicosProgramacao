@@ -36,7 +36,7 @@ lab3.o: $(SRC)/lab3.cpp
 	$(CC) $(CFLAGS) -c $(SRC)/lab3.cpp
 
 # All
-lab3: Funcionario.o Empresa.o CadastroPessoas.o lab2.o
+lab3: Funcionario.o Empresa.o CadastroPessoas.o lab3.o
 	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o lab3.o -o lab3 # $(LIBS)
 
 clean:

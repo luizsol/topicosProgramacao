@@ -13,25 +13,35 @@
 using namespace std;
 
 class Funcionario{
-  string idFuncional; // ID Funcional do funcionário
-  string nome;        // Nome do funcionário
-  string endereco;    // Endereço do funcionário
-  string profissao;   // Profissão do funcionário
-  string funcao;      // Funcao do funcionário
-  string cargo;       // Cargo do funcionário
+  string idPessoa;        // ID da pessoa
+  string idFuncional;     // ID Funcional do funcionário
+  string estadoFuncional; // O estado funcional do funcionário
+  string nome;            // Nome do funcionário
+  string profissao;       // Profissão do funcionário
+  string endereco;        // Endereço do funcionário
+  string funcao;          // Funcao do funcionário
+  string cargo;           // Cargo do funcionário
+  string faixaSalario;    // Faixa salarial do funcionário
 
 public:
   // Construtores da classe Funcionario
   Funcionario();
-  Funcionario(string idFuncional, string nome, string endereco,
-              string profissao, string funcao, string cargo);
+  Funcionario(string idPessoa, string idFuncional, string nome,
+              string profissao, string endereco, string funcao, string cargo,
+              string faixaSalario);
 
   // Destrutor da classe empresa
   ~Funcionario();
 
   // Setters e Getters
-  string getId();
-  void setId(string idFuncional);
+  string getIdPessoa();
+  void setIdPessoa(string idPessoa);
+
+  string getIdFuncional();
+  void setIdFuncional(string idFuncional);
+
+  string getEstadoFuncional();
+  void setEstadoFuncional(string estadoFuncional);
 
   string getNome();
   void setNome(string nome);
@@ -48,4 +58,6 @@ public:
   string getCargo();
   void setCargo(string cargo);
 
+  string getFaixaSalario();
+  void setFaixaSalario(string faixaSalario);
 };

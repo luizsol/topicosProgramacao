@@ -19,7 +19,11 @@ void sistema(){
   string nomeEmpresa;
   cout << "Forneca o nome da empresa:" << endl;
   getline(cin, nomeEmpresa);
-  Empresa novaEmpresa(nomeEmpresa, 5);
+  string tamanho;
+  cout << "Forneca o numero maximo de funcionarios da empresa " << nomeEmpresa
+    << ":" << endl;
+  getline(cin, tamanho);
+  Empresa novaEmpresa(nomeEmpresa, atoi(tamanho.c_str()));
 
   string option = "";
 
@@ -48,6 +52,7 @@ void sistema(){
     case 'T':
     case 't':
       novaEmpresa.demitirTodosFuncionarios();
+      cout << "SUCESSO: Todos funcionarios demitidos com sucesso" << endl;
       break;
     case 'M':
     case 'm':

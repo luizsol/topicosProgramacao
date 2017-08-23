@@ -96,13 +96,20 @@ bool Empresa::contratarFuncionarioIterativo(){
   cout << "Forneca o cargo do funcionario:" << endl;
   getline(cin, cargo);
 
-  return Empresa::contratarFuncionario(idFuncional, nome, endereco, profissao,
-                                       funcao, cargo);
+  if(Empresa::contratarFuncionario(idFuncional, nome, endereco, profissao,
+                                   funcao, cargo)){
+    cout << endl << "SUCESSO: Funcionario " << nome <<
+    " cadastrado com sucesso!" << endl;
+    return true;
+  } else {
+    cout << endl << "ERRO: erro ao cadastrar o funcionario " <<
+    ", limite de funcionarios excedido"  << endl;
+    return false;
+  }
 }
 
 bool Empresa::demitirFuncionario(string idFuncional){
   if(!Empresa::idJaCadastrado(idFuncional)){
-    cout << "ERRO: Id funcional nao cadastrado" << endl;
     return false;
   }
 
@@ -118,13 +125,21 @@ bool Empresa::demitirFuncionarioIterativo(){
   cout << "Forneca o id Funcional de quem deseja demitir:" << endl;
   getline(cin, idFuncional);
 
-  return Empresa::demitirFuncionario(idFuncional);
+  if(Empresa::demitirFuncionario(idFuncional)){
+    cout << endl << "SUCESSO: Funcionario com ID funcional " << idFuncional <<
+      " demitido!" << endl;
+    return true;
+  } else {
+    cout << endl << "ERRO: Funcionario com ID funcional " << idFuncional <<
+      " inexistente!" << endl;
+    return false;
+  }
 }
 
 void Empresa::demitirTodosFuncionarios(){
   for(int i = 0; i < this->maxFuncionarios; i++){
     if(this->funcionarios[i] != NULL){
-      Empresa::demitirFuncionario(this->funcionarios[i]->getNome());
+      Empresa::demitirFuncionario(this->funcionarios[i]->getId());
     }
   }
 }
@@ -165,7 +180,7 @@ bool Empresa::idJaCadastrado(string idFuncional){
 int Empresa::buscaIdFuncional(string idFuncional){
   for(int i = 0; i < this->maxFuncionarios; i++){
     if(this->funcionarios[i] != NULL &&
-       this->funcionarios[i]->getNome().compare(idFuncional) == 0){
+       this->funcionarios[i]->getId().compare(idFuncional) == 0){
       return i;
     }
   }

@@ -56,9 +56,10 @@ void Empresa::setNome(string nome){
     @param cargo (string): o cargo do funcionário
     @return true se o funcionário foi criado e cadastrado, false caso contrário
 */
-bool Empresa::contratarFuncionario(string idFuncional, string nome,
-                                   string endereco, string profissao,
-                                   string funcao, string cargo){
+bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
+                                   string nome, string profissao,
+                                   string endereco, string funcao, string cargo,
+                                   string faixaSalario){
   int i = 0;
   while(this->funcionarios[i] != NULL && i < this->maxFuncionarios){
     i++;
@@ -76,9 +77,9 @@ bool Empresa::contratarFuncionario(string idFuncional, string nome,
 
 
 
-  this->funcionarios[i] =  new Funcionario(idFuncional, nome,
-                                           endereco, profissao,
-                                           funcao, cargo);
+  this->funcionarios[i] =  new Funcionario(idPessoa, idFuncional, nome,
+                                           profissao, endereco, funcao, cargo,
+                                           faixaSalario);
 
   return true;
 }
@@ -90,12 +91,14 @@ bool Empresa::contratarFuncionario(string idFuncional, string nome,
     @return true se o funcionário foi criado e cadastrado, false caso contrário
 */
 bool Empresa::contratarFuncionarioIterativo(){
+  string idPessoa;
   string idFuncional;
   string nome;
   string endereco;
   string profissao;
   string funcao;
   string cargo;
+  string faixaSalario;
 
   bool idExistente = true;
   while(idExistente){
@@ -107,6 +110,8 @@ bool Empresa::contratarFuncionarioIterativo(){
     }
   }
 
+  cout << "Forneca o ID Pessoa do funcionario:" << endl;
+  getline(cin, idPessoa);
   cout << "Forneca o nome do funcionario:" << endl;
   getline(cin, nome);
   cout << "Forneca o endereco do funcionario:" << endl;
@@ -117,9 +122,11 @@ bool Empresa::contratarFuncionarioIterativo(){
   getline(cin, funcao);
   cout << "Forneca o cargo do funcionario:" << endl;
   getline(cin, cargo);
+  cout << "Forneca faixa de salario do funcionario:" << endl;
+  getline(cin, faixaSalario);
 
-  return Empresa::contratarFuncionario(idFuncional, nome, endereco, profissao,
-                                       funcao, cargo);
+  return Empresa::contratarFuncionario(idPessoa, idFuncional, nome, profissao,
+                                       endereco, funcao, cargo, faixaSalario);
 }
 
 /**
@@ -159,7 +166,7 @@ bool Empresa::demitirFuncionarioIterativo(){
 void Empresa::demitirTodosFuncionarios(){
   for(int i = 0; i < this->maxFuncionarios; i++){
     if(this->funcionarios[i] != NULL){
-      Empresa::demitirFuncionario(this->funcionarios[i]->getNome());
+      Empresa::demitirFuncionario(this->funcionarios[i]->getIdFuncional());
     }
   }
 }
@@ -222,7 +229,7 @@ bool Empresa::idJaCadastrado(string idFuncional){
 int Empresa::buscaIdFuncional(string idFuncional){
   for(int i = 0; i < this->maxFuncionarios; i++){
     if(this->funcionarios[i] != NULL &&
-       this->funcionarios[i]->getNome().compare(idFuncional) == 0){
+       this->funcionarios[i]->getIdFuncional().compare(idFuncional) == 0){
       return i;
     }
   }
@@ -236,7 +243,8 @@ int Empresa::buscaIdFuncional(string idFuncional){
                            ser impresso
 */
 void Empresa::obterDadosFuncionario(int index){
-  cout << "Id Funcional: \t" << this->funcionarios[index]->getId() << endl;
+  cout << "Id Funcional: \t" << this->funcionarios[index]->getIdFuncional()
+    << endl;
   cout << "Nome:\t\t" << this->funcionarios[index]->getNome() << endl;
   cout << "Endereco:\t" << this->funcionarios[index]->getEndereco() << endl;
   cout << "Profissao:\t" << this->funcionarios[index]->getProfissao() << endl;

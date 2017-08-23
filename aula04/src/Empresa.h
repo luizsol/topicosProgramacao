@@ -44,8 +44,9 @@ public:
       @return true se o funcionário foi criado e cadastrado, false caso
               contrário
   */
-  bool contratarFuncionario(string idFuncional, string nome, string endereco,
-                            string profissao, string funcao, string cargo);
+  bool contratarFuncionario(string idPessoa, string idFuncional, string nome,
+                            string profissao, string endereco, string funcao,
+                            string cargo, string faixaSalario);
 
   /**
       Cria e cadastra um funcionário na empresa via CLI

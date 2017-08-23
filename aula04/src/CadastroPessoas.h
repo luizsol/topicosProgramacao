@@ -10,18 +10,28 @@
 
 #pragma once
 #include <string>
-// #include "Funcionario.h"
+#include <sstream>
+#include <iostream>
+#include <vector>
+#include "Funcionario.h"
 // #include "Empresa.h"
 
 using namespace std;
 
 class CadastroPessoas{
+  vector<string> dadosPessoais;
 
 public:
   CadastroPessoas();
+  CadastroPessoas(string cargaInicial);
   ~CadastroPessoas();
 
-private:
+  bool validarDados(string dados);
+  bool adicionaDadosPessoa(string dados);
+  string lerDadosTodasPessoas();
+  string lerDadosPessoa(string idFuncional);
+  string atualizarDadosPessoa(string dados);
 
+private:
 
 };
