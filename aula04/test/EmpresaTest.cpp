@@ -10,7 +10,7 @@ int main(int argc, char * argv[]){
   // Construtor da empresa funciona
   Empresa testeEmpresa1;
   Empresa testeEmpresa2("Empresona2");
-  Empresa testeEmpresa3("Empresona3", 2);
+  Empresa testeEmpresa3("Empresona3", 6);
 
   // Setter funciona
   testeEmpresa1.setNome("Empresona1");
@@ -66,6 +66,10 @@ int main(int argc, char * argv[]){
   // Consigo demitir todo mundo
   testeEmpresa3.demitirTodosFuncionarios();
   testeEmpresa3.obterDadosFuncionarios();
+
+  // Consigo contratar funcionário a partir do banco de dados
+  testeEmpresa1.contratarFuncionario();
+  testeEmpresa1.obterDadosFuncionarios();
 
   return 0;
 }

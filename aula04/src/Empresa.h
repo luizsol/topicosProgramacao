@@ -10,6 +10,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "CadastroPessoas.h"
 #include "Funcionario.h"
 
 using namespace std;
@@ -18,6 +19,8 @@ class Empresa{
   string nome;                      // Nome da empresa
   vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
   unsigned long maxFuncionarios;    // Tamanho do array funcionarios
+  CadastroPessoas cadastroPessoas;  // Objeto de acesso ao cadastro de pessoas
+
 
 public:
   // Construtores da classe Empresa
@@ -32,6 +35,14 @@ public:
   // Setters e Getters
   string getNome();
   void setNome(string nome);
+
+  /**
+      Solicita os dados de todas as pessoas cadastradas e contrata aquelas que
+      tiverem o estado funcional "empregado" (1)
+
+      @return true se todos os funcionários foram devidamente contratados
+  */
+  bool iniciarFuncionarios();
 
   /**
       Cria e cadastra um funcionário na empresa.
@@ -50,12 +61,13 @@ public:
                             string cargo, string faixaSalario);
 
   /**
-      Cria e cadastra um funcionário na empresa via CLI
+      Cadastra um funcionário na empresa de maneira interativa (via CLI)
+      utilizando os dados do cadastroPessoa.
 
-      @return true se o funcionário foi criado e cadastrado, false caso
+      @return true se o funcionário foi cadastrado, false caso
               contrário
   */
-  bool contratarFuncionarioIterativo();
+  bool contratarFuncionario();
 
   /**
       Demite e apaga um funcionário da empresa.
@@ -77,6 +89,14 @@ public:
 
   // Imprime os dados de todos os funcionários da empresa de forma formatada
   void obterDadosFuncionarios();
+
+  /**
+      Imprime os dados de todas as pessoas contidas em cadastroPessoa de forma
+      formatada
+      @param filtro (int): filtra as pessoas a serem apresentadas pelo seu
+                           estado funcional. deve ser -1 para apresentar todos.
+  */
+  void obterDadosPessoas(int filtro = -1);
 
 private:
   /**

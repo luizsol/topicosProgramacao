@@ -22,6 +22,11 @@ CadastroPessoas::CadastroPessoas(string dados){
 // Destrutor da classe CadastroPessoas
 CadastroPessoas::~CadastroPessoas(){}
 
+// Setters e Getters
+vector<string> CadastroPessoas::getDadosPessoais(){
+  return this->dadosPessoais;
+}
+
 /**
     Valida uma string de dados de cadastro.
 

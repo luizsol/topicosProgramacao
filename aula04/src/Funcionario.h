@@ -9,6 +9,7 @@
 
 #pragma once
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ class Funcionario{
 public:
   // Construtores da classe Funcionario
   Funcionario();
+  Funcionario(vector<string> dados);
   Funcionario(string idPessoa, string idFuncional, string nome,
               string profissao, string endereco, string funcao, string cargo,
               string faixaSalario);

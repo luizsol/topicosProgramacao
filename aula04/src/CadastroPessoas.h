@@ -27,6 +27,9 @@ public:
   // Destrutor da classe empresa
   ~CadastroPessoas();
 
+  // Setters e Getters
+  vector<string> getDadosPessoais();
+
   /**
       Valida uma string de dados de cadastro.
 
