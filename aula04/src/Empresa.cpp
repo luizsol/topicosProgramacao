@@ -24,7 +24,6 @@ Empresa::Empresa(string nome, int maxFuncionarios){
   Empresa::initFuncArray(maxFuncionarios);
 }
 
-
 // Destrutor da classe empresa
 Empresa::~Empresa(){
   for(int i = 0; i < this->maxFuncionarios; i++){

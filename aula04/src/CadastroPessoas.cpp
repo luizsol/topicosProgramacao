@@ -7,48 +7,27 @@
     @version 1.0 2017-08-23
 */
 
-
 #include "CadastroPessoas.h"
 #include <iostream>
 
 using namespace std;
 
 // Construtores da classe CadastroPessoas
-CadastroPessoas::CadastroPessoas(){
-  string l01, l02, l03, l04, l05, lTotal;
-  l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|\n";
-  l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|\n";
-  l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|\n";
-  l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|\n";
-  l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|\n";
+CadastroPessoas::CadastroPessoas(){}
 
-  lTotal = l01 + l02 + l03 + l04 + l05;
-  new CadastroPessoas(lTotal);
+CadastroPessoas::CadastroPessoas(dados){
+  CadastroPessoas::adicionarDadosPessoas(dados);
 }
 
-CadastroPessoas::CadastroPessoas(string cargaInicial){ // TODO
-  cout << cargaInicial << endl;
-}
+// Destrutor da classe CadastroPessoas
+CadastroPessoas::~CadastroPessoas(){}
 
-vector<string> CadastroPessoas::splitDado(string dado){
-  vector<string> result;
-  unsigned int start = 0;
-  unsigned int i = 1;
+/**
+    Valida uma string de dados de cadastro.
 
-  while(i < dado.length()-1){
-    if(dado.at(i) == '|'){
-      if(start == i){
-        throw std::invalid_argument("String invalida.");
-      }
-      result.push_back(dado.substr(start, i-start));
-      start = i + 1;
-    }
-    i++;
-  }
-
-  return result;
-}
-
+    @param dados (string): a string a ser validada
+    @return true se a string for válida, false caso contrário
+*/
 bool CadastroPessoas::validarDados(string dados){
   if(dados.back() != '\n'){ // String termina em '/n'?
     return false;
@@ -75,6 +54,14 @@ bool CadastroPessoas::validarDados(string dados){
   return true;
 }
 
+/**
+    Adiciona uma string de dados ao array de dados pessoais.
+
+    @param dados (string): a string a ser adicionada
+    @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
+                                um usuário com o mesmo idPessoa
+    @return true se a string foi adicionada, false caso contrário
+*/
 bool CadastroPessoas::adicionarDadosPessoa(string dados,
                                           bool sobrescrever){
   if(CadastroPessoas::validarDados(dados)){
@@ -93,6 +80,15 @@ bool CadastroPessoas::adicionarDadosPessoa(string dados,
   return false;
 }
 
+/**
+    Adiciona uma string contendo várias strings de dados ao array de dados
+    pessoais.
+
+    @param dados (string): a string dos dados a serem adicionados
+    @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
+                                um usuário com o mesmo idPessoa
+    @return true se todos os dados foram adicionados, false caso contrário
+*/
 bool CadastroPessoas::adicionarDadosPessoas(string dados,
                                            bool sobrescrever){
   vector<string> linhas;
@@ -125,6 +121,94 @@ bool CadastroPessoas::adicionarDadosPessoas(string dados,
   return true;
 }
 
+/**
+    Retorna uma string obtida pela concatenação de todos os dados no vetor de
+    dados pessoais.
+
+    @return a string resultante da concatenação de todos os dados contidos no
+            vetor de dados pessoais
+*/
+string CadastroPessoas::lerDadosTodasPessoas(){
+  string resultado;
+  for(unsigned int i = 0; i < this->dadosPessoais.size(); i++){
+    resultado += this->dadosPessoais[i];
+  }
+  return resultado;
+}
+
+/**
+    Atualiza os dados de uma pessoa.
+
+    @param dados (string): os novos dados a serem atualizados
+    @return true se a operação foi bem sucedida, false caso contrario
+*/
+bool CadastroPessoas::atualizarDadosPessoa(string dados){
+  if(!CadastroPessoas::validarDados(dados)){
+    return false;
+  }
+
+  vector<string> resultado = CadastroPessoas::splitDado(dados);
+  int indice = CadastroPessoas::getIndicePessoa(resultado[0]);
+
+  if(indice == -1){
+    return false;
+  }
+
+  return CadastroPessoas::adicionarDadosPessoa(dados, true);
+}
+
+/**
+    Retorna uma string com os dados de uma pessoa.
+
+    @param idPessoa (string): o id da pessoa a ser buscada
+    @return a string contendo os dados da pessoa
+    @throw: 404 caso a pessoa não esteja cadastrada
+*/
+string CadastroPessoas::lerDadosPessoa(string idPessoa){
+  int indice = CadastroPessoas::getIndicePessoa(idPessoa);
+  if(indice == -1){
+    throw 404;
+  } else {
+    return this->dadosPessoais[indice];
+  }
+}
+
+/**
+    Retorna um vector de strings contendo os diferentes campos de uma linha de
+    dados de pessoa.
+
+    @param dado (string): o dado a ser processado
+    @return o vetor de strings contendo os diferentes campos de uma linha de
+            dados de pessoa
+    @throw: std::invalid_argument caso o argumento seja inválido
+*/
+vector<string> CadastroPessoas::splitDado(string dado){
+  vector<string> result;
+  unsigned int start = 0;
+  unsigned int i = 1;
+
+  while(i < dado.length()-1){
+    if(dado.at(i) == '|'){
+      if(start == i){
+        throw std::invalid_argument("String invalida.");
+      }
+      result.push_back(dado.substr(start, i-start));
+      start = i + 1;
+    }
+    i++;
+  }
+
+  return result;
+}
+
+/**
+    Determina o índice do vector dadosPessoais em que está uma linha contendo
+    os dados de uma determinada pessoa.
+
+    @param idPessoa (string): o id da pessoa a ser localizada
+    @return o índice da string contida no dadosPessoais caso ela exista, -1
+            caso contrário
+*/
 int CadastroPessoas::getIndicePessoa(string idPessoa){
   for(unsigned int i = 0; i < this->dadosPessoais.size(); i++){
     if(CadastroPessoas::splitDado(this->dadosPessoais[i])[0] == idPessoa){
@@ -134,24 +218,20 @@ int CadastroPessoas::getIndicePessoa(string idPessoa){
   return -1;
 }
 
-string CadastroPessoas::lerDadosTodasPessoas(){
-  string resultado;
-  for(unsigned int i = 0; i < this->dadosPessoais.size(); i++){
-    resultado += this->dadosPessoais[i];
-  }
-  return resultado;
-}
+/**
+    Gera uma linha formatada contendo os dados relativos a uma pessoa.
 
-string CadastroPessoas::lerDadosPessoa(string idPessoa){
-  int indice = CadastroPessoas::getIndicePessoa(idPessoa);
-  if(indice == -1){
-    throw 404;
-  } else {
-    return this->dadosPessoais[indice];
-  }
-
-}
-
+    @param idPessoa (string): o id da pessoa
+    @param idFuncional (string): o idFuncional da pessoa
+    @param estadoFuncional (string): o estado funcional da pessoa
+    @param nome (string): o nome da pessoa
+    @param profissao (string): a profissão da pessoa
+    @param endereco (string): o endereco da pessoa
+    @param funcao (string): a funcao da pessoa
+    @param cargo (string): o cargo da pessoa
+    @param faixaSalarial (string): a faixa salarial da pessoa
+    @return a string formatada contendo os dados da pessoa
+*/
 string CadastroPessoas::gerarLinha(string idPessoa, string idFuncional,
                                    string estadoFuncional, string nome,
                                    string profissao, string endereco,
@@ -159,20 +239,5 @@ string CadastroPessoas::gerarLinha(string idPessoa, string idFuncional,
                                    string faixaSalarial){
   return idPessoa + "|" + idFuncional + "|" + estadoFuncional + "|" + nome +
          "|" + profissao + "|" + endereco + "|" + funcao + "|" + cargo + "|" +
-         faixaSalarial + "\n";
-}
-
-bool CadastroPessoas::atualizarDadosPessoa(string dados){
-  if(!CadastroPessoas::validarDados(dados)){
-    return false;
-  }
-
-  vector<string> resultado = CadastroPessoas::splitDado(dados);
-  int indice = CadastroPessoas::getIndicePessoa(resultado[0]);
-
-  if(indice != -1){
-    return false;
-  }
-
-  return CadastroPessoas::adicionarDadosPessoa(dados, true);
+         faixaSalarial + "|\n";
 }

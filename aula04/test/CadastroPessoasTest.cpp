@@ -31,8 +31,18 @@ int main(int argc, char * argv[]){
   lTotal = l01 + l02 + l03 + l04;
 
   cadastroPessoas->adicionarDadosPessoas(lTotal);
-  cout << cadastroPessoas->lerDadosTodasPessoas();
+  cout << endl << cadastroPessoas->lerDadosTodasPessoas();
+
+  // Atualizar cadastro
+  cadastroPessoas->atualizarDadosPessoa(
+    "0002|0042|1|HUEHUEHU|Engenheiro Eletronico|Rua BB, 32|Suporte|Junior|03|\n"
+  );
+
+  cout << endl << cadastroPessoas->lerDadosTodasPessoas();
 
 
+  cout << endl << cadastroPessoas->gerarLinha("0003", "0004", "4", "Luiz Sol",
+                                              "CEO", "Rua Braba", "CEO",
+                                              "Pleno", "99");
   return 0;
 }
