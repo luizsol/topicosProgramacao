@@ -18,7 +18,6 @@ CFLAGS += -Wpedantic
 TDIR = test
 SRC = src
 
-
 # Goals
 .DEFAULT_GOAL := lab3
 
@@ -37,7 +36,16 @@ lab3.o: $(SRC)/lab3.cpp
 
 # All
 lab3: Funcionario.o Empresa.o CadastroPessoas.o lab3.o
-	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o lab3.o -o lab3 # $(LIBS)
+	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o lab3.o -o lab3
+
+# Tests
+CadastroPessoasTest.o: $(TDIR)/CadastroPessoasTest.cpp
+	$(CC) $(CFLAGS) -c $(TDIR)/CadastroPessoasTest.cpp
+
+cadastroPessoasTest: CadastroPessoasTest.o CadastroPessoas.o
+	$(CC) $(CFLAGS) CadastroPessoasTest.o CadastroPessoas.o -o cadastroPessoasTest
+
+tests: cadastroPessoasTest
 
 clean:
-	rm -f *.o lab3
+	rm -f *.o lab3 cadastroPessoasTest

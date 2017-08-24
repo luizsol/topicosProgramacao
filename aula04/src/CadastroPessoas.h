@@ -14,7 +14,6 @@
 #include <iostream>
 #include <vector>
 #include "Funcionario.h"
-// #include "Empresa.h"
 
 using namespace std;
 
@@ -27,10 +26,16 @@ public:
   ~CadastroPessoas();
 
   bool validarDados(string dados);
-  bool adicionaDadosPessoa(string dados);
+  bool adicionarDadosPessoa(string dados, bool sobrescrever=true);
+  bool adicionarDadosPessoas(string dados, bool sobrescrever=true);
   string lerDadosTodasPessoas();
-  string lerDadosPessoa(string idFuncional);
-  string atualizarDadosPessoa(string dados);
+  string lerDadosPessoa(string idPessoa);
+  bool atualizarDadosPessoa(string dados);
+  vector<string> splitDado(string dado);
+  int getIndicePessoa(string idPessoa);
+  string gerarLinha(string idPessoa, string idFuncional, string estadoFuncional,
+                    string nome, string profissao, string endereco,
+                    string funcao, string cargo, string faixaSalarial);
 
 private:
 
