@@ -45,7 +45,13 @@ CadastroPessoasTest.o: $(TDIR)/CadastroPessoasTest.cpp
 cadastroPessoasTest: CadastroPessoasTest.o CadastroPessoas.o
 	$(CC) $(CFLAGS) CadastroPessoasTest.o CadastroPessoas.o -o cadastroPessoasTest
 
-tests: cadastroPessoasTest
+EmpresaTest.o: $(TDIR)/EmpresaTest.cpp
+	$(CC) $(CFLAGS) -c $(TDIR)/EmpresaTest.cpp
+
+empresaTest: EmpresaTest.o Empresa.o Funcionario.o CadastroPessoas.o
+	$(CC) $(CFLAGS) EmpresaTest.o Empresa.o Funcionario.o CadastroPessoas.o -o empresaTest
+
+tests: cadastroPessoasTest empresaTest
 
 clean:
-	rm -f *.o lab3 cadastroPessoasTest
+	rm -f *.o lab3 cadastroPessoasTest empresaTest

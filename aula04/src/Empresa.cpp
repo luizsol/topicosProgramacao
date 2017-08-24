@@ -25,14 +25,7 @@ Empresa::Empresa(string nome, int maxFuncionarios){
 }
 
 // Destrutor da classe empresa
-Empresa::~Empresa(){
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL){
-      delete this->funcionarios[i];
-    }
-  }
-  free(this->funcionarios);
-}
+Empresa::~Empresa(){}
 
 // Setters e Getters
 string Empresa::getNome(){
@@ -42,7 +35,6 @@ string Empresa::getNome(){
 void Empresa::setNome(string nome){
   this->nome = nome;
 }
-
 
 /**
     Cria e cadastra um funcionário na empresa.
@@ -59,27 +51,18 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
                                    string nome, string profissao,
                                    string endereco, string funcao, string cargo,
                                    string faixaSalario){
-  int i = 0;
-  while(this->funcionarios[i] != NULL && i < this->maxFuncionarios){
-    i++;
-  }
 
-  if(i >= this->maxFuncionarios){
-    cout << "ERRO: Limite de funcionarios excedido" << endl;
+  if(this->maxFuncionarios == this->funcionarios.size()){
     return false;
   }
 
   if(Empresa::idJaCadastrado(idFuncional)){
-    cout << "ERRO: Id Funcional ja cadastrado" << endl;
     return false;
   }
 
-
-
-  this->funcionarios[i] =  new Funcionario(idPessoa, idFuncional, nome,
-                                           profissao, endereco, funcao, cargo,
-                                           faixaSalario);
-
+  this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
+                                          profissao, endereco, funcao, cargo,
+                                          faixaSalario));
   return true;
 }
 
@@ -141,9 +124,8 @@ bool Empresa::demitirFuncionario(string idFuncional){
   }
 
   int index = Empresa::buscaIdFuncional(idFuncional);
-  delete this->funcionarios[index];
+  this->funcionarios.erase(this->funcionarios.begin() + index);
 
-  this->funcionarios[index] = NULL;
   return true;
 }
 
@@ -160,28 +142,21 @@ bool Empresa::demitirFuncionarioIterativo(){
   return Empresa::demitirFuncionario(idFuncional);
 }
 
-
 // Demite e apaga todos funcionário da empresa.
 void Empresa::demitirTodosFuncionarios(){
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL){
-      Empresa::demitirFuncionario(this->funcionarios[i]->getIdFuncional());
-    }
+  while(this->funcionarios.size() > 0){
+    this->funcionarios.erase(this->funcionarios.begin());
   }
 }
 
 // Imprime os dados de todos os funcionários da empresa de forma formatada
 void Empresa::obterDadosFuncionarios(){
-  int j = 1;
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL){
-      cout << j << "o Funcionario: " << endl << endl;
-      Empresa::obterDadosFuncionario(i);
-      cout << endl;
-      j++;
-    }
+  for(unsigned long i = 0; i < this->funcionarios.size(); i++){
+    cout << i+1 << "o Funcionario: " << endl << endl;
+    Empresa::obterDadosFuncionario(i);
+    cout << endl;
   }
-  if(j == 1){
+  if(this->funcionarios.size() == 0){
     cout << "Nenhum funcionario cadastrado." << endl;
   }
 }
@@ -193,12 +168,7 @@ void Empresa::obterDadosFuncionarios(){
     @return true se a inicialização foi bem sucedida, false caso contrário
 */
 bool Empresa::initFuncArray(int maxFuncionarios){
-  this->funcionarios = (Funcionario**) malloc(maxFuncionarios *
-                                              sizeof(Funcionario*));
   this->maxFuncionarios = maxFuncionarios;
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    this->funcionarios[i] = NULL;
-  }
 
   return true;
 }
@@ -217,7 +187,6 @@ bool Empresa::idJaCadastrado(string idFuncional){
   return true;
 }
 
-
 /**
     Determina o índice no array de funcionários de determinado funcionário
 
@@ -226,9 +195,8 @@ bool Empresa::idJaCadastrado(string idFuncional){
             ou -1 caso ele não tenha sido encontrado
 */
 int Empresa::buscaIdFuncional(string idFuncional){
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL &&
-       this->funcionarios[i]->getIdFuncional().compare(idFuncional) == 0){
+  for(unsigned long i = 0; i < this->funcionarios.size(); i++){
+    if(this->funcionarios[i].getIdFuncional().compare(idFuncional) == 0){
       return i;
     }
   }
@@ -242,13 +210,13 @@ int Empresa::buscaIdFuncional(string idFuncional){
                            ser impresso
 */
 void Empresa::obterDadosFuncionario(int index){
-  cout << "Id Funcional: \t" << this->funcionarios[index]->getIdFuncional()
+  cout << "Id Funcional: \t" << this->funcionarios[index].getIdFuncional()
     << endl;
-  cout << "Nome:\t\t" << this->funcionarios[index]->getNome() << endl;
-  cout << "Endereco:\t" << this->funcionarios[index]->getEndereco() << endl;
-  cout << "Profissao:\t" << this->funcionarios[index]->getProfissao() << endl;
-  cout << "Funcao:\t\t" << this->funcionarios[index]->getFuncao() << endl;
-  cout << "Cargo:\t\t" << this->funcionarios[index]->getCargo() << endl;
+  cout << "Nome:\t\t" << this->funcionarios[index].getNome() << endl;
+  cout << "Endereco:\t" << this->funcionarios[index].getEndereco() << endl;
+  cout << "Profissao:\t" << this->funcionarios[index].getProfissao() << endl;
+  cout << "Funcao:\t\t" << this->funcionarios[index].getFuncao() << endl;
+  cout << "Cargo:\t\t" << this->funcionarios[index].getCargo() << endl;
 }
 
 

@@ -15,7 +15,7 @@ using namespace std;
 // Construtores da classe CadastroPessoas
 CadastroPessoas::CadastroPessoas(){}
 
-CadastroPessoas::CadastroPessoas(dados){
+CadastroPessoas::CadastroPessoas(string dados){
   CadastroPessoas::adicionarDadosPessoas(dados);
 }
 

@@ -9,14 +9,15 @@
 
 #pragma once
 #include <string>
+#include <vector>
 #include "Funcionario.h"
 
 using namespace std;
 
 class Empresa{
-  string nome;                  // Nome da empresa
-  Funcionario ** funcionarios;  // Array contendo os funcionários da emrpesa
-  int maxFuncionarios;          // Tamanho do array funcionarios
+  string nome;                      // Nome da empresa
+  vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
+  unsigned long maxFuncionarios;    // Tamanho do array funcionarios
 
 public:
   // Construtores da classe Empresa
