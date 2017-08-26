@@ -3,7 +3,7 @@
     CadastroPessoas.h
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 1.0 2017-08-23
 */
 
@@ -45,6 +45,8 @@ public:
       @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
                                   um usuário com o mesmo idPessoa
       @return true se a string foi adicionada, false caso contrário
+      @throw caso haja a tentativa de sobrescrever um usuário e o argumento
+             'sobrescrever' seja false (domain_error)
   */
   bool adicionarDadosPessoa(string dados, bool sobrescrever=true);
 
@@ -56,6 +58,8 @@ public:
       @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
                                   um usuário com o mesmo idPessoa
       @return true se todos os dados foram adicionados, false caso contrário
+      @throw caso sejam passados dados inválidos (invalid_argument)
+      @throw caso outro cadastro já possua esse ID Pessoa (domain_error)
   */
   bool adicionarDadosPessoas(string dados, bool sobrescrever=true);
 
@@ -73,7 +77,7 @@ public:
 
       @param idPessoa (string): o id da pessoa a ser buscada
       @return a string contendo os dados da pessoa
-      @throw: 404 caso a pessoa não esteja cadastrada
+      @throw caso os idPessoa não exista (domain_error)
   */
   string lerDadosPessoa(string idPessoa);
 
@@ -82,6 +86,8 @@ public:
 
       @param dados (string): os novos dados a serem atualizados
       @return true se a operação foi bem sucedida, false caso contrario
+      @throw caso sejam passados dados inválidos (invalid_argument)
+      @throw caso os idPessoa não exista (domain_error)
   */
   bool atualizarDadosPessoa(string dados);
 
@@ -92,7 +98,7 @@ public:
       @param dado (string): o dado a ser processado
       @return o vetor de strings contendo os diferentes campos de uma linha de
               dados de pessoa
-      @throw: std::invalid_argument caso o argumento seja inválido
+      @throw caso o argumento seja inválido (invalid_argument)
   */
   vector<string> splitDado(string dado);
 

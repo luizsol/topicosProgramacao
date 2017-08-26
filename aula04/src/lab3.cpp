@@ -3,7 +3,7 @@
     lab3.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 1.0 2017-08-23
 */
 
@@ -22,20 +22,27 @@ void sistema(){
   cout << "Forneca o numero maximo de funcionarios da empresa " << nomeEmpresa
     << ":" << endl;
   getline(cin, tamanho);
-  Empresa aEmpresa(nomeEmpresa, atoi(tamanho.c_str()));
+  Empresa * aEmpresa;
 
+  try{
+    aEmpresa = new Empresa(nomeEmpresa, atoi(tamanho.c_str()));
+  } catch (logic_error& ex){
+      cout << "ERRO ao criar a empresa: " << ex.what() << endl;
+      cout << "Saindo..." << endl;
+      exit(1);
+  }
   string option = "";
 
   while(true){
     cout << endl << "-------------------------" << endl;
-    cout << aEmpresa.getNome() << endl;
+    cout << aEmpresa->getNome() << endl;
     cout << "-------------------------" << endl << endl;
 
     cout << "[M] Mostrar todas as Pessoas" << endl;
-    cout << "[C] Cadastrar Funcionario" << endl;
+    cout << "[F] Mostrar Funcionarios" << endl;
+    cout << "[C] Contratar Funcionario" << endl;
     cout << "[D] Demitir Funcionario" << endl;
     cout << "[T] Demitir Todos Funcionarios" << endl;
-    cout << "[F] Mostrar Funcionarios" << endl;
     cout << "[X] Sair" << endl;
     getline(cin, option);
     cout << "-------------------------" << endl << endl;
@@ -43,42 +50,57 @@ void sistema(){
     switch(option.at(0)){
     case 'M':
     case 'm':
-      aEmpresa.obterDadosPessoas();
+      aEmpresa->obterDadosPessoas();
       break;
     case 'C':
     case 'c':
-      if(aEmpresa.contratarFuncionario()){
-        cout << "Operacao realizada com sucesso!" << endl << endl;
-      } else {
-        cout << "ERRO: A operacao falhou!" << endl << endl;
+      try{
+        aEmpresa->contratarFuncionario();
+        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
+      } catch (logic_error& ex){
+        cout << ex.what() << endl;
+        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
       }
       break;
     case 'D':
     case 'd':
-      if(aEmpresa.demitirFuncionario()){
-        cout << "Operacao realizada com sucesso!" << endl << endl;
-      } else {
-        cout << "ERRO: A operacao falhou!" << endl << endl;
+      try{
+        aEmpresa->demitirFuncionario();
+        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
+      } catch (logic_error& ex){
+        cout << ex.what() << endl;
+        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
       }
       break;
     case 'T':
     case 't':
-      aEmpresa.demitirTodosFuncionarios();
-      cout << "SUCESSO: Todos funcionarios demitidos com sucesso" << endl;
+      try{
+        aEmpresa->demitirTodosFuncionarios();
+        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
+      } catch (logic_error& ex){
+        cout << ex.what() << endl;
+        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
+      }
       break;
     case 'F':
     case 'f':
-      aEmpresa.obterDadosFuncionarios();
+      try{
+        aEmpresa->obterDadosFuncionarios();
+        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
+      } catch (logic_error& ex){
+        cout << ex.what() << endl;
+        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
+      }
       break;
     case 'X':
     case 'x':
+      cout << endl << "Saindo..." << endl;
       return;
     default:
+      cout << endl << "Opcao inválida" << endl;
       break;
     }
   }
-
-
 }
 
 int main(int argc, char * argv[]){

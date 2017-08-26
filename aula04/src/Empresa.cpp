@@ -3,7 +3,7 @@
     Empresa.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 2.0 2017-08-23
 */
 
@@ -28,9 +28,9 @@ Empresa::Empresa(string nome, int maxFuncionarios){
   l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|\n";
   lTotal = l01 + l02 + l03 + l04 + l05;
 
+  Empresa::initFuncArray(maxFuncionarios);
   this->cadastroPessoas.adicionarDadosPessoas(lTotal);
   Empresa::setNome(nome);
-  Empresa::initFuncArray(maxFuncionarios);
   Empresa::iniciarFuncionarios();
 }
 
@@ -58,7 +58,8 @@ bool Empresa::iniciarFuncionarios(){
   for(unsigned long i = 0; i < pessoas.size(); i++){
     vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
     if(pessoa[2].compare("1") == 0){
-      this->funcionarios.push_back(Funcionario(pessoa));
+      Empresa::contratarFuncionario(pessoa[0], pessoa[1], pessoa[3], pessoa[4],
+                                    pessoa[5], pessoa[6], pessoa[7], pessoa[8]);
     }
   }
   return true;
@@ -74,6 +75,10 @@ bool Empresa::iniciarFuncionarios(){
     @param funcao (string): a função do funcionário
     @param cargo (string): o cargo do funcionário
     @return true se o funcionário foi criado e cadastrado, false caso contrário
+    @throw caso se tente contratar mais funcionários que o limite máximo
+           (domain_error)
+    @throw caso se tente contratar um funcionário com um ID Funcional já
+           existente (domain_error)
 */
 bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
                                    string nome, string profissao,
@@ -81,28 +86,24 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
                                    string faixaSalario){
 
   if(this->maxFuncionarios == this->funcionarios.size()){
-    return false;
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "Limite de funcionarios atingido");
   }
 
   if(Empresa::idJaCadastrado(idFuncional)){
-    return false;
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "ID Funcional ja cadastrado");
   }
-
-
-
 
   string linha = this->cadastroPessoas.gerarLinha(idPessoa, idFuncional, "1",
                                                   nome, profissao, endereco,
                                                   funcao, cargo, faixaSalario);
 
-  if(this->cadastroPessoas.atualizarDadosPessoa(linha)){
-    this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
-                                             profissao, endereco, funcao, cargo,
-                                             faixaSalario));
-    return true;
-  }
-
-  return false;
+  this->cadastroPessoas.atualizarDadosPessoa(linha);
+  this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
+                                           profissao, endereco, funcao, cargo,
+                                           faixaSalario));
+  return true;
 }
 
 /**
@@ -111,6 +112,9 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
 
     @return true se o funcionário foi cadastrado, false caso
             contrário
+    @throw caso o ID Pessoa seja inexistente (domain_error)
+    @throw caso a pessoa não esteja com o status de aguardando vaga
+           (domain_error)
 */
 bool Empresa::contratarFuncionario(){
   cout << endl << "Pessoas elegiveis para contratacao: " << endl;
@@ -122,13 +126,18 @@ bool Empresa::contratarFuncionario(){
 
   int indice = this->cadastroPessoas.getIndicePessoa(idPessoa);
   if(indice < 0){
-    cout << "ID pessoa inexistente." << endl;
-    return false;
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "ID pessoa inexistente.");
   }
 
   vector<string> pessoa = this->cadastroPessoas.splitDado(
                             this->cadastroPessoas.lerDadosPessoa(idPessoa)
                           );
+  if(pessoa[2].compare("2") != 0){
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "a pessoa com esse ID pessoa nao esta aguardando"
+                            " vaga");
+  }
 
   cout << "Digite o novo ID funcional da pessoa a ser contratada (ID antigo = "
     << pessoa[1] << "): " ;
@@ -144,10 +153,12 @@ bool Empresa::contratarFuncionario(){
 
     @param idFuncional (string): o ID Funcional do funcionário a ser demitido
     @return true se o funcionário foi demitido e apagado, false caso contrário
+    @throw caso o ID Funcional seja inexistente (domain_error)
 */
 bool Empresa::demitirFuncionario(string idFuncional){
   if(!Empresa::idJaCadastrado(idFuncional)){
-    return false;
+    throw std::domain_error("Empresa::demitirFuncionario: "
+                            "ID Funcional inexistente.");
   }
 
   int index = Empresa::buscaIdFuncional(idFuncional);
@@ -169,12 +180,10 @@ bool Empresa::demitirFuncionario(string idFuncional){
                                                   this->funcionarios[index].
                                                         getFaixaSalario());
 
-  if(this->cadastroPessoas.atualizarDadosPessoa(linha)){
-    this->funcionarios.erase(this->funcionarios.begin() + index);
-    return true;
-  }
+  this->cadastroPessoas.atualizarDadosPessoa(linha);
+  this->funcionarios.erase(this->funcionarios.begin() + index);
+  return true;
 
-  return false;
 }
 
 /**

@@ -3,7 +3,7 @@
     Empresa.h
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 2.0 2017-08-23
 */
 
@@ -53,8 +53,11 @@ public:
       @param profissao (string): a profissão do funcionário
       @param funcao (string): a função do funcionário
       @param cargo (string): o cargo do funcionário
-      @return true se o funcionário foi criado e cadastrado, false caso
-              contrário
+      @return true se o funcionário foi criado e cadastrado, false caso contrário
+      @throw caso se tente contratar mais funcionários que o limite máximo
+             (domain_error)
+      @throw caso se tente contratar um funcionário com um ID Funcional já
+             existente (domain_error)
   */
   bool contratarFuncionario(string idPessoa, string idFuncional, string nome,
                             string profissao, string endereco, string funcao,
@@ -66,6 +69,10 @@ public:
 
       @return true se o funcionário foi cadastrado, false caso
               contrário
+      @throw caso o ID Pessoa seja inexistente (domain_error)
+      @throw caso a pessoa não esteja com o status de aguardando vaga
+             (domain_error)
+
   */
   bool contratarFuncionario();
 
@@ -74,6 +81,7 @@ public:
 
       @param idFuncional (string): o ID Funcional do funcionário a ser demitido
       @return true se o funcionário foi demitido e apagado, false caso contrário
+      @throw caso o ID Funcional seja inexistente (domain_error)
   */
   bool demitirFuncionario(string idFuncional);
 

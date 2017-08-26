@@ -3,7 +3,7 @@
     CadastroPessoas.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 1.0 2017-08-23
 */
 
@@ -66,6 +66,8 @@ bool CadastroPessoas::validarDados(string dados){
     @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
                                 um usuário com o mesmo idPessoa
     @return true se a string foi adicionada, false caso contrário
+    @throw caso haja a tentativa de sobrescrever um usuário e o argumento
+           'sobrescrever' seja false (domain_error)
 */
 bool CadastroPessoas::adicionarDadosPessoa(string dados,
                                           bool sobrescrever){
@@ -82,7 +84,8 @@ bool CadastroPessoas::adicionarDadosPessoa(string dados,
       return true;
     }
   }
-  return false;
+  throw std::domain_error("CadastroPessoas::adicionarDadosPessoa: "
+                          "Tentativa de subscricao de pessoa ja cadastrada");
 }
 
 /**
@@ -93,6 +96,8 @@ bool CadastroPessoas::adicionarDadosPessoa(string dados,
     @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
                                 um usuário com o mesmo idPessoa
     @return true se todos os dados foram adicionados, false caso contrário
+    @throw caso sejam passados dados inválidos (invalid_argument)
+    @throw caso outro cadastro já possua esse ID Pessoa (domain_error)
 */
 bool CadastroPessoas::adicionarDadosPessoas(string dados,
                                            bool sobrescrever){
@@ -110,13 +115,15 @@ bool CadastroPessoas::adicionarDadosPessoas(string dados,
   for(unsigned int i = 0; i < linhas.size(); i++){
     // A linha é válida?
     if(! CadastroPessoas::validarDados(linhas[i])){
-      return false;
+      throw std::invalid_argument("CadastroPessoas::adicionarDadosPessoas:"
+                              " dados invalidos");
     }
     string idPessoa = CadastroPessoas::splitDado(linhas[i])[0];
 
     // Caso não possa sobrescrever, já existe algum usuário com esse idPessoa?
     if(!sobrescrever && CadastroPessoas::getIndicePessoa(idPessoa) != -1) {
-      return false;
+      throw std::domain_error("CadastroPessoas::adicionarDadosPessoas:"
+                              " outro cadastro ja possui esse ID Pessoa");
     }
   }
 
@@ -142,40 +149,45 @@ string CadastroPessoas::lerDadosTodasPessoas(){
 }
 
 /**
+    Retorna uma string com os dados de uma pessoa.
+
+    @param idPessoa (string): o id da pessoa a ser buscada
+    @return a string contendo os dados da pessoa
+    @throw caso os idPessoa não exista (domain_error)
+*/
+string CadastroPessoas::lerDadosPessoa(string idPessoa){
+  int indice = CadastroPessoas::getIndicePessoa(idPessoa);
+  if(indice == -1){
+    throw std::domain_error("CadastroPessoas::lerDadosPessoa:"
+                            " ID Pessoa inexistente.");
+  } else {
+    return this->dadosPessoais[indice];
+  }
+}
+
+/**
     Atualiza os dados de uma pessoa.
 
     @param dados (string): os novos dados a serem atualizados
     @return true se a operação foi bem sucedida, false caso contrario
+    @throw caso sejam passados dados inválidos (invalid_argument)
+    @throw caso os idPessoa não exista (domain_error)
 */
 bool CadastroPessoas::atualizarDadosPessoa(string dados){
   if(!CadastroPessoas::validarDados(dados)){
-    return false;
+    throw std::invalid_argument("CadastroPessoas::atualizarDadosPessoa:"
+                                " dados invalidos");
   }
 
   vector<string> resultado = CadastroPessoas::splitDado(dados);
   int indice = CadastroPessoas::getIndicePessoa(resultado[0]);
 
   if(indice == -1){
-    return false;
+    throw std::domain_error("CadastroPessoas::atualizarDadosPessoa:"
+                            " ID Pessoa inexistente.");
   }
 
   return CadastroPessoas::adicionarDadosPessoa(dados, true);
-}
-
-/**
-    Retorna uma string com os dados de uma pessoa.
-
-    @param idPessoa (string): o id da pessoa a ser buscada
-    @return a string contendo os dados da pessoa
-    @throw: 404 caso a pessoa não esteja cadastrada
-*/
-string CadastroPessoas::lerDadosPessoa(string idPessoa){
-  int indice = CadastroPessoas::getIndicePessoa(idPessoa);
-  if(indice == -1){
-    throw 404;
-  } else {
-    return this->dadosPessoais[indice];
-  }
 }
 
 /**
@@ -185,7 +197,7 @@ string CadastroPessoas::lerDadosPessoa(string idPessoa){
     @param dado (string): o dado a ser processado
     @return o vetor de strings contendo os diferentes campos de uma linha de
             dados de pessoa
-    @throw: std::invalid_argument caso o argumento seja inválido
+    @throw caso o argumento seja inválido (invalid_argument)
 */
 vector<string> CadastroPessoas::splitDado(string dado){
   vector<string> result;
