@@ -147,14 +147,44 @@ bool Empresa::contratarFuncionario(){
 */
 bool Empresa::demitirFuncionario(string idFuncional){
   if(!Empresa::idJaCadastrado(idFuncional)){
-    cout << "ERRO: Id funcional nao cadastrado" << endl;
     return false;
   }
 
   int index = Empresa::buscaIdFuncional(idFuncional);
-  this->funcionarios.erase(this->funcionarios.begin() + index);
 
-  return true;
+  string linha = this->cadastroPessoas.gerarLinha(this->funcionarios[index].
+                                                        getIdPessoa(),
+                                                  this->funcionarios[index].
+                                                        getIdFuncional(), "0",
+                                                  this->funcionarios[index].
+                                                        getNome(),
+                                                  this->funcionarios[index].
+                                                        getProfissao(),
+                                                  this->funcionarios[index].
+                                                        getEndereco(),
+                                                  this->funcionarios[index].
+                                                        getFuncao(),
+                                                  this->funcionarios[index].
+                                                        getCargo(),
+                                                  this->funcionarios[index].
+                                                        getFaixaSalario());
+
+  if(this->cadastroPessoas.atualizarDadosPessoa(linha)){
+    this->funcionarios.erase(this->funcionarios.begin() + index);
+    return true;
+  }
+
+  return false;
+}
+
+/**
+    Demite e apaga um funcionário da empresa.
+
+    @param idFuncional (string): o ID Funcional do funcionário a ser demitido
+    @return true se o funcionário foi demitido e apagado, false caso contrário
+*/
+bool Empresa::demitirFuncionario(){
+  //TODO
 }
 
 /**
