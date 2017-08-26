@@ -13,47 +13,52 @@
 using namespace std;
 
 // Construtores da classe Funcionario
-Funcionario::Funcionario() : Funcionario("", "", "", "", "", "") {}
+Funcionario::Funcionario() : Funcionario("", "", "", "", "", "", "", "") {}
 
-Funcionario::Funcionario(string idFuncional, string idPessoa, string estadoFuncional, string nome, string endereco,
-                         string profissao, string funcao, string cargo, string faixaSalario){
-  Funcionario::setIdF(idFuncional);
-  Funcionario::setIdP(idPessoa);
-  Funcionario::setEstado(estadoFuncional);
+Funcionario::Funcionario(vector<string> dados) : Funcionario(dados[0], dados[1],
+                                                             dados[3], dados[4],
+                                                             dados[5], dados[6],
+                                                             dados[7],
+                                                             dados[8]){}
+
+Funcionario::Funcionario(string idPessoa, string idFuncional, string nome,
+                         string profissao, string endereco, string funcao,
+                         string cargo, string faixaSalario){
+  Funcionario::setIdPessoa(idPessoa);
+  Funcionario::setIdFuncional(idFuncional);
   Funcionario::setNome(nome);
-  Funcionario::setEndereco(endereco);
   Funcionario::setProfissao(profissao);
+  Funcionario::setEndereco(endereco);
   Funcionario::setFuncao(funcao);
   Funcionario::setCargo(cargo);
-  Funcionario::setSalario(faixaSalario);
+  Funcionario::setFaixaSalario(faixaSalario);
 }
 
 // Destrutor da classe empresa
 Funcionario::~Funcionario(){}
 
 // Setters e Getters
-string Funcionario::getIdF(){
+string Funcionario::getIdPessoa(){
+  return this->idPessoa;
+}
+
+void Funcionario::setIdPessoa(string idPessoa){
+  this->idPessoa = idPessoa;
+}
+
+string Funcionario::getIdFuncional(){
   return this->idFuncional;
 }
 
-void Funcionario::setIdF(string idFuncional){
+void Funcionario::setIdFuncional(string idFuncional){
   this->idFuncional = idFuncional;
 }
 
-string Funcionario::getIdP() {
-	return this->idPessoa;
+string Funcionario::getEstadoFuncional(){
+  return this->estadoFuncional;
 }
-
-void Funcionario::setIdP(string idPessoa) {
-	this->idPessoa = idPessoa;
-}
-
-string Funcionario::getEstado() {
-	return this->estadoFuncional;
-}
-
-void Funcionario::setEstado(string estadoFuncional) {
-	this->estadoFuncional = estadoFuncional;
+void Funcionario::setEstadoFuncional(string estadoFuncional){
+  this->estadoFuncional = estadoFuncional;
 }
 
 string Funcionario::getNome(){
@@ -94,9 +99,10 @@ void Funcionario::setCargo(string cargo){
   this->cargo = cargo;
 }
 
-string Funcionario::getSalario() {
-	return this->faixaSalario;
+string Funcionario::getFaixaSalario(){
+  return this->faixaSalario;
 }
-void Funcionario::setSalario(string faixaSalario) {
-	this->faixaSalario = faixaSalario;
+
+void Funcionario::setFaixaSalario(string faixaSalario){
+  this->faixaSalario = faixaSalario;
 }

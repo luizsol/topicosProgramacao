@@ -3,7 +3,7 @@
     Empresa.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 2.0 2017-08-23
 */
 
@@ -20,20 +20,22 @@ Empresa::Empresa(string nome) : Empresa(nome, 10) {}
 Empresa::Empresa(int maxFuncionarios) : Empresa("Sem Nome", maxFuncionarios) {}
 
 Empresa::Empresa(string nome, int maxFuncionarios){
-  Empresa::setNome(nome);
-  Empresa::initFuncArray(maxFuncionarios);
-}
+  string l01, l02, l03, l04, l05, lTotal;
+  l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|\n";
+  l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|\n";
+  l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|\n";
+  l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|\n";
+  l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|\n";
+  lTotal = l01 + l02 + l03 + l04 + l05;
 
+  Empresa::initFuncArray(maxFuncionarios);
+  this->cadastroPessoas.adicionarDadosPessoas(lTotal);
+  Empresa::setNome(nome);
+  Empresa::iniciarFuncionarios();
+}
 
 // Destrutor da classe empresa
-Empresa::~Empresa(){
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL){
-      delete this->funcionarios[i];
-    }
-  }
-  free(this->funcionarios);
-}
+Empresa::~Empresa(){}
 
 // Setters e Getters
 string Empresa::getNome(){
@@ -44,6 +46,24 @@ void Empresa::setNome(string nome){
   this->nome = nome;
 }
 
+/**
+    Solicita os dados de todas as pessoas cadastradas e contrata aquelas que
+    tiverem o estado funcional "empregado" (1)
+
+    @return true se todos os funcionários foram devidamente contratados
+*/
+bool Empresa::iniciarFuncionarios(){
+  vector<string> pessoas = this->cadastroPessoas.getDadosPessoais();
+
+  for(unsigned long i = 0; i < pessoas.size(); i++){
+    vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
+    if(pessoa[2].compare("1") == 0){
+      Empresa::contratarFuncionario(pessoa[0], pessoa[1], pessoa[3], pessoa[4],
+                                    pessoa[5], pessoa[6], pessoa[7], pessoa[8]);
+    }
+  }
+  return true;
+}
 
 /**
     Cria e cadastra um funcionário na empresa.
@@ -55,71 +75,77 @@ void Empresa::setNome(string nome){
     @param funcao (string): a função do funcionário
     @param cargo (string): o cargo do funcionário
     @return true se o funcionário foi criado e cadastrado, false caso contrário
+    @throw caso se tente contratar mais funcionários que o limite máximo
+           (domain_error)
+    @throw caso se tente contratar um funcionário com um ID Funcional já
+           existente (domain_error)
 */
-bool Empresa::contratarFuncionario(string idFuncional, string nome,
-                                   string endereco, string profissao,
-                                   string funcao, string cargo){
-  int i = 0;
-  while(this->funcionarios[i] != NULL && i < this->maxFuncionarios){
-    i++;
-  }
+bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
+                                   string nome, string profissao,
+                                   string endereco, string funcao, string cargo,
+                                   string faixaSalario){
 
-  if(i >= this->maxFuncionarios){
-    cout << "ERRO: Limite de funcionarios excedido" << endl;
-    return false;
+  if(this->maxFuncionarios == this->funcionarios.size()){
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "Limite de funcionarios atingido");
   }
 
   if(Empresa::idJaCadastrado(idFuncional)){
-    cout << "ERRO: Id Funcional ja cadastrado" << endl;
-    return false;
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "ID Funcional ja cadastrado");
   }
 
+  string linha = this->cadastroPessoas.gerarLinha(idPessoa, idFuncional, "1",
+                                                  nome, profissao, endereco,
+                                                  funcao, cargo, faixaSalario);
 
-
-  this->funcionarios[i] =  new Funcionario(idFuncional, nome,
-                                           endereco, profissao,
-                                           funcao, cargo);
-
+  this->cadastroPessoas.atualizarDadosPessoa(linha);
+  this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
+                                           profissao, endereco, funcao, cargo,
+                                           faixaSalario));
   return true;
 }
 
-
 /**
-    Cria e cadastra um funcionário na empresa via CLI
+    Cadastra um funcionário na empresa de maneira interativa (via CLI)
+    utilizando os dados do cadastroPessoa.
 
-    @return true se o funcionário foi criado e cadastrado, false caso contrário
+    @return true se o funcionário foi cadastrado, false caso
+            contrário
+    @throw caso o ID Pessoa seja inexistente (domain_error)
+    @throw caso a pessoa não esteja com o status de aguardando vaga
+           (domain_error)
 */
-bool Empresa::contratarFuncionarioIterativo(){
-  string idFuncional;
-  string nome;
-  string endereco;
-  string profissao;
-  string funcao;
-  string cargo;
+bool Empresa::contratarFuncionario(){
+  cout << endl << "Pessoas elegiveis para contratacao: " << endl;
+  cout << "-----------------------------------------------------------" << endl;
+  Empresa::obterDadosPessoas(2);
+  cout << "Digite o ID da pessoa que deseja contratar: " << endl;
+  string idPessoa;
+  getline(cin, idPessoa);
 
-  bool idExistente = true;
-  while(idExistente){
-    cout << "Forneca o ID funcional:" << endl;
-    getline(cin, idFuncional);
-    idExistente =  Empresa::idJaCadastrado(idFuncional);
-    if(idExistente){
-      cout << "Id Funcional ja existente. Digite outro." << endl;
-    }
+  int indice = this->cadastroPessoas.getIndicePessoa(idPessoa);
+  if(indice < 0){
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "ID pessoa inexistente.");
   }
 
-  cout << "Forneca o nome do funcionario:" << endl;
-  getline(cin, nome);
-  cout << "Forneca o endereco do funcionario:" << endl;
-  getline(cin, endereco);
-  cout << "Forneca a profissao do funcionario:" << endl;
-  getline(cin, profissao);
-  cout << "Forneca a funcao do funcionario:" << endl;
-  getline(cin, funcao);
-  cout << "Forneca o cargo do funcionario:" << endl;
-  getline(cin, cargo);
+  vector<string> pessoa = this->cadastroPessoas.splitDado(
+                            this->cadastroPessoas.lerDadosPessoa(idPessoa)
+                          );
+  if(pessoa[2].compare("2") != 0){
+    throw std::domain_error("Empresa::contratarFuncionario: "
+                            "a pessoa com esse ID pessoa nao esta aguardando"
+                            " vaga");
+  }
 
-  return Empresa::contratarFuncionario(idFuncional, nome, endereco, profissao,
-                                       funcao, cargo);
+  cout << "Digite o novo ID funcional da pessoa a ser contratada (ID antigo = "
+    << pessoa[1] << "): " ;
+  getline(cin, pessoa[1]);
+
+  return Empresa::contratarFuncionario(pessoa[0], pessoa[1], pessoa[3],
+                                       pessoa[4], pessoa[5], pessoa[6],
+                                       pessoa[7], pessoa[8]);
 }
 
 /**
@@ -127,18 +153,37 @@ bool Empresa::contratarFuncionarioIterativo(){
 
     @param idFuncional (string): o ID Funcional do funcionário a ser demitido
     @return true se o funcionário foi demitido e apagado, false caso contrário
+    @throw caso o ID Funcional seja inexistente (domain_error)
 */
 bool Empresa::demitirFuncionario(string idFuncional){
   if(!Empresa::idJaCadastrado(idFuncional)){
-    cout << "ERRO: Id funcional nao cadastrado" << endl;
-    return false;
+    throw std::domain_error("Empresa::demitirFuncionario: "
+                            "ID Funcional inexistente.");
   }
 
   int index = Empresa::buscaIdFuncional(idFuncional);
-  delete this->funcionarios[index];
 
-  this->funcionarios[index] = NULL;
+  string linha = this->cadastroPessoas.gerarLinha(this->funcionarios[index].
+                                                        getIdPessoa(),
+                                                  this->funcionarios[index].
+                                                        getIdFuncional(), "0",
+                                                  this->funcionarios[index].
+                                                        getNome(),
+                                                  this->funcionarios[index].
+                                                        getProfissao(),
+                                                  this->funcionarios[index].
+                                                        getEndereco(),
+                                                  this->funcionarios[index].
+                                                        getFuncao(),
+                                                  this->funcionarios[index].
+                                                        getCargo(),
+                                                  this->funcionarios[index].
+                                                        getFaixaSalario());
+
+  this->cadastroPessoas.atualizarDadosPessoa(linha);
+  this->funcionarios.erase(this->funcionarios.begin() + index);
   return true;
+
 }
 
 /**
@@ -146,36 +191,62 @@ bool Empresa::demitirFuncionario(string idFuncional){
 
     @return true se o funcionário foi demitido e apagado, false caso contrário
 */
-bool Empresa::demitirFuncionarioIterativo(){
+bool Empresa::demitirFuncionario(){
+  Empresa::obterDadosFuncionarios();
+  cout << "Forneca o ID Funcional do funcionario que deseja demitir:" << endl;
   string idFuncional;
-  cout << "Forneca o id Funcional de quem deseja demitir:" << endl;
   getline(cin, idFuncional);
-
   return Empresa::demitirFuncionario(idFuncional);
-}
 
+}
 
 // Demite e apaga todos funcionário da empresa.
 void Empresa::demitirTodosFuncionarios(){
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL){
-      Empresa::demitirFuncionario(this->funcionarios[i]->getNome());
-    }
+  while(this->funcionarios.size() > 0){
+    this->funcionarios.erase(this->funcionarios.begin());
   }
+}
+
+/**
+    Imprime os dados de todas as pessoas contidas em cadastroPessoa de forma
+    formatada
+*/
+void Empresa::obterDadosPessoas(int filtro){
+  vector<string> pessoas = this->cadastroPessoas.getDadosPessoais();
+
+  for(unsigned long i = 0; i < pessoas.size(); i++){
+    vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
+
+    // Verificando se o usuário deseja filtrar os resultados
+    if(filtro != -1 && std::to_string(filtro).compare(pessoa[2]) != 0){
+      // O usuário deseja filtrar e essa pessoa não se encaixa no filtro.
+      continue;
+    }
+    cout << i+1 << "a pessoa:" << endl;
+    cout << "ID Pessoa: \t\t" << pessoa[0] << endl;
+    cout << "Id Funcional: \t\t" << pessoa[1] << endl;
+    cout << "Estado Funcional:\t" << pessoa[2] << endl;
+    cout << "Nome:\t\t\t" << pessoa[3] << endl;
+    cout << "Endereco:\t\t" << pessoa[4] << endl;
+    cout << "Profissao:\t\t" << pessoa[5] << endl;
+    cout << "Funcao:\t\t\t" << pessoa[6] << endl;
+    cout << "Cargo:\t\t\t" << pessoa[7] << endl;
+    cout << "Faixa Salarial:\t\t" << pessoa[8] << endl << endl;
+  }
+
 }
 
 // Imprime os dados de todos os funcionários da empresa de forma formatada
 void Empresa::obterDadosFuncionarios(){
-  int j = 1;
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL){
-      cout << j << "o Funcionario: " << endl << endl;
-      Empresa::obterDadosFuncionario(i);
-      cout << endl;
-      j++;
-    }
+  cout << "Dados de todas os funcionarios:" << endl;
+  cout << "------------------------------------------------------------" << endl
+  << endl;
+  for(unsigned long i = 0; i < this->funcionarios.size(); i++){
+    cout << i+1 << "o Funcionario: " << endl << endl;
+    Empresa::obterDadosFuncionario(i);
+    cout << endl;
   }
-  if(j == 1){
+  if(this->funcionarios.size() == 0){
     cout << "Nenhum funcionario cadastrado." << endl;
   }
 }
@@ -187,12 +258,7 @@ void Empresa::obterDadosFuncionarios(){
     @return true se a inicialização foi bem sucedida, false caso contrário
 */
 bool Empresa::initFuncArray(int maxFuncionarios){
-  this->funcionarios = (Funcionario**) malloc(maxFuncionarios *
-                                              sizeof(Funcionario*));
   this->maxFuncionarios = maxFuncionarios;
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    this->funcionarios[i] = NULL;
-  }
 
   return true;
 }
@@ -211,7 +277,6 @@ bool Empresa::idJaCadastrado(string idFuncional){
   return true;
 }
 
-
 /**
     Determina o índice no array de funcionários de determinado funcionário
 
@@ -220,9 +285,8 @@ bool Empresa::idJaCadastrado(string idFuncional){
             ou -1 caso ele não tenha sido encontrado
 */
 int Empresa::buscaIdFuncional(string idFuncional){
-  for(int i = 0; i < this->maxFuncionarios; i++){
-    if(this->funcionarios[i] != NULL &&
-       this->funcionarios[i]->getNome().compare(idFuncional) == 0){
+  for(unsigned long i = 0; i < this->funcionarios.size(); i++){
+    if(this->funcionarios[i].getIdFuncional().compare(idFuncional) == 0){
       return i;
     }
   }
@@ -236,12 +300,18 @@ int Empresa::buscaIdFuncional(string idFuncional){
                            ser impresso
 */
 void Empresa::obterDadosFuncionario(int index){
-  cout << "Id Funcional: \t" << this->funcionarios[index]->getId() << endl;
-  cout << "Nome:\t\t" << this->funcionarios[index]->getNome() << endl;
-  cout << "Endereco:\t" << this->funcionarios[index]->getEndereco() << endl;
-  cout << "Profissao:\t" << this->funcionarios[index]->getProfissao() << endl;
-  cout << "Funcao:\t\t" << this->funcionarios[index]->getFuncao() << endl;
-  cout << "Cargo:\t\t" << this->funcionarios[index]->getCargo() << endl;
+  cout << "Id Pessoa: \t" << this->funcionarios[index].getIdPessoa()
+    << endl;
+  cout << "Id Funcional: \t" << this->funcionarios[index].getIdFuncional()
+    << endl;
+  cout << "Nome:\t\t" << this->funcionarios[index].getNome() << endl;
+  cout << "Endereco:\t" << this->funcionarios[index].getEndereco() << endl;
+  cout << "Profissao:\t" << this->funcionarios[index].getProfissao() << endl;
+  cout << "Funcao:\t\t" << this->funcionarios[index].getFuncao() << endl;
+  cout << "Cargo:\t\t" << this->funcionarios[index].getCargo() << endl;
+  cout << "Faixa Salario:\t" << this->funcionarios[index].getFaixaSalario()
+    << endl << endl;
+
 }
 
 
