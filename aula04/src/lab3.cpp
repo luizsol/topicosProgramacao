@@ -8,7 +8,6 @@
 */
 
 #include "Empresa.h"
-#include "CadastroPessoas.h"
 #include <iostream>
 #include <string>
 
@@ -16,16 +15,70 @@ using namespace std;
 
 
 void sistema(){
-  string l01, l02, l03, l04, l05, lTotal;
-  l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|\n";
-  l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|\n";
-  l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|\n";
-  l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|\n";
-  l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|\n";
+  string nomeEmpresa;
+  cout << "Forneca o nome da empresa:" << endl;
+  getline(cin, nomeEmpresa);
+  string tamanho;
+  cout << "Forneca o numero maximo de funcionarios da empresa " << nomeEmpresa
+    << ":" << endl;
+  getline(cin, tamanho);
+  Empresa aEmpresa(nomeEmpresa, atoi(tamanho.c_str()));
 
-  lTotal = l01 + l02 + l03 + l04 + l05;
+  string option = "";
 
-  CadastroPessoas * cadastroPessoas = new CadastroPessoas();
+  while(true){
+    cout << endl << "-------------------------" << endl;
+    cout << aEmpresa.getNome() << endl;
+    cout << "-------------------------" << endl << endl;
+
+    cout << "[M] Mostrar todas as Pessoas" << endl;
+    cout << "[C] Cadastrar Funcionario" << endl;
+    cout << "[D] Demitir Funcionario" << endl;
+    cout << "[T] Demitir Todos Funcionarios" << endl;
+    cout << "[F] Mostrar Funcionarios" << endl;
+    cout << "[X] Sair" << endl;
+    getline(cin, option);
+    cout << "-------------------------" << endl << endl;
+
+    switch(option.at(0)){
+    case 'M':
+    case 'm':
+      aEmpresa.obterDadosPessoas();
+      break;
+    case 'C':
+    case 'c':
+      if(aEmpresa.contratarFuncionario()){
+        cout << "Operacao realizada com sucesso!" << endl << endl;
+      } else {
+        cout << "ERRO: A operacao falhou!" << endl << endl;
+      }
+      break;
+    case 'D':
+    case 'd':
+      if(aEmpresa.demitirFuncionario()){
+        cout << "Operacao realizada com sucesso!" << endl << endl;
+      } else {
+        cout << "ERRO: A operacao falhou!" << endl << endl;
+      }
+      break;
+    case 'T':
+    case 't':
+      aEmpresa.demitirTodosFuncionarios();
+      cout << "SUCESSO: Todos funcionarios demitidos com sucesso" << endl;
+      break;
+    case 'F':
+    case 'f':
+      aEmpresa.obterDadosFuncionarios();
+      break;
+    case 'X':
+    case 'x':
+      return;
+    default:
+      break;
+    }
+  }
+
+
 }
 
 int main(int argc, char * argv[]){

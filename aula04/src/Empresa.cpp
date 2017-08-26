@@ -178,26 +178,17 @@ bool Empresa::demitirFuncionario(string idFuncional){
 }
 
 /**
-    Demite e apaga um funcionário da empresa.
-
-    @param idFuncional (string): o ID Funcional do funcionário a ser demitido
-    @return true se o funcionário foi demitido e apagado, false caso contrário
-*/
-bool Empresa::demitirFuncionario(){
-  //TODO
-}
-
-/**
     Demite e apaga um funcionário da empresa via CLI
 
     @return true se o funcionário foi demitido e apagado, false caso contrário
 */
-bool Empresa::demitirFuncionarioIterativo(){
+bool Empresa::demitirFuncionario(){
+  Empresa::obterDadosFuncionarios();
+  cout << "Forneca o ID Funcional do funcionario que deseja demitir:" << endl;
   string idFuncional;
-  cout << "Forneca o id Funcional de quem deseja demitir:" << endl;
   getline(cin, idFuncional);
-
   return Empresa::demitirFuncionario(idFuncional);
+
 }
 
 // Demite e apaga todos funcionário da empresa.
@@ -222,7 +213,7 @@ void Empresa::obterDadosPessoas(int filtro){
       // O usuário deseja filtrar e essa pessoa não se encaixa no filtro.
       continue;
     }
-    cout << i << "a pessoa:" << endl;
+    cout << i+1 << "a pessoa:" << endl;
     cout << "ID Pessoa: \t\t" << pessoa[0] << endl;
     cout << "Id Funcional: \t\t" << pessoa[1] << endl;
     cout << "Estado Funcional:\t" << pessoa[2] << endl;

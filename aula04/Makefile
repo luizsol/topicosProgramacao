@@ -25,13 +25,13 @@ SRC = src
 Funcionario.o: $(SRC)/Funcionario.cpp $(SRC)/Funcionario.h
 	$(CC) $(CFLAGS) -c $(SRC)/Funcionario.cpp
 
-Empresa.o: $(SRC)/Empresa.cpp $(SRC)/Empresa.h
+Empresa.o: $(SRC)/Empresa.cpp $(SRC)/Empresa.h $(SRC)/CadastroPessoas.h $(SRC)/Funcionario.h
 	$(CC) $(CFLAGS) -c $(SRC)/Empresa.cpp
 
-CadastroPessoas.o: $(SRC)/CadastroPessoas.cpp $(SRC)/CadastroPessoas.h
+CadastroPessoas.o: $(SRC)/CadastroPessoas.cpp $(SRC)/CadastroPessoas.h $(SRC)/Funcionario.h
 	$(CC) $(CFLAGS) -c $(SRC)/CadastroPessoas.cpp
 
-lab3.o: $(SRC)/lab3.cpp
+lab3.o: $(SRC)/lab3.cpp $(SRC)/Empresa.h
 	$(CC) $(CFLAGS) -c $(SRC)/lab3.cpp
 
 # All

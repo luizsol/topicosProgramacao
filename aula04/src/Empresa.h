@@ -82,6 +82,13 @@ public:
 
       @return true se o funcionário foi demitido e apagado, false caso contrário
   */
+  bool demitirFuncionario();
+
+  /**
+      Demite e apaga um funcionário da empresa via CLI
+
+      @return true se o funcionário foi demitido e apagado, false caso contrário
+  */
   bool demitirFuncionarioIterativo();
 
   // Demite e apaga todos funcionário da empresa.
