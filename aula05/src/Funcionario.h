@@ -23,6 +23,7 @@ class Funcionario{
   string funcao;          // Funcao do funcionário
   string cargo;           // Cargo do funcionário
   string faixaSalario;    // Faixa salarial do funcionário
+  string gratificacao;    // Gratificação salarial do funcionário
 
 public:
   // Construtores da classe Funcionario
@@ -30,7 +31,7 @@ public:
   Funcionario(vector<string> dados);
   Funcionario(string idPessoa, string idFuncional, string nome,
               string profissao, string endereco, string funcao, string cargo,
-              string faixaSalario);
+              string faixaSalario, string gratificacao);
 
   // Destrutor da classe empresa
   ~Funcionario();
@@ -62,4 +63,7 @@ public:
 
   string getFaixaSalario();
   void setFaixaSalario(string faixaSalario);
+
+  string getGratificacao();
+  void setGratificacao(string gratificacao);
 };

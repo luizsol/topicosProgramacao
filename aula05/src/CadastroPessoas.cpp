@@ -48,7 +48,7 @@ bool CadastroPessoas::validarDados(string dados){
     return false;
   }
 
-  if(resultado.size() != 9){ // String tem 9 campos?
+  if(resultado.size() != 10){ // String tem 9 campos?
     return false;
   }
 
@@ -118,7 +118,7 @@ bool CadastroPessoas::adicionarDadosPessoas(string dados,
     // A linha é válida?
     if(! CadastroPessoas::validarDados(linhas[i])){
       throw std::invalid_argument("CadastroPessoas::adicionarDadosPessoas:"
-                              " dados invalidos");
+                                  " dados invalidos");
     }
     string idPessoa = CadastroPessoas::splitDado(linhas[i])[0];
 
@@ -249,14 +249,15 @@ int CadastroPessoas::getIndicePessoa(string idPessoa){
     @param funcao (string): a funcao da pessoa
     @param cargo (string): o cargo da pessoa
     @param faixaSalarial (string): a faixa salarial da pessoa
+    @param gratificacao (string): a gratificação salarial da pessoa
     @return a string formatada contendo os dados da pessoa
 */
 string CadastroPessoas::gerarLinha(string idPessoa, string idFuncional,
                                    string estadoFuncional, string nome,
                                    string profissao, string endereco,
                                    string funcao, string cargo,
-                                   string faixaSalarial){
+                                   string faixaSalarial, string gratificacao){
   return idPessoa + "|" + idFuncional + "|" + estadoFuncional + "|" + nome +
          "|" + profissao + "|" + endereco + "|" + funcao + "|" + cargo + "|" +
-         faixaSalarial + "|\n";
+         faixaSalarial + "|" + gratificacao + "|\n";
 }

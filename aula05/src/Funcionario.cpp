@@ -13,17 +13,18 @@
 using namespace std;
 
 // Construtores da classe Funcionario
-Funcionario::Funcionario() : Funcionario("", "", "", "", "", "", "", "") {}
+Funcionario::Funcionario() : Funcionario("", "", "", "", "", "", "", "", "") {}
 
 Funcionario::Funcionario(vector<string> dados) : Funcionario(dados[0], dados[1],
                                                              dados[3], dados[4],
                                                              dados[5], dados[6],
-                                                             dados[7],
-                                                             dados[8]){}
+                                                             dados[7], dados[8],
+                                                             dados[9]){}
 
 Funcionario::Funcionario(string idPessoa, string idFuncional, string nome,
                          string profissao, string endereco, string funcao,
-                         string cargo, string faixaSalario){
+                         string cargo, string faixaSalario,
+                         string gratificacao){
   Funcionario::setIdPessoa(idPessoa);
   Funcionario::setIdFuncional(idFuncional);
   Funcionario::setNome(nome);
@@ -32,6 +33,7 @@ Funcionario::Funcionario(string idPessoa, string idFuncional, string nome,
   Funcionario::setFuncao(funcao);
   Funcionario::setCargo(cargo);
   Funcionario::setFaixaSalario(faixaSalario);
+  Funcionario::setGratificacao(gratificacao);
 }
 
 // Destrutor da classe empresa
@@ -106,3 +108,12 @@ string Funcionario::getFaixaSalario(){
 void Funcionario::setFaixaSalario(string faixaSalario){
   this->faixaSalario = faixaSalario;
 }
+
+string Funcionario::getGratificacao(){
+  return this->gratificacao;
+}
+
+void Funcionario::setGratificacao(string gratificacao){
+  this->gratificacao = gratificacao;
+}
+

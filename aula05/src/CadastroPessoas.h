@@ -124,11 +124,13 @@ public:
       @param funcao (string): a funcao da pessoa
       @param cargo (string): o cargo da pessoa
       @param faixaSalarial (string): a faixa salarial da pessoa
+      @param gratificacao (string): a gratificação salarial da pessoa
       @return a string formatada contendo os dados da pessoa
   */
   string gerarLinha(string idPessoa, string idFuncional, string estadoFuncional,
                     string nome, string profissao, string endereco,
-                    string funcao, string cargo, string faixaSalarial);
+                    string funcao, string cargo, string faixaSalarial,
+                    string gratificacao);
 
 private:
 
