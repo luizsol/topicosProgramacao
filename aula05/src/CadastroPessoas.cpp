@@ -20,7 +20,9 @@ CadastroPessoas::CadastroPessoas(string dados){
 }
 
 // Destrutor da classe CadastroPessoas
-CadastroPessoas::~CadastroPessoas(){}
+CadastroPessoas::~CadastroPessoas(){
+
+}
 
 // Setters e Getters
 vector<string> CadastroPessoas::getDadosPessoais(){
