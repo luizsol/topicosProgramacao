@@ -8,10 +8,15 @@
 */
 
 #pragma once
+
 #include <string>
+#include <iomanip>
+#include <sstream>
 #include <vector>
+
 #include "CadastroPessoas.h"
 #include "Funcionario.h"
+#include "TabelaSalarial.h"
 
 using namespace std;
 
@@ -20,6 +25,7 @@ class Empresa{
   vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
   unsigned long maxFuncionarios;    // Tamanho do array funcionarios
   CadastroPessoas cadastroPessoas;  // Objeto de acesso ao cadastro de pessoas
+  TabelaSalarial tabelaSalarial;    // A tabela de tradução de faixas salariais
 
 
 public:
@@ -53,6 +59,8 @@ public:
       @param profissao (string): a profissão do funcionário
       @param funcao (string): a função do funcionário
       @param cargo (string): o cargo do funcionário
+      @param faixaSalario (string): a faixa salarial do funcionário
+      @param gratificação (string): o gratificação salarial do funcionário
       @return true se o funcionário foi criado e cadastrado, false caso contrário
       @throw caso se tente contratar mais funcionários que o limite máximo
              (domain_error)
@@ -61,7 +69,8 @@ public:
   */
   bool contratarFuncionario(string idPessoa, string idFuncional, string nome,
                             string profissao, string endereco, string funcao,
-                            string cargo, string faixaSalario);
+                            string cargo, string faixaSalario,
+                            string gratificacao);
 
   /**
       Cadastra um funcionário na empresa de maneira interativa (via CLI)
@@ -91,13 +100,6 @@ public:
       @return true se o funcionário foi demitido e apagado, false caso contrário
   */
   bool demitirFuncionario();
-
-  /**
-      Demite e apaga um funcionário da empresa via CLI
-
-      @return true se o funcionário foi demitido e apagado, false caso contrário
-  */
-  bool demitirFuncionarioIterativo();
 
   // Demite e apaga todos funcionário da empresa.
   void demitirTodosFuncionarios();
@@ -149,5 +151,15 @@ private:
                              ser impresso
   */
   void obterDadosFuncionario(int index);
+
+  /**
+      Retorna uma string com formato monetário correspondente ao salário de um
+      determinado funcionário
+
+      @param idFuncional (string): o id funcional do funcionário
+      @return a string formatada correspondente ao salário do funcionário
+      @throw caso não exista o id funcional (domain_error)
+  */
+  string calcularSalario(string idFuncional);
 
 };

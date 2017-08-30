@@ -19,7 +19,7 @@ TDIR = test
 SRC = src
 
 # Goals
-.DEFAULT_GOAL := lab3
+.DEFAULT_GOAL := lab4
 
 # Object files
 Funcionario.o: $(SRC)/Funcionario.cpp $(SRC)/Funcionario.h
@@ -54,7 +54,13 @@ EmpresaTest.o: $(TDIR)/EmpresaTest.cpp
 empresaTest: EmpresaTest.o Empresa.o Funcionario.o CadastroPessoas.o
 	$(CC) $(CFLAGS) EmpresaTest.o Empresa.o Funcionario.o CadastroPessoas.o -o empresaTest
 
-tests: cadastroPessoasTest empresaTest
+TabelaSalarialTest.o: $(TDIR)/TabelaSalarialTest.cpp $(SRC)/TabelaSalarial.h
+	$(CC) $(CFLAGS) -c $(TDIR)/TabelaSalarialTest.cpp
+
+tabelaSalarialTest: TabelaSalarialTest.o TabelaSalarial.o
+	$(CC) $(CFLAGS) TabelaSalarialTest.o TabelaSalarial.o -o tabelaSalarialTest
+
+tests: cadastroPessoasTest empresaTest tabelaSalarialTest
 
 clean:
-	rm -f *.o lab4 cadastroPessoasTest empresaTest
+	rm -f *.o lab4 cadastroPessoasTest empresaTest tabelaSalarialTest

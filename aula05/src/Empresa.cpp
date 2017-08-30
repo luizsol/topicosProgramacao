@@ -21,11 +21,11 @@ Empresa::Empresa(int maxFuncionarios) : Empresa("Sem Nome", maxFuncionarios) {}
 
 Empresa::Empresa(string nome, int maxFuncionarios){
   string l01, l02, l03, l04, l05, lTotal;
-  l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|\n";
-  l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|\n";
-  l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|\n";
-  l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|\n";
-  l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|\n";
+  l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|0|\n";
+  l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|1|\n";
+  l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|0|\n";
+  l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|1|\n";
+  l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|0|\n";
   lTotal = l01 + l02 + l03 + l04 + l05;
 
   Empresa::initFuncArray(maxFuncionarios);
@@ -61,7 +61,8 @@ bool Empresa::iniciarFuncionarios(){
     vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
     if(pessoa[2].compare("1") == 0){
       Empresa::contratarFuncionario(pessoa[0], pessoa[1], pessoa[3], pessoa[4],
-                                    pessoa[5], pessoa[6], pessoa[7], pessoa[8]);
+                                    pessoa[5], pessoa[6], pessoa[7], pessoa[8],
+                                    pessoa[9]);
     }
   }
   return true;
@@ -76,6 +77,8 @@ bool Empresa::iniciarFuncionarios(){
     @param profissao (string): a profissão do funcionário
     @param funcao (string): a função do funcionário
     @param cargo (string): o cargo do funcionário
+    @param faixaSalario (string): a faixa salarial do funcionário
+    @param gratificação (string): o gratificação salarial do funcionário
     @return true se o funcionário foi criado e cadastrado, false caso contrário
     @throw caso se tente contratar mais funcionários que o limite máximo
            (domain_error)
@@ -85,7 +88,7 @@ bool Empresa::iniciarFuncionarios(){
 bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
                                    string nome, string profissao,
                                    string endereco, string funcao, string cargo,
-                                   string faixaSalario){
+                                   string faixaSalario, string gratificacao){
 
   if(this->maxFuncionarios == this->funcionarios.size()){
     throw std::domain_error("Empresa::contratarFuncionario: "
@@ -99,12 +102,13 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
 
   string linha = this->cadastroPessoas.gerarLinha(idPessoa, idFuncional, "1",
                                                   nome, profissao, endereco,
-                                                  funcao, cargo, faixaSalario);
+                                                  funcao, cargo, faixaSalario,
+                                                  gratificacao);
 
   this->cadastroPessoas.atualizarDadosPessoa(linha);
   this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
                                            profissao, endereco, funcao, cargo,
-                                           faixaSalario));
+                                           faixaSalario, gratificacao));
   return true;
 }
 
@@ -164,7 +168,7 @@ bool Empresa::contratarFuncionario(){
 
   return Empresa::contratarFuncionario(pessoa[0], pessoa[1], pessoa[3],
                                        pessoa[4], pessoa[5], pessoa[6],
-                                       pessoa[7], pessoa[8]);
+                                       pessoa[7], pessoa[8], pessoa[9]);
 }
 
 /**
@@ -197,7 +201,9 @@ bool Empresa::demitirFuncionario(string idFuncional){
                                                   this->funcionarios[index].
                                                         getCargo(),
                                                   this->funcionarios[index].
-                                                        getFaixaSalario());
+                                                        getFaixaSalario(),
+                                                  this->funcionarios[index].
+                                                        getGratificacao());
 
   this->cadastroPessoas.atualizarDadosPessoa(linha);
   this->funcionarios.erase(this->funcionarios.begin() + index);
@@ -249,7 +255,8 @@ void Empresa::obterDadosPessoas(int filtro){
     cout << "Profissao:\t\t" << pessoa[5] << endl;
     cout << "Funcao:\t\t\t" << pessoa[6] << endl;
     cout << "Cargo:\t\t\t" << pessoa[7] << endl;
-    cout << "Faixa Salarial:\t\t" << pessoa[8] << endl << endl;
+    cout << "Faixa Salarial:\t\t" << pessoa[8] << endl;
+    cout << "Gratificacao Salarial:\t" << pessoa[9] << endl << endl;
   }
 }
 
@@ -326,6 +333,33 @@ void Empresa::obterDadosFuncionario(int index){
   cout << "Profissao:\t" << this->funcionarios[index].getProfissao() << endl;
   cout << "Funcao:\t\t" << this->funcionarios[index].getFuncao() << endl;
   cout << "Cargo:\t\t" << this->funcionarios[index].getCargo() << endl;
-  cout << "Faixa Salario:\t" << this->funcionarios[index].getFaixaSalario()
+  cout << "Salario:\t" << Empresa::calcularSalario(this->funcionarios[index].
+                                                     getIdFuncional())
     << endl << endl;
+}
+
+/**
+    Retorna uma string com formato monetário correspondente ao salário de um
+    determinado funcionário
+
+    @param idFuncional (string): o id funcional do funcionário
+    @return a string formatada correspondente ao salário do funcionário
+    @throw caso não exista o id funcional (domain_error)
+*/
+string Empresa::calcularSalario(string idFuncional){
+  int i = Empresa::buscaIdFuncional(idFuncional);
+  if(i == -1){
+    throw std::domain_error("Empresa::calcularSalario: "
+                            "ID Funcional inexistente");
+  }
+
+  string faixaSalario = this->funcionarios[i].getFaixaSalario();
+  float salario = this->tabelaSalarial.lerSalario(faixaSalario);
+  if(this->funcionarios[i].getGratificacao().compare("1") == 0){
+    salario *= 1.01;
+  }
+
+  stringstream stream;
+  stream << "R$ " << fixed << setprecision(2) << salario;
+  return stream.str();
 }
