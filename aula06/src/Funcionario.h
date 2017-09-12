@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 4.0 2017-08-30
+    @version 5.0 2017-09-13
 */
 
 #pragma once
@@ -23,7 +23,6 @@ class Funcionario{
   string funcao;          // Funcao do funcionário
   string cargo;           // Cargo do funcionário
   string faixaSalario;    // Faixa salarial do funcionário
-  string gratificacao;    // Gratificação salarial do funcionário
 
 public:
   // Construtores da classe Funcionario
@@ -31,7 +30,7 @@ public:
   Funcionario(vector<string> dados);
   Funcionario(string idPessoa, string idFuncional, string nome,
               string profissao, string endereco, string funcao, string cargo,
-              string faixaSalario, string gratificacao);
+              string faixaSalario);
 
   // Destrutor da classe empresa
   ~Funcionario();
@@ -63,7 +62,4 @@ public:
 
   string getFaixaSalario();
   void setFaixaSalario(string faixaSalario);
-
-  string getGratificacao();
-  void setGratificacao(string gratificacao);
 };

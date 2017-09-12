@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 3.0 2017-08-30
+    @version 3.0 2017-09-13
 */
 
 #pragma once
@@ -161,5 +161,20 @@ private:
       @throw caso não exista o id funcional (domain_error)
   */
   string calcularSalario(string idFuncional);
+
+  /**
+      Obtém e processa os dados dos funcionários de uma forma menos eficiente
+      para ficar de acordo com as especificações.
+
+      @return um vector de strings contendo os dados das pessoas
+  */
+  vector<string> getAndSplitPessoas();
+
+  /**
+      Obtém a gratificação de um determinado funcionário.
+
+      @return a string relativa à gratificação do funcionário
+  */
+  string getGratificacaoFuncionario(string idFuncional);
 
 };

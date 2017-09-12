@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 2.0 2017-08-30
+    @version 3.0 2017-09-13
 */
 
 #include "CadastroPessoas.h"
@@ -21,7 +21,7 @@ CadastroPessoas::CadastroPessoas(string dados){
 
 // Destrutor da classe CadastroPessoas
 CadastroPessoas::~CadastroPessoas(){
-
+  delete &(this->dadosPessoais);
 }
 
 // Setters e Getters
@@ -102,7 +102,7 @@ bool CadastroPessoas::adicionarDadosPessoa(string dados,
     @throw caso outro cadastro já possua esse ID Pessoa (domain_error)
 */
 bool CadastroPessoas::adicionarDadosPessoas(string dados,
-                                           bool sobrescrever){
+                                            bool sobrescrever){
   vector<string> linhas;
   string linha;
   istringstream f(dados);

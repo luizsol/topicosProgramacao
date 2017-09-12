@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 3.0 2017-08-30
+    @version 4.0 2017-09-13
 */
 
 #include "Empresa.h"
@@ -37,6 +37,9 @@ Empresa::Empresa(string nome, int maxFuncionarios){
 // Destrutor da classe empresa
 Empresa::~Empresa(){
   Empresa::demitirTodosFuncionarios();
+  delete &(this->funcionarios);
+  delete &(this->cadastroPessoas);
+  delete &(this->tabelaSalarial);
 }
 
 // Setters e Getters
@@ -55,7 +58,7 @@ void Empresa::setNome(string nome){
     @return true se todos os funcionários foram devidamente contratados
 */
 bool Empresa::iniciarFuncionarios(){
-  vector<string> pessoas = this->cadastroPessoas.getDadosPessoais();
+  vector<string> pessoas = Empresa::getAndSplitPessoas();
 
   for(unsigned long i = 0; i < pessoas.size(); i++){
     vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
@@ -108,7 +111,7 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
   this->cadastroPessoas.atualizarDadosPessoa(linha);
   this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
                                            profissao, endereco, funcao, cargo,
-                                           faixaSalario, gratificacao));
+                                           faixaSalario));
   return true;
 }
 
@@ -125,7 +128,7 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
 */
 bool Empresa::contratarFuncionario(){
   // Verificando se existem pessoas para serem contratadas
-  vector<string> pessoas = this->cadastroPessoas.getDadosPessoais();
+  vector<string> pessoas = Empresa::getAndSplitPessoas();
   bool ninguemPorCadastrar = true;
   for(unsigned long i = 0; i < pessoas.size() && ninguemPorCadastrar; i++){
     vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
@@ -186,24 +189,17 @@ bool Empresa::demitirFuncionario(string idFuncional){
 
   int index = Empresa::buscaIdFuncional(idFuncional);
 
-  string linha = this->cadastroPessoas.gerarLinha(this->funcionarios[index].
-                                                        getIdPessoa(),
-                                                  this->funcionarios[index].
-                                                        getIdFuncional(), "0",
-                                                  this->funcionarios[index].
-                                                        getNome(),
-                                                  this->funcionarios[index].
-                                                        getProfissao(),
-                                                  this->funcionarios[index].
-                                                        getEndereco(),
-                                                  this->funcionarios[index].
-                                                        getFuncao(),
-                                                  this->funcionarios[index].
-                                                        getCargo(),
-                                                  this->funcionarios[index].
-                                                        getFaixaSalario(),
-                                                  this->funcionarios[index].
-                                                        getGratificacao());
+  string linha = this->cadastroPessoas.gerarLinha(
+    this->funcionarios[index].getIdPessoa(),
+    this->funcionarios[index].getIdFuncional(), "0",
+    this->funcionarios[index].getNome(),
+    this->funcionarios[index].getProfissao(),
+    this->funcionarios[index].getEndereco(),
+    this->funcionarios[index].getFuncao(),
+    this->funcionarios[index].getCargo(),
+    this->funcionarios[index].getFaixaSalario(),
+    Empresa::getGratificacaoFuncionario(
+      this->funcionarios[index].getIdFuncional()));
 
   this->cadastroPessoas.atualizarDadosPessoa(linha);
   this->funcionarios.erase(this->funcionarios.begin() + index);
@@ -236,7 +232,7 @@ void Empresa::demitirTodosFuncionarios(){
     formatada
 */
 void Empresa::obterDadosPessoas(int filtro){
-  vector<string> pessoas = this->cadastroPessoas.getDadosPessoais();
+  vector<string> pessoas = Empresa::getAndSplitPessoas();
 
   for(unsigned long i = 0; i < pessoas.size(); i++){
     vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
@@ -264,7 +260,7 @@ void Empresa::obterDadosPessoas(int filtro){
 void Empresa::obterDadosFuncionarios(){
   cout << "Dados de todas os funcionarios:" << endl;
   cout << "------------------------------------------------------------" << endl
-  << endl;
+    << endl;
   for(unsigned long i = 0; i < this->funcionarios.size(); i++){
     cout << i+1 << "o Funcionario: " << endl << endl;
     Empresa::obterDadosFuncionario(i);
@@ -334,7 +330,7 @@ void Empresa::obterDadosFuncionario(int index){
   cout << "Funcao:\t\t" << this->funcionarios[index].getFuncao() << endl;
   cout << "Cargo:\t\t" << this->funcionarios[index].getCargo() << endl;
   cout << "Salario:\t" << Empresa::calcularSalario(this->funcionarios[index].
-                                                     getIdFuncional())
+                                                   getIdFuncional())
     << endl << endl;
 }
 
@@ -355,11 +351,43 @@ string Empresa::calcularSalario(string idFuncional){
 
   string faixaSalario = this->funcionarios[i].getFaixaSalario();
   float salario = this->tabelaSalarial.lerSalario(faixaSalario);
-  if(this->funcionarios[i].getGratificacao().compare("1") == 0){
+  if(Empresa::getGratificacaoFuncionario(
+      this->funcionarios[i].getIdFuncional()).compare("1") == 0){
     salario *= 1.01;
   }
 
   stringstream stream;
   stream << "R$ " << fixed << setprecision(2) << salario;
   return stream.str();
+}
+
+/**
+    Obtem e processa os dados dos funcionários de uma forma menos eficiente
+    para ficar de acordo com as especificações.
+
+    @return um vector de strings contendo os dados das pessoas
+*/
+vector<string> Empresa::getAndSplitPessoas(){
+  vector<string> linhas;
+  string linha;
+  istringstream f(this->cadastroPessoas.lerDadosTodasPessoas());
+
+  // Transformando a string de linhas em vetores
+  while (std::getline(f, linha)) {
+    linha.push_back('\n');
+    linhas.push_back(linha);
+  }
+
+  return linhas;
+}
+
+/**
+    Obtém a gratificação de um determinado funcionário.
+
+    @return a string relativa à gratificação do funcionário
+*/
+string Empresa::getGratificacaoFuncionario(string idFuncional){
+  int index = Empresa::buscaIdFuncional(idFuncional);
+  return this->cadastroPessoas.splitDado(this->cadastroPessoas.lerDadosPessoa(
+    this->funcionarios[index].getIdPessoa()))[9];
 }
