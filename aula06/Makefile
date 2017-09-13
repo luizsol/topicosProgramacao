@@ -34,12 +34,12 @@ CadastroPessoas.o: $(SRC)/CadastroPessoas.cpp $(SRC)/CadastroPessoas.h $(SRC)/Fu
 TabelaSalarial.o: $(SRC)/TabelaSalarial.cpp $(SRC)/TabelaSalarial.h
 	$(CC) $(CFLAGS) -c $(SRC)/TabelaSalarial.cpp
 
-lab5.o: $(SRC)/lab5.cpp $(SRC)/Empresa.h
-	$(CC) $(CFLAGS) -c $(SRC)/lab5.cpp
+lab6.o: $(SRC)/lab5.cpp $(SRC)/Empresa.h
+	$(CC) $(CFLAGS) -c $(SRC)/lab6.cpp
 
 # All
-lab5: Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o lab5.o
-	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o lab5.o -o lab5
+lab6: Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o lab5.o
+	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o lab6.o -o lab6
 
 clean:
-	rm -f *.o lab5 cadastroPessoasTest empresaTest tabelaSalarialTest
+	rm -f *.o lab6

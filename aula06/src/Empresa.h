@@ -27,7 +27,6 @@ class Empresa{
   CadastroPessoas cadastroPessoas;  // Objeto de acesso ao cadastro de pessoas
   TabelaSalarial tabelaSalarial;    // A tabela de tradução de faixas salariais
 
-
 public:
   // Construtores da classe Empresa
   Empresa();
