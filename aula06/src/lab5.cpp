@@ -1,6 +1,6 @@
 /**
     PCS2478 - Tópicos de Programação
-    lab6.cpp
+    lab5.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
@@ -21,6 +21,7 @@ void sistema(){
   string tamanho;
   cout << "Forneca o numero maximo de funcionarios da empresa " << nomeEmpresa
     << ":" << endl;
+
   getline(cin, tamanho);
   Empresa * aEmpresa;
 
