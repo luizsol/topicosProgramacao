@@ -3,12 +3,12 @@
     ContribuicaoSindical.h
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 1.0 2017-09-13
 */
 
 #pragma once
 #include <string>
+#include <sstream>
 #include <vector>
 
 using namespace std;
@@ -39,5 +39,26 @@ public:
   float calcularCS(float salario, string funcao);
 
 private:
+  /**
+      Retorna um vector de strings contendo os diferentes campos de uma linha de
+      dados de contribuições sindicais.
+
+      @param dado (string): o dado a ser processado
+      @return o vetor de strings contendo os diferentes campos de uma linha de
+              contribuições sindicais
+      @throw caso o argumento seja inválido (invalid_argument)
+  */
+  vector<string> splitDado(string dado);
+
+  /**
+      Determina a porcentagem da contribuição sindical para uma dada função.
+
+      @param funcao (string): a função cuja contribuição sindical deve ser
+        determinada
+      @return a proporção (0.0 a 1.0) da contribuição sindical devida
+      @throw caso a função não está registrada na tabela de contribuições
+        sindicais (domain_error)
+  */
+  float getPorcentagemCS(string funcao);
 
 };

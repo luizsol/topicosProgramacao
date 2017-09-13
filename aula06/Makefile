@@ -19,14 +19,11 @@ TDIR = test
 SRC = src
 
 # Goals
-.DEFAULT_GOAL := lab5
+.DEFAULT_GOAL := p1
 
 # Object files
 Funcionario.o: $(SRC)/Funcionario.cpp $(SRC)/Funcionario.h
 	$(CC) $(CFLAGS) -c $(SRC)/Funcionario.cpp
-
-Empresa.o: $(SRC)/Empresa.cpp $(SRC)/Empresa.h $(SRC)/CadastroPessoas.h $(SRC)/Funcionario.h
-	$(CC) $(CFLAGS) -c $(SRC)/Empresa.cpp
 
 CadastroPessoas.o: $(SRC)/CadastroPessoas.cpp $(SRC)/CadastroPessoas.h $(SRC)/Funcionario.h
 	$(CC) $(CFLAGS) -c $(SRC)/CadastroPessoas.cpp
@@ -34,12 +31,25 @@ CadastroPessoas.o: $(SRC)/CadastroPessoas.cpp $(SRC)/CadastroPessoas.h $(SRC)/Fu
 TabelaSalarial.o: $(SRC)/TabelaSalarial.cpp $(SRC)/TabelaSalarial.h
 	$(CC) $(CFLAGS) -c $(SRC)/TabelaSalarial.cpp
 
-lab6.o: $(SRC)/lab5.cpp $(SRC)/Empresa.h
-	$(CC) $(CFLAGS) -c $(SRC)/lab5.cpp
+ContribuicaoSindical.o: $(SRC)/ContribuicaoSindical.cpp $(SRC)/ContribuicaoSindical.h
+	$(CC) $(CFLAGS) -c $(SRC)/ContribuicaoSindical.cpp
+
+Empresa.o: $(SRC)/Empresa.cpp $(SRC)/Empresa.h $(SRC)/CadastroPessoas.h $(SRC)/Funcionario.h $(SRC)/TabelaSalarial.h $(SRC)/ContribuicaoSindical.h
+	$(CC) $(CFLAGS) -c $(SRC)/Empresa.cpp
+
+p1.o: $(SRC)/p1.cpp $(SRC)/Empresa.h
+	$(CC) $(CFLAGS) -c $(SRC)/p1.cpp
 
 # All
-lab6: Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o lab5.o
-	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o lab5.o -o lab5
+p1: Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o ContribuicaoSindical.o p1.o
+	$(CC) $(CFLAGS) Funcionario.o Empresa.o CadastroPessoas.o TabelaSalarial.o ContribuicaoSindical.o p1.o -o p1
+
+# Test
+TestContribuicaoSindical.o: $(TDIR)/TestContribuicaoSindical.cpp $(SRC)/ContribuicaoSindical.h
+	$(CC) $(CFLAGS) -c $(TDIR)/TestContribuicaoSindical.cpp
+
+tests TestContribuicaoSindical: TestContribuicaoSindical.o ContribuicaoSindical.o
+	$(CC) $(CFLAGS) TestContribuicaoSindical.o ContribuicaoSindical.o -o testContribuicaoSindical
 
 clean:
-	rm -f *.o lab6
+	rm -f *.o p1

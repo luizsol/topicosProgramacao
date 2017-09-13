@@ -17,6 +17,7 @@
 #include "CadastroPessoas.h"
 #include "Funcionario.h"
 #include "TabelaSalarial.h"
+#include "ContribuicaoSindical.h"
 
 using namespace std;
 
@@ -114,6 +115,13 @@ public:
   */
   void obterDadosPessoas(int filtro = -1);
 
+  /**
+      Apresenta as informações sobre a remuneração de um determinado funcionário
+
+      @throw caso não exista o id funcional inserido pelo usuário (domain_error)
+  */
+  void calcularSalarioLiquido();
+
 private:
   /**
       Inicializa o array de funcionários.
@@ -153,7 +161,7 @@ private:
 
   /**
       Retorna uma string com formato monetário correspondente ao salário de um
-      determinado funcionário
+      determinado funcionário.
 
       @param idFuncional (string): o id funcional do funcionário
       @return a string formatada correspondente ao salário do funcionário

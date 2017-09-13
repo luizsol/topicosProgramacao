@@ -1,9 +1,8 @@
 /**
     PCS2478 - Tópicos de Programação
-    lab5.cpp
+    p1.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 1.0 2017-09-13
 */
 
@@ -41,6 +40,7 @@ void sistema(){
 
     cout << "[M] Mostrar todas as Pessoas" << endl;
     cout << "[F] Mostrar Funcionarios" << endl;
+    cout << "[S] Mostrar Dados Salariais de um Funcionario" << endl;
     cout << "[C] Contratar Funcionario" << endl;
     cout << "[D] Demitir Funcionario" << endl;
     cout << "[T] Demitir Todos Funcionarios" << endl;
@@ -87,6 +87,16 @@ void sistema(){
     case 'f':
       try{
         aEmpresa->obterDadosFuncionarios();
+        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
+      } catch (logic_error& ex){
+        cout << ex.what() << endl;
+        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
+      }
+      break;
+    case 'S':
+    case 's':
+      try{
+        aEmpresa->calcularSalarioLiquido();
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
       } catch (logic_error& ex){
         cout << ex.what() << endl;

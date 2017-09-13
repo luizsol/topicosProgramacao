@@ -20,13 +20,14 @@ Empresa::Empresa(string nome) : Empresa(nome, 10) {}
 Empresa::Empresa(int maxFuncionarios) : Empresa("Sem Nome", maxFuncionarios) {}
 
 Empresa::Empresa(string nome, int maxFuncionarios){
-  string l01, l02, l03, l04, l05, lTotal;
+  string l01, l02, l03, l04, l05, l06, lTotal;
   l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|0|\n";
   l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|1|\n";
   l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|0|\n";
   l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|1|\n";
   l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|0|\n";
-  lTotal = l01 + l02 + l03 + l04 + l05;
+  l06 = "0006|0000|2|Ricardo Souza Carvalho|Contador|Praca E, 128|Contador|Pleno|04|0|\n";
+  lTotal = l01 + l02 + l03 + l04 + l05 + l06;
 
   Empresa::initFuncArray(maxFuncionarios);
   this->cadastroPessoas.adicionarDadosPessoas(lTotal);
@@ -359,6 +360,47 @@ string Empresa::calcularSalario(string idFuncional){
   stringstream stream;
   stream << "R$ " << fixed << setprecision(2) << salario;
   return stream.str();
+}
+
+/**
+    Apresenta as informações sobre a remuneração de um determinado funcionário
+
+    @throw caso não exista o id funcional inserido pelo usuário (domain_error)
+*/
+void Empresa::calcularSalarioLiquido(){
+  string idFuncional;
+  cout << "Insira o ID Funcional do funcionário: ";
+  getline(cin, idFuncional);
+
+  int index = Empresa::buscaIdFuncional(idFuncional);
+  if(index == -1){
+    throw std::domain_error("Empresa::calcularSalario: "
+                            "ID Funcional inexistente");
+  }
+  string salarioBruto = Empresa::calcularSalario(idFuncional);
+
+  float sb = stof(salarioBruto.substr(3, salarioBruto.length()-3));
+
+  ContribuicaoSindical contribSindical;
+  float cs = contribSindical.calcularCS(sb,
+                                        this->funcionarios[index].getFuncao());
+
+  // Ajustando a resolução
+  stringstream streamCS;
+  streamCS << "R$ " << fixed << setprecision(2) << cs;
+
+  float sl = sb - cs;
+
+  // Ajustando a resolução
+  stringstream streamSL;
+  streamSL << "R$ " << fixed << setprecision(2) << sl;
+
+  cout << endl << endl << "Id Funcional: \t\t"
+    << this->funcionarios[index].getIdFuncional() << endl;
+  cout << "Nome:\t\t\t" << this->funcionarios[index].getNome() << endl;
+  cout << "Salario Bruto:\t\t" << salarioBruto << endl;
+  cout << "Desconto Sindical:\t" << streamCS.str() << endl;
+  cout << "Salario Liquido:\t" << streamSL.str() << endl << endl;
 }
 
 /**
