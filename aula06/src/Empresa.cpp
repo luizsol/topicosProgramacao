@@ -2,7 +2,6 @@
     PCS2478 - Tópicos de Programação
     Empresa.cpp
 
-    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 4.0 2017-09-13
 */
@@ -20,13 +19,14 @@ Empresa::Empresa(string nome) : Empresa(nome, 10) {}
 Empresa::Empresa(int maxFuncionarios) : Empresa("Sem Nome", maxFuncionarios) {}
 
 Empresa::Empresa(string nome, int maxFuncionarios){
-  string l01, l02, l03, l04, l05, lTotal;
+  string l01, l02, l03, l04, l05, l06, lTotal;
   l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|0|\n";
   l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|1|\n";
   l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|0|\n";
   l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|1|\n";
   l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|0|\n";
-  lTotal = l01 + l02 + l03 + l04 + l05;
+  l06 = "0006|0000|2|Ricardo Souza Carvalho|Contador|Praca E, 128|Contador|Pleno|04|0|\n";
+  lTotal = l01 + l02 + l03 + l04 + l05+ l06;
 
   Empresa::initFuncArray(maxFuncionarios);
   this->cadastroPessoas.adicionarDadosPessoas(lTotal);
@@ -390,4 +390,42 @@ string Empresa::getGratificacaoFuncionario(string idFuncional){
   int index = Empresa::buscaIdFuncional(idFuncional);
   return this->cadastroPessoas.splitDado(this->cadastroPessoas.lerDadosPessoa(
     this->funcionarios[index].getIdPessoa()))[9];
+}
+
+/**
+Imprime os dados de todas os funcionários da Empresa de forma
+formatada e ordenada decrescentemente pelo salário nominal
+*/
+
+void Empresa::obterDadosOrdenadosFunc() {
+	cout << "Dados de todos os funcionarios ordenados pelo salario:" << endl;
+	cout << "------------------------------------------------------------" << endl
+		<< endl;
+
+	vector<string> pessoas = Empresa::getAndSplitPessoas();
+	int n = 1;
+	for (int j = 9; j > 0; j--) {
+		for (unsigned long i = 0; i < pessoas.size(); i++) {
+			vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
+			if (pessoa[2] == "1") {
+				if (stoi(pessoa[8]) == j) {
+					cout << n << "o Funcionario: " << endl << endl;
+					cout << "Id Pessoa: \t" <<pessoa[0]<< endl;
+					cout << "Id Funcional: \t" << pessoa[1] << endl;
+					cout << "Nome:\t\t" << pessoa[3] << endl;
+					cout << "Endereco:\t" << pessoa[5] << endl;
+					cout << "Profissao:\t" << pessoa[4] << endl;
+					cout << "Funcao:\t\t" << pessoa[6] << endl;
+					cout << "Cargo:\t\t" << pessoa[7] << endl;
+					cout << "Salario:\t" << Empresa::calcularSalario(pessoa[1])
+						<< endl << endl;
+					cout << endl;
+					n++;
+				}
+			}
+		}
+	}
+	if (this->funcionarios.size() == 0) {
+		cout << "Nenhum funcionario cadastrado." << endl;
+	}
 }

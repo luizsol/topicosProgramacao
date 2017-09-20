@@ -2,9 +2,8 @@
     PCS2478 - Tópicos de Programação
     Empresa.h
 
-    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 3.0 2017-09-13
+    @version 4.0 2017-09-13
 */
 
 #pragma once
@@ -113,6 +112,13 @@ public:
                            estado funcional. deve ser -1 para apresentar todos.
   */
   void obterDadosPessoas(int filtro = -1);
+
+  /**
+  Imprime os dados de todas os funcionários da Empresa de forma
+  formatada e ordenada decrescentemente pelo salário nominal
+  */
+
+  void obterDadosOrdenadosFunc();
 
 private:
   /**

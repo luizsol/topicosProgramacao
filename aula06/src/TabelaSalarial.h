@@ -2,7 +2,6 @@
     PCS2478 - Tópicos de Programação
     TabelaSalarial.h
 
-    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
     @version 2.0 2017-09-13
 */
