@@ -19,9 +19,7 @@ ImpostoRenda::ImpostoRenda(string arquivo){
 }
 
 // Destrutor da classe ImpostoRenda
-ImpostoRenda::~ImpostoRenda(){
-  delete &(this->conexao);
-}
+ImpostoRenda::~ImpostoRenda(){}
 
 // Setters e getters
 string ImpostoRenda::getNomeArquivo(){
@@ -86,17 +84,14 @@ vector<string> ImpostoRenda::retrieveAndParseLine(int linha){
     @throw caso a linha não exista (domain_error)
 */
 string ImpostoRenda::retrieveLine(int linha){
-  this->conexao.open(this->nomeArquivo.c_str(), ios::app);
+  this->conexao.open(this->nomeArquivo, ios::in);
   if(!this->conexao.good()){
     throw std::domain_error("ImpostoRenda::retrieveLine: "
                                   "Impossivel abrir o arquivo.");
   }
   string result;
   for(int i = 0; i <= linha; i++){
-    cout << i << endl;
     getline(this->conexao, result);
-    cout << "foi" << i <<  endl;
-    cout << result;
     if(this->conexao.eof()){
       this->conexao.close();
       throw std::domain_error("ImpostoRenda::retrieveLine: linha "

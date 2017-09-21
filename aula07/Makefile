@@ -30,7 +30,7 @@ lab5.o: $(SRC)/lab5.cpp $(SRC)/ImpostoRenda.h
 
 # All
 lab5: ImpostoRenda.o lab5.o
-	$(CC) $(CFLAGS) ImpostoRenda.o lab5.o -o la5
+	$(CC) $(CFLAGS) ImpostoRenda.o lab5.o -o lab5
 
 clean:
 	rm -f *.o lab5
