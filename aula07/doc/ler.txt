@@ -1,0 +1,4 @@
+Dados do arquivo "Ler.txt"
+Mensagem 1
+Mensagem 2
+Mensagem 3
