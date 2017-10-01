@@ -1,9 +1,9 @@
 /**
     PCS2478 - Tópicos de Programação
-    p1.cpp
+    lab6.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @version 1.0 2017-09-13
+    @version 1.0 2017-10-01
 */
 
 #include "Empresa.h"

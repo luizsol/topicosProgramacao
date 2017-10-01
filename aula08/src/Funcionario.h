@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 5.0 2017-09-13
+    @version 6.0 2017-10-01
 */
 
 #pragma once
