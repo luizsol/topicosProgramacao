@@ -8,17 +8,36 @@
 */
 
 #pragma once
-#include <string>
-#include <fstream>
+
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <vector>
+
+#include "AcessoDados.h"
+#include "globais.h"
 
 using namespace std;
 
 class ImpostoRenda{
+
+public:
+  // Construtores da classe ImpostoRenda
+  ImpostoRenda();
+
+  // Destrutor da classe ImpostoRenda
+  ~ImpostoRenda();
+
+  /**
+      Calcula o imposto de renda com base no salário do indivídio.
+
+      @param salarioBruto (float): o salário bruto do indivíduo
+      @return o imposto de renda a ser pago pelo funcionário
+  */
+  float calculaIR(float salarioBruto);
+
 private:
   string nomeArquivo;
-  fstream conexao;
 
   /**
       Busca e subdivide um daterminada linha da tabela de Imposto de Renda
@@ -39,25 +58,4 @@ private:
       @throw caso a linha não exista (domain_error)
   */
   string retrieveLine(int linha);
-
-public:
-  // Construtores da classe ImpostoRenda
-  ImpostoRenda();
-  ImpostoRenda(string arquivo);
-
-  // Destrutor da classe ImpostoRenda
-  ~ImpostoRenda();
-
-  // Setters e Getters
-  string getNomeArquivo();
-  void setNomeArquivo(string arquivo);
-
-  /**
-      Calcula o imposto de renda com base no salário do indivídio.
-
-      @param salarioBruto (float): o salário bruto do indivíduo
-      @return o imposto de renda a ser pago pelo funcionário
-  */
-  float calculaIR(float salarioBruto);
-
 };

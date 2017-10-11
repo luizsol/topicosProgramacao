@@ -4,20 +4,21 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 5.0 2017-10-01
+    @version 5.0 2017-10-10
 */
 
 #pragma once
 
-#include <string>
 #include <iomanip>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "CadastroPessoas.h"
-#include "Funcionario.h"
-#include "TabelaSalarial.h"
 #include "ContribuicaoSindical.h"
+#include "Funcionario.h"
+#include "ImpostoRenda.h"
+#include "TabelaSalarial.h"
 
 using namespace std;
 
@@ -25,8 +26,6 @@ class Empresa{
   string nome;                      // Nome da empresa
   vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
   unsigned long maxFuncionarios;    // Tamanho do array funcionarios
-  CadastroPessoas cadastroPessoas;  // Objeto de acesso ao cadastro de pessoas
-  TabelaSalarial tabelaSalarial;    // A tabela de tradução de faixas salariais
 
 public:
   // Construtores da classe Empresa
@@ -49,60 +48,6 @@ public:
       @return true se todos os funcionários foram devidamente contratados
   */
   bool iniciarFuncionarios();
-
-  /**
-      Cria e cadastra um funcionário na empresa.
-
-      @param idFuncional (string): o ID Funcional do funcionário
-      @param nome (string): o nome do funcionário
-      @param endereco (string): o endereço do funcionário
-      @param profissao (string): a profissão do funcionário
-      @param funcao (string): a função do funcionário
-      @param cargo (string): o cargo do funcionário
-      @param faixaSalario (string): a faixa salarial do funcionário
-      @param gratificação (string): o gratificação salarial do funcionário
-      @return true se o funcionário foi criado e cadastrado, false caso contrário
-      @throw caso se tente contratar mais funcionários que o limite máximo
-             (domain_error)
-      @throw caso se tente contratar um funcionário com um ID Funcional já
-             existente (domain_error)
-  */
-  bool contratarFuncionario(string idPessoa, string idFuncional, string nome,
-                            string profissao, string endereco, string funcao,
-                            string cargo, string faixaSalario,
-                            string gratificacao);
-
-  /**
-      Cadastra um funcionário na empresa de maneira interativa (via CLI)
-      utilizando os dados do cadastroPessoa.
-
-      @return true se o funcionário foi cadastrado, false caso
-              contrário
-      @throw caso não haja funcionario elegivel para contratacao (domain_error)
-      @throw caso o ID Pessoa seja inexistente (domain_error)
-      @throw caso a pessoa não esteja com o status de aguardando vaga
-             (domain_error)
-  */
-  bool contratarFuncionario();
-
-  /**
-      Demite e apaga um funcionário da empresa.
-
-      @param idFuncional (string): o ID Funcional do funcionário a ser demitido
-      @return true se o funcionário foi demitido e apagado, false caso contrário
-      @throw caso o ID Funcional seja inexistente (domain_error)
-  */
-  bool demitirFuncionario(string idFuncional);
-
-  /**
-      Demite e apaga um funcionário da empresa via CLI
-
-      @return true se o funcionário foi demitido e apagado, false caso contrário
-  */
-  bool demitirFuncionario();
-
-  // Demite e apaga todos funcionário da empresa.
-  void demitirTodosFuncionarios();
 
   // Imprime os dados de todos os funcionários da empresa de forma formatada
   void obterDadosFuncionarios();

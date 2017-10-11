@@ -8,86 +8,27 @@
 */
 
 #include "TabelaSalarial.h"
-#include <iostream>
 
 using namespace std;
 
 // Construtores da classe TabelaSalarial
-TabelaSalarial::TabelaSalarial() : TabelaSalarial(
-  "01|390.00|\n"
-  "02|460.00|\n"
-  "03|800.00|\n"
-  "04|1400.00|\n"
-  "05|2300.00|\n"
-  "06|2850.00|\n"
-  "07|4600.00|\n"
-  "08|6000.00|\n"
-  "09|9000.00|\n"
-){}
-
-TabelaSalarial::TabelaSalarial(string faixasSalario){
-   TabelaSalarial::adicionaFaixasSalario(faixasSalario);
-}
+TabelaSalarial::TabelaSalarial(){}
 
 // Destrutor da classe TabelaSalarial
 TabelaSalarial::~TabelaSalarial(){}
 
 // Setters e Getters
 vector<string> TabelaSalarial::getFaixasSalario(){
-  return this->faixasSalario;
-}
-
-void TabelaSalarial::setFaixasSalario(vector<string> faixasSalario){
-  this->faixasSalario = faixasSalario;
-}
-
-/**
-    Adiciona uma linha de faixa salarial.
-
-    @param linhaFaixaSalario (string): a linha formatada de faixa salarial
-                                       a ser adiciona
-    @throw caso a linhaFaixaSalario seja inválida (invalid_argument)
-*/
-void TabelaSalarial::adicionaFaixaSalario(string linhaFaixaSalario){
-  if(!TabelaSalarial::validaStringFaixaSalario(linhaFaixaSalario)){
-    throw std::invalid_argument("TabelaSalarial::adicionaFaixaSalario:"
-                                  " linha invalida");
+  vector<string> lines;
+  string line;
+  AcessoDados acessoDados;
+  istringstream stream(acessoDados.lerTudo(Arquivos.TAB_SALARIAL));
+  for(int i = 0; i <= linha; i++){
+    getline(stream, line);
+    line.append("\n");
+    lines.push_back(line);
   }
-
-  this->faixasSalario.push_back(linhaFaixaSalario);
-}
-
-/**
-    Adiciona várias linhas de faixa salarial.
-
-    @param linhasFaixaSalario (string): as linhas formatadas de faixas salariais
-                                        a serem adicionas
-    @throw caso uma das linhas de linhasFaixaSalario seja inválida
-           (invalid_argument)
-*/
-void TabelaSalarial::adicionaFaixasSalario(string linhasFaixaSalario){
-  vector<string> linhas;
-  string linha;
-  istringstream f(linhasFaixaSalario);
-
-  // Transformando a string de linhas em vetores
-  while (std::getline(f, linha)) {
-    linha.push_back('\n');
-    linhas.push_back(linha);
-  }
-
-  // Validando as linhas
-  for(unsigned int i = 0; i < linhas.size(); i++){
-    // A linha é válida?
-    if(! TabelaSalarial::validaStringFaixaSalario(linhas[i])){
-      throw std::invalid_argument("TabelaSalarial::adicionaFaixasSalario"
-                                  " dados invalidos");
-    }
-  }
-
-  for(unsigned int i = 0; i < linhas.size(); i++){ // Adicionando as linhas
-    TabelaSalarial::adicionaFaixaSalario(linhas[i]);
-  }
+  return lines;
 }
 
 /**
@@ -132,12 +73,7 @@ bool TabelaSalarial::validaStringFaixaSalario(string linhaFaixaSalario){
     @throw caso o índice do array seja inválido (invalid_argument)
 */
 vector<string> TabelaSalarial::splitSalario(unsigned long indice){
-  if(indice >= this->faixasSalario.size()){
-    throw std::invalid_argument("TabelaSalarial::splitSalario:"
-                                " indice invalido");
-  }
-
-  string salario = this->faixasSalario[indice];
+  string salario = TabelaSalarial::getFaixasSalario()[indice];
   vector<string> resultado;
   // Adiciona o primeiro campo (início em 0 e com 2 caracteres)
   resultado.push_back(salario.substr(0, 2));

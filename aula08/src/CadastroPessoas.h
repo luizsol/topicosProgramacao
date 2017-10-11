@@ -4,25 +4,25 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 4.0 2017-10-01
+    @version 4.0 2017-10-10
 */
 
 #pragma once
+
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <vector>
-#include "Funcionario.h"
+
+#include "AcessoDados.h"
+#include "globais.h"
 
 using namespace std;
 
 class CadastroPessoas{
-  vector<string> dadosPessoais;
-
 public:
   // Construtores da classe CadastroPessoas
   CadastroPessoas();
-  CadastroPessoas(string cargaInicial);
 
   // Destrutor da classe empresa
   ~CadastroPessoas();
@@ -37,18 +37,6 @@ public:
       @return true se a string for válida, false caso contrário
   */
   bool validarDados(string dados);
-
-  /**
-      Adiciona uma string de dados ao array de dados pessoais.
-
-      @param dados (string): a string a ser adicionada
-      @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
-                                  um usuário com o mesmo idPessoa
-      @return true se a string foi adicionada, false caso contrário
-      @throw caso haja a tentativa de sobrescrever um usuário e o argumento
-             'sobrescrever' seja false (domain_error)
-  */
-  bool adicionarDadosPessoa(string dados, bool sobrescrever=true);
 
   /**
       Adiciona uma string contendo várias strings de dados ao array de dados
@@ -80,16 +68,6 @@ public:
       @throw caso os idPessoa não exista (domain_error)
   */
   string lerDadosPessoa(string idPessoa);
-
-  /**
-      Atualiza os dados de uma pessoa.
-
-      @param dados (string): os novos dados a serem atualizados
-      @return true se a operação foi bem sucedida, false caso contrario
-      @throw caso sejam passados dados inválidos (invalid_argument)
-      @throw caso os idPessoa não exista (domain_error)
-  */
-  bool atualizarDadosPessoa(string dados);
 
   /**
       Retorna um vector de strings contendo os diferentes campos de uma linha de

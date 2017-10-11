@@ -1,0 +1,13 @@
+enum Arquivos{
+  CAD_PESSOAS,
+  TAB_SALARIAL,
+  IMP_RENDA,
+  CONTR_SINDICAL
+};
+
+enum ModoAcesso{
+  LEITURA,
+  ESCRITA,
+  INSERCAO
+};
+

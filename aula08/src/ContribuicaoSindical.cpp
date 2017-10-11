@@ -12,39 +12,16 @@
 using namespace std;
 
 // Construtores da classe ContribuicaoSindical
-ContribuicaoSindical::ContribuicaoSindical() :
-  ContribuicaoSindical::ContribuicaoSindical(
-    "Administrador|2.0|\n"
-    "Contador|1.5|\n"
-    "Engenheiro|1.5|\n"
-    "Entregador|0.5|\n"
-    "Estudante|0.0|\n"
-    "Secretaria|1.0|\n"
-    "Suporte|0.5|\n"
-  ){}
-
-ContribuicaoSindical::ContribuicaoSindical(string cargaInicial){
-  ContribuicaoSindical::setTabelaCS(cargaInicial);
-}
+ContribuicaoSindical::ContribuicaoSindical(){}
 
 // Destrutor da classe ContribuicaoSindical
 ContribuicaoSindical::~ContribuicaoSindical(){}
 
 // Setters e Getters
 vector<string> ContribuicaoSindical::getTabelaCS(){
-  return this->tabelaCS;
-}
-
-void ContribuicaoSindical::setTabelaCS(string tabelaCS){
-  vector<string> linhas;
-  string linha;
-  istringstream f(tabelaCS);
-
-  // Transformando a string de linhas em vetores
-  while (std::getline(f, linha)) {
-    linha.push_back('\n');
-    this->tabelaCS.push_back(linha);
-  }
+  AcessoDados acessoDados;
+  return ContribuicaoSindical::splitDado(
+    acessoDados.lerTudo(Arquivos.CONTR_SINDICAL));
 }
 
 /**

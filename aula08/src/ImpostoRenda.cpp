@@ -14,21 +14,8 @@ using namespace std;
 // Construtores da classe ImpostoRenda
 ImpostoRenda::ImpostoRenda(){}
 
-ImpostoRenda::ImpostoRenda(string arquivo){
-  ImpostoRenda::setNomeArquivo(arquivo);
-}
-
 // Destrutor da classe ImpostoRenda
 ImpostoRenda::~ImpostoRenda(){}
-
-// Setters e getters
-string ImpostoRenda::getNomeArquivo(){
-  return this->nomeArquivo;
-}
-
-void ImpostoRenda::setNomeArquivo(string arquivo){
-  this->nomeArquivo = arquivo;
-}
 
 /**
     Calcula o imposto de renda com base no salário do indivídio.
@@ -84,21 +71,11 @@ vector<string> ImpostoRenda::retrieveAndParseLine(int linha){
     @throw caso a linha não exista (domain_error)
 */
 string ImpostoRenda::retrieveLine(int linha){
-  this->conexao.open(this->nomeArquivo, ios::in);
-  if(!this->conexao.good()){
-    throw std::domain_error("ImpostoRenda::retrieveLine: "
-                                  "Impossivel abrir o arquivo.");
-  }
-  string result;
+  AcessoDados acessoDados;
+  istringstream stream(acessoDados.lerTudo(Arquivos.IMP_RENDA));
+  string line;
   for(int i = 0; i <= linha; i++){
-    getline(this->conexao, result);
-    if(this->conexao.eof()){
-      this->conexao.close();
-      throw std::domain_error("ImpostoRenda::retrieveLine: linha "
-                                  "inexistente.");
-    }
+    getline(stream, line);
   }
-  result += '\n';
-  this->conexao.close();
-  return result;
+  return line.append("\n");
 }

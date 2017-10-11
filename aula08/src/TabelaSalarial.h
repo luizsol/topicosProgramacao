@@ -8,46 +8,28 @@
 */
 
 #pragma once
+
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <sstream>
-#include <iostream>
+
+#include "AcessoDados.h"
+#include "globais.h"
 
 using namespace std;
 
 class TabelaSalarial{
-  vector<string> faixasSalario; // Vetor contendo as faixas salariais
 
 public:
   // Construtores da classe TabelaSalarial
   TabelaSalarial();
-  TabelaSalarial(string faixasSalario);
 
   // Destrutor da classe TabelaSalarial
   ~TabelaSalarial();
 
   // Setters e Getters
   vector<string> getFaixasSalario();
-  void setFaixasSalario(vector<string> faixasSalario);
-
-  /**
-      Adiciona uma linha de faixa salarial.
-
-      @param linhaFaixaSalario (string): a linha formatada de faixa salarial
-                                         a ser adiciona
-      @throw caso a linhaFaixaSalario seja inválida (invalid_argument)
-  */
-  void adicionaFaixaSalario(string linhaFaixaSalario);
-
-  /**
-      Adiciona várias linhas de faixa salarial.
-
-      @param linhasFaixaSalario (string): as linhas formatadas de faixas
-                                          salariais a serem adicionas
-      @throw caso uma das linhas de linhasFaixaSalario seja inválida
-             (invalid_argument)
-  */
-  void adicionaFaixasSalario(string linhasFaixaSalario);
 
   /**
       Valida uma linha formatada de faixa salarial.
