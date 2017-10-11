@@ -1,10 +1,10 @@
 /**
-    PCS2478 - Tópicos de Programação
-    Empresa.cpp
+PCS2478 - Tópicos de Programação
+Empresa.cpp
 
-    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 4.0 2017-09-13
+@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
+@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+@version 1.0 2017-10-11
 */
 
 #include "Empresa.h"
@@ -423,6 +423,20 @@ vector<string> Empresa::getAndSplitPessoas(){
   return linhas;
 }
 
+vector<string> Empresa::SplitPessoas(string in) {
+	vector<string> linhas;
+	string linha;
+	istringstream f(in);
+
+	// Transformando a string de linhas em vetores
+	while (std::getline(f, linha)) {
+		linha.push_back('\n');
+		linhas.push_back(linha);
+	}
+
+	return linhas;
+}
+
 /**
     Obtém a gratificação de um determinado funcionário.
 
@@ -453,7 +467,25 @@ string Empresa::obterDadosArquivo(int idArquivo)
 	
 }
 
-string Empresa::obterDadosPessoasEspecificas(string valorChave, Campos chave)
+void Empresa::obterDadosPessoasEspecificas(string valorChave, Campos chave)
 {
-	return this->acessoDados.ler(CAD_PESSOAS,valorChave,chave);
+	string resultado = this->acessoDados.ler(CAD_PESSOAS, valorChave, chave);
+	vector<string> pessoas = this->SplitPessoas(resultado);
+
+	for (unsigned long i = 0; i < pessoas.size(); i++) {
+
+		vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
+
+		cout << i + 1 << "a pessoa:" << endl;
+		cout << "ID Pessoa: \t\t" << pessoa[0] << endl;
+		cout << "Id Funcional: \t\t" << pessoa[1] << endl;
+		cout << "Estado Funcional:\t" << pessoa[2] << endl;
+		cout << "Nome:\t\t\t" << pessoa[3] << endl;
+		cout << "Endereco:\t\t" << pessoa[4] << endl;
+		cout << "Profissao:\t\t" << pessoa[5] << endl;
+		cout << "Funcao:\t\t\t" << pessoa[6] << endl;
+		cout << "Cargo:\t\t\t" << pessoa[7] << endl;
+		cout << "Faixa Salarial:\t\t" << pessoa[8] << endl;
+		cout << "Gratificacao Salarial:\t" << pessoa[9] << endl << endl;
+	}
 }

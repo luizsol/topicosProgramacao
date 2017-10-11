@@ -1,3 +1,12 @@
+/**
+PCS2478 - Tópicos de Programação
+AcessoDados.h
+
+@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
+@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+@version 1.0 2017-10-11
+*/
+
 #pragma once
 #pragma once
 #include <string>

@@ -1,10 +1,10 @@
 /**
-    PCS2478 - Tópicos de Programação
-    Empresa.h
+PCS2478 - Tópicos de Programação
+Empresa.h
 
-    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 3.0 2017-09-13
+@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
+@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+@version 1.0 2017-10-11
 */
 
 #pragma once
@@ -126,7 +126,7 @@ public:
 
   string obterDadosArquivo(int idArquivo);
 
-  string obterDadosPessoasEspecificas(string valorChave, Campos chave);
+  void obterDadosPessoasEspecificas(string valorChave, Campos chave);
 
 private:
   /**
@@ -182,6 +182,8 @@ private:
       @return um vector de strings contendo os dados das pessoas
   */
   vector<string> getAndSplitPessoas();
+
+  vector<string> SplitPessoas(string in);
 
   /**
       Obtém a gratificação de um determinado funcionário.
