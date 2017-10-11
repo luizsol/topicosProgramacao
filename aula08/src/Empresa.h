@@ -60,12 +60,6 @@ public:
   */
   void obterDadosPessoas(int filtro = -1);
 
-  /**
-      Apresenta as informações sobre a remuneração de um determinado funcionário
-
-      @throw caso não exista o id funcional inserido pelo usuário (domain_error)
-  */
-  void calcularSalarioLiquido();
 
 private:
   /**
@@ -97,14 +91,6 @@ private:
   int buscaIdFuncional(string idFuncional);
 
   /**
-      Imprime os dados de um determinado funcionário de forma formatada
-
-      @param index (string): o índice no array de funcionários do funcionário a
-                             ser impresso
-  */
-  void obterDadosFuncionario(int index);
-
-  /**
       Retorna uma string com formato monetário correspondente ao salário de um
       determinado funcionário.
 
@@ -121,12 +107,5 @@ private:
       @return um vector de strings contendo os dados das pessoas
   */
   vector<string> getAndSplitPessoas();
-
-  /**
-      Obtém a gratificação de um determinado funcionário.
-
-      @return a string relativa à gratificação do funcionário
-  */
-  string getGratificacaoFuncionario(string idFuncional);
 
 };

@@ -6,9 +6,12 @@
     @version 1.0 2017-10-01
 */
 
-#include "Empresa.h"
+
 #include <iostream>
 #include <string>
+
+#include "AcessoDados.h"
+#include "Empresa.h"
 
 using namespace std;
 
@@ -26,93 +29,50 @@ void sistema(){
 
   try{
     aEmpresa = new Empresa(nomeEmpresa, atoi(tamanho.c_str()));
+    cout << "Empresa " << aEmpresa->getNome() << " criada com sucesso." << endl;
   } catch (logic_error& ex){
       cout << "ERRO ao criar a empresa: " << ex.what() << endl;
       cout << "Saindo..." << endl;
       exit(1);
   }
-  string option = "";
 
-  while(true){
-    cout << endl << "-------------------------" << endl;
-    cout << aEmpresa->getNome() << endl;
-    cout << "-------------------------" << endl << endl;
+  AcessoDados acessoDados;
 
-    cout << "[M] Mostrar todas as Pessoas" << endl;
-    cout << "[F] Mostrar Funcionarios" << endl;
-    cout << "[S] Mostrar Dados Salariais de um Funcionario" << endl;
-    cout << "[C] Contratar Funcionario" << endl;
-    cout << "[D] Demitir Funcionario" << endl;
-    cout << "[T] Demitir Todos Funcionarios" << endl;
-    cout << "[X] Sair" << endl;
-    getline(cin, option);
-    cout << "-------------------------" << endl << endl;
+  try{
+    cout << "Dados das pessoas:" << endl;
+    cout << acessoDados.lerTudo(CAD_PESSOAS) << endl;
+  } catch (logic_error& ex){
+      cout << "ERRO ao ler dados das pessoas: " << ex.what() << endl;
+      exit(1);
+  }
 
-    switch(option.at(0)){
-    case 'M':
-    case 'm':
-      aEmpresa->obterDadosPessoas();
-      break;
-    case 'C':
-    case 'c':
-      try{
-        aEmpresa->contratarFuncionario();
-        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
-      } catch (logic_error& ex){
-        cout << ex.what() << endl;
-        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
-      }
-      break;
-    case 'D':
-    case 'd':
-      try{
-        aEmpresa->demitirFuncionario();
-        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
-      } catch (logic_error& ex){
-        cout << ex.what() << endl;
-        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
-      }
-      break;
-    case 'T':
-    case 't':
-      try{
-        aEmpresa->demitirTodosFuncionarios();
-        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
-      } catch (logic_error& ex){
-        cout << ex.what() << endl;
-        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
-      }
-      break;
-    case 'F':
-    case 'f':
-      try{
-        aEmpresa->obterDadosFuncionarios();
-        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
-      } catch (logic_error& ex){
-        cout << ex.what() << endl;
-        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
-      }
-      break;
-    case 'S':
-    case 's':
-      try{
-        aEmpresa->calcularSalarioLiquido();
-        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
-      } catch (logic_error& ex){
-        cout << ex.what() << endl;
-        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
-      }
-      break;
-    case 'X':
-    case 'x':
-      cout << endl << "Saindo..." << endl;
-      return;
-    default:
-      cout << endl << "Opcao inválida" << endl;
-      break;
-    }
+  try{
+    cout << "Dados da tabela salarial:" << endl;
+    cout << acessoDados.lerTudo(TAB_SALARIAL) << endl;
+  } catch (logic_error& ex){
+      cout << "ERRO ao ler dados da tabela salarial: " << ex.what() << endl;
+      exit(1);
+  }
+
+  try{
+    cout << "Dados da contribuicao sindical:" << endl;
+    cout << acessoDados.lerTudo(CONTR_SINDICAL) << endl;
+  } catch (logic_error& ex){
+      cout << "ERRO ao ler dados da contribuicao sindical: " << ex.what() <<
+        endl;
+      exit(1);
+  }
+
+  try{
+    cout << "Dados do imposto de renda:" << endl;
+    cout << acessoDados.lerTudo(IMP_RENDA) << endl;
+  } catch (logic_error& ex){
+      cout << "ERRO ao ler dados da contribuicao sindical: " << ex.what() <<
+        endl;
+      exit(1);
   }
 }
+
 
 int main(int argc, char * argv[]){
   sistema();

@@ -12,11 +12,11 @@
 using namespace std;
 
 // Construtores da classe AcessoDados
-AcessoDados::AcessoDados(Arquivos arq, ModosAcesso modo){
-  this->nomesArqs[Arquivos.CAD_PESSOAS] = "cadpessoas.dat";
-  this->nomesArqs[Arquivos.TAB_SALARIAL] = "tabsalarial.dat";
-  this->nomesArqs[Arquivos.IMP_RENDA] = "imprenda.dat";
-  this->nomesArqs[Arquivos.CONTR_SINDICAL] = "contrsindical.dat";
+AcessoDados::AcessoDados(){
+  this->nomesArqs[CAD_PESSOAS] = "cadpessoas.dat";
+  this->nomesArqs[TAB_SALARIAL] = "tabsalarial.dat";
+  this->nomesArqs[IMP_RENDA] = "tabir.dat";
+  this->nomesArqs[CONTR_SINDICAL] = "tabcs.dat";
 }
 
 // Destrutor da classe AcessoDados
@@ -25,37 +25,37 @@ AcessoDados::~AcessoDados(){
 }
 
 
-bool AcessoDados::conectar(Arquivos arq, ModosAcesso modo){
+bool AcessoDados::conectar(Arquivos arq, ModoAcesso modo){
   string nomeArq;
 
-  swich(arq){
-  case Arquivos.CAD_PESSOAS:
-    nomeArq = this->nomesArqs[Arquivos.CAD_PESSOAS];
+  switch(arq){
+  case CAD_PESSOAS:
+    nomeArq = this->nomesArqs[CAD_PESSOAS];
     break;
-   case Arquivos.TAB_SALARIAL:
-    nomeArq = this->nomesArqs[Arquivos.TAB_SALARIAL];
+   case TAB_SALARIAL:
+    nomeArq = this->nomesArqs[TAB_SALARIAL];
     break;
-   case Arquivos.IMP_RENDA:
-    nomeArq = this->nomesArqs[Arquivos.IMP_RENDA];
+   case IMP_RENDA:
+    nomeArq = this->nomesArqs[IMP_RENDA];
     break;
-   case Arquivos.TAB_SALARIAL:
-    nomeArq = this->nomesArqs[Arquivos.TAB_SALARIAL];
+   case CONTR_SINDICAL:
+    nomeArq = this->nomesArqs[CONTR_SINDICAL];
     break;
   default:
     throw std::invalid_argument("AcessoDados::conectar: tentativa de "
                                 "conexão a um arquivo inexistente");
   }
 
-  swich(modo){
-  case modosAcesso.LEITURA:
+  switch(modo){
+  case LEITURA:
     this->arquivo.open(nomeArq.c_str(), ios::in);
     break;
-  case modosAcesso.ESCRITA:
+  case ESCRITA:
     this->arquivo.open(nomeArq.c_str(), ios::out);
     break;
-  case modosAcesso.INSERCAO:
+  case INSERCAO:
     this->arquivo.open(nomeArq.c_str(), ios::app);
-    break
+    break;
   default:
     throw std::invalid_argument("AcessoDados::conectar: tentativa de "
                                 "conexão a um arquivo em modo de de acesso "
@@ -74,12 +74,13 @@ bool AcessoDados::conectar(Arquivos arq, ModosAcesso modo){
 
 bool AcessoDados::desconectar(){
   this->arquivo.close();
+  return true;
 }
 
 
-string AcessoDados::lerTudo(Arquivos arq, ModosAcesso modo){
+string AcessoDados::lerTudo(Arquivos arq, ModoAcesso modo){
   AcessoDados::conectar(arq, modo);
-  string result;
+  string result, line;
   if (this->arquivo.is_open()){
     while(getline(this->arquivo, line)){
       result.append(line);
@@ -87,7 +88,7 @@ string AcessoDados::lerTudo(Arquivos arq, ModosAcesso modo){
     }
     this->arquivo.clear();
     // this->arquivo.seekg(0, ios::beg);
-    AcessoDados::desconectar()
+    AcessoDados::desconectar();
     return result;
   }
 

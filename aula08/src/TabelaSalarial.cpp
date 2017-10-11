@@ -22,9 +22,8 @@ vector<string> TabelaSalarial::getFaixasSalario(){
   vector<string> lines;
   string line;
   AcessoDados acessoDados;
-  istringstream stream(acessoDados.lerTudo(Arquivos.TAB_SALARIAL));
-  for(int i = 0; i <= linha; i++){
-    getline(stream, line);
+  istringstream stream(acessoDados.lerTudo(TAB_SALARIAL));
+  while(getline(stream, line)){
     line.append("\n");
     lines.push_back(line);
   }
@@ -91,7 +90,8 @@ vector<string> TabelaSalarial::splitSalario(unsigned long indice){
     @throw caso a faixa salaria não exista (invalid_argument)
 */
 float TabelaSalarial::lerSalario(string faixaSalario){
-  for(unsigned long i = 0; i < this->faixasSalario.size(); i++){
+  vector<string> faixasSalario = TabelaSalarial::getFaixasSalario();
+  for(unsigned long i = 0; i < faixasSalario.size(); i++){
     vector<string> salario = TabelaSalarial::splitSalario(i);
     if(salario[0].compare(faixaSalario) == 0){
       return std::stof(salario[1]);

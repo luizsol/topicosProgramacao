@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "AcessoDados.h"
-#include "globais.h"
 
 using namespace std;
 

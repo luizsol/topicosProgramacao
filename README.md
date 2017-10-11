@@ -21,3 +21,4 @@ A disciplina consiste em 3 tópicos principais:
 - [Aula5](aula05/): Conversão de `string` em `float` ou `double`.
 - [Aula6](aula06/): Prova 1.
 - [Aula7](aula07/): Implementação da classe `ImpostoRenda` que acessa o arquivo tabir.dat.
+- [Aula8](aula08/): Inclusão da classe `AcessoDados`. Implementação das estruturas de dados para o acesso de arquivos e das operações `conectar`, `ler` e `lerTudo` apresentadas na aula teórica.

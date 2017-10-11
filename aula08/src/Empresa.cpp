@@ -23,7 +23,6 @@ Empresa::Empresa(int maxFuncionarios) : Empresa("Empresa Nome", maxFuncionarios)
 Empresa::Empresa(string nome, int maxFuncionarios){
   Empresa::initFuncArray(maxFuncionarios);
   Empresa::setNome(nome);
-  Empresa::iniciarFuncionarios();
 }
 
 // Destrutor da classe empresa
@@ -38,42 +37,6 @@ string Empresa::getNome(){
 
 void Empresa::setNome(string nome){
   this->nome = nome;
-}
-
-/**
-    Solicita os dados de todas as pessoas cadastradas e contrata aquelas que
-    tiverem o estado funcional "empregado" (1)
-
-    @return true se todos os funcionários foram devidamente contratados
-*/
-bool Empresa::iniciarFuncionarios(){
-  vector<string> pessoas = Empresa::getAndSplitPessoas();
-  CadastroPessoas cadastroPessoas;
-
-  for(unsigned long i = 0; i < pessoas.size(); i++){
-    vector<string> pessoa = cadastroPessoas.splitDado(pessoas[i]);
-    if(pessoa[2].compare("1") == 0){
-      Empresa::contratarFuncionario(pessoa[0], pessoa[1], pessoa[3], pessoa[4],
-                                    pessoa[5], pessoa[6], pessoa[7], pessoa[8],
-                                    pessoa[9]);
-    }
-  }
-  return true;
-}
-
-// Imprime os dados de todos os funcionários da empresa de forma formatada
-void Empresa::obterDadosFuncionarios(){
-  cout << "Dados de todas os funcionarios:" << endl;
-  cout << "------------------------------------------------------------" << endl
-    << endl;
-  for(unsigned long i = 0; i < this->funcionarios.size(); i++){
-    cout << i+1 << "o Funcionario: " << endl << endl;
-    Empresa::obterDadosFuncionario(i);
-    cout << endl;
-  }
-  if(this->funcionarios.size() == 0){
-    cout << "Nenhum funcionario cadastrado." << endl;
-  }
 }
 
 /**
@@ -104,47 +67,6 @@ void Empresa::obterDadosPessoas(int filtro){
     cout << "Faixa Salarial:\t\t" << pessoa[8] << endl;
     cout << "Gratificacao Salarial:\t" << pessoa[9] << endl << endl;
   }
-}
-
-/**
-    Apresenta as informações sobre a remuneração de um determinado funcionário
-
-    @throw caso não exista o id funcional inserido pelo usuário (domain_error)
-*/
-void Empresa::calcularSalarioLiquido(){
-  string idFuncional;
-  cout << "Insira o ID Funcional do funcionário: ";
-  getline(cin, idFuncional);
-
-  int index = Empresa::buscaIdFuncional(idFuncional);
-  if(index == -1){
-    throw std::domain_error("Empresa::calcularSalario: "
-                            "ID Funcional inexistente");
-  }
-  string salarioBruto = Empresa::calcularSalario(idFuncional);
-
-  float sb = stof(salarioBruto.substr(3, salarioBruto.length()-3));
-
-  ContribuicaoSindical contribSindical;
-  float cs = contribSindical.calcularCS(sb,
-                                        this->funcionarios[index].getFuncao());
-
-  // Ajustando a resolução
-  stringstream streamCS;
-  streamCS << "R$ " << fixed << setprecision(2) << cs;
-
-  float sl = sb - cs;
-
-  // Ajustando a resolução
-  stringstream streamSL;
-  streamSL << "R$ " << fixed << setprecision(2) << sl;
-
-  cout << endl << endl << "Id Funcional: \t\t"
-    << this->funcionarios[index].getIdFuncional() << endl;
-  cout << "Nome:\t\t\t" << this->funcionarios[index].getNome() << endl;
-  cout << "Salario Bruto:\t\t" << salarioBruto << endl;
-  cout << "Desconto Sindical:\t" << streamCS.str() << endl;
-  cout << "Salario Liquido:\t" << streamSL.str() << endl << endl;
 }
 
 /**
@@ -190,55 +112,6 @@ int Empresa::buscaIdFuncional(string idFuncional){
 }
 
 /**
-    Imprime os dados de um determinado funcionário de forma formatada
-
-    @param index (string): o índice no array de funcionários do funcionário a
-                           ser impresso
-*/
-void Empresa::obterDadosFuncionario(int index){
-  cout << "Id Pessoa: \t" << this->funcionarios[index].getIdPessoa()
-    << endl;
-  cout << "Id Funcional: \t" << this->funcionarios[index].getIdFuncional()
-    << endl;
-  cout << "Nome:\t\t" << this->funcionarios[index].getNome() << endl;
-  cout << "Endereco:\t" << this->funcionarios[index].getEndereco() << endl;
-  cout << "Profissao:\t" << this->funcionarios[index].getProfissao() << endl;
-  cout << "Funcao:\t\t" << this->funcionarios[index].getFuncao() << endl;
-  cout << "Cargo:\t\t" << this->funcionarios[index].getCargo() << endl;
-  cout << "Salario:\t" << Empresa::calcularSalario(this->funcionarios[index].
-                                                   getIdFuncional())
-    << endl << endl;
-}
-
-/**
-    Retorna uma string com formato monetário correspondente ao salário de um
-    determinado funcionário
-
-    @param idFuncional (string): o id funcional do funcionário
-    @return a string formatada correspondente ao salário do funcionário
-    @throw caso não exista o id funcional (domain_error)
-*/
-string Empresa::calcularSalario(string idFuncional){
-  int i = Empresa::buscaIdFuncional(idFuncional);
-  if(i == -1){
-    throw std::domain_error("Empresa::calcularSalario: "
-                            "ID Funcional inexistente");
-  }
-
-  string faixaSalario = this->funcionarios[i].getFaixaSalario();
-  TabelaSalarial tabelaSalarial;
-  float salario = tabelaSalarial.lerSalario(faixaSalario);
-  if(Empresa::getGratificacaoFuncionario(
-      this->funcionarios[i].getIdFuncional()).compare("1") == 0){
-    salario *= 1.01;
-  }
-
-  stringstream stream;
-  stream << "R$ " << fixed << setprecision(2) << salario;
-  return stream.str();
-}
-
-/**
     Obtem e processa os dados dos funcionários de uma forma menos eficiente
     para ficar de acordo com as especificações.
 
@@ -257,16 +130,4 @@ vector<string> Empresa::getAndSplitPessoas(){
   }
 
   return linhas;
-}
-
-/**
-    Obtém a gratificação de um determinado funcionário.
-
-    @return a string relativa à gratificação do funcionário
-*/
-string Empresa::getGratificacaoFuncionario(string idFuncional){
-  int index = Empresa::buscaIdFuncional(idFuncional);
-  CadastroPessoas cadastroPessoas;
-  return cadastroPessoas.splitDado(cadastroPessoas.lerDadosPessoa(
-    this->funcionarios[index].getIdPessoa()))[9];
 }

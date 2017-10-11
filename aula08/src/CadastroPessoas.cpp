@@ -18,11 +18,6 @@ CadastroPessoas::CadastroPessoas(){}
 // Destrutor da classe CadastroPessoas
 CadastroPessoas::~CadastroPessoas(){}
 
-// Setters e Getters
-vector<string> CadastroPessoas::getDadosPessoais(){
-  return this->dadosPessoais;
-}
-
 /**
     Valida uma string de dados de cadastro.
 
@@ -64,24 +59,7 @@ bool CadastroPessoas::validarDados(string dados){
 */
 string CadastroPessoas::lerDadosTodasPessoas(){
   AcessoDados acessoDados;
-  return acessoDados.lerTudo(Arquivos.CAD_PESSOAS);
-}
-
-/**
-    Retorna uma string com os dados de uma pessoa.
-
-    @param idPessoa (string): o id da pessoa a ser buscada
-    @return a string contendo os dados da pessoa
-    @throw caso os idPessoa não exista (domain_error)
-*/
-string CadastroPessoas::lerDadosPessoa(string idPessoa){
-  int indice = CadastroPessoas::getIndicePessoa(idPessoa);
-  if(indice == -1){
-    throw std::domain_error("CadastroPessoas::lerDadosPessoa:"
-                            " ID Pessoa inexistente.");
-  } else {
-    return this->dadosPessoais[indice];
-  }
+  return acessoDados.lerTudo(CAD_PESSOAS);
 }
 
 /**
@@ -110,23 +88,6 @@ vector<string> CadastroPessoas::splitDado(string dado){
   }
 
   return result;
-}
-
-/**
-    Determina o índice do vector dadosPessoais em que está uma linha contendo
-    os dados de uma determinada pessoa.
-
-    @param idPessoa (string): o id da pessoa a ser localizada
-    @return o índice da string contida no dadosPessoais caso ela exista, -1
-            caso contrário
-*/
-int CadastroPessoas::getIndicePessoa(string idPessoa){
-  for(unsigned int i = 0; i < this->dadosPessoais.size(); i++){
-    if(CadastroPessoas::splitDado(this->dadosPessoais[i])[0] == idPessoa){
-      return i;
-    }
-  }
-  return -1;
 }
 
 /**

@@ -72,7 +72,7 @@ vector<string> ImpostoRenda::retrieveAndParseLine(int linha){
 */
 string ImpostoRenda::retrieveLine(int linha){
   AcessoDados acessoDados;
-  istringstream stream(acessoDados.lerTudo(Arquivos.IMP_RENDA));
+  istringstream stream(acessoDados.lerTudo(IMP_RENDA));
   string line;
   for(int i = 0; i <= linha; i++){
     getline(stream, line);

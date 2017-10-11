@@ -15,7 +15,6 @@
 #include <vector>
 
 #include "AcessoDados.h"
-#include "globais.h"
 
 using namespace std;
 
@@ -26,9 +25,6 @@ public:
 
   // Destrutor da classe empresa
   ~CadastroPessoas();
-
-  // Setters e Getters
-  vector<string> getDadosPessoais();
 
   /**
       Valida uma string de dados de cadastro.
@@ -61,15 +57,6 @@ public:
   string lerDadosTodasPessoas();
 
   /**
-      Retorna uma string com os dados de uma pessoa.
-
-      @param idPessoa (string): o id da pessoa a ser buscada
-      @return a string contendo os dados da pessoa
-      @throw caso os idPessoa não exista (domain_error)
-  */
-  string lerDadosPessoa(string idPessoa);
-
-  /**
       Retorna um vector de strings contendo os diferentes campos de uma linha de
       dados de pessoa.
 
@@ -79,16 +66,6 @@ public:
       @throw caso o argumento seja inválido (invalid_argument)
   */
   vector<string> splitDado(string dado);
-
-  /**
-      Determina o índice do vector dadosPessoais em que está uma linha contendo
-      os dados de uma determinada pessoa.
-
-      @param idPessoa (string): o id da pessoa a ser localizada
-      @return o índice da string contida no dadosPessoais caso ela exista, -1
-              caso contrário
-  */
-  int getIndicePessoa(string idPessoa);
 
   /**
       Gera uma linha formatada contendo os dados relativos a uma pessoa.

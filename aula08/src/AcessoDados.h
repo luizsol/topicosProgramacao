@@ -29,14 +29,14 @@ public:
   ~AcessoDados();
 
   // Setters e Getters
-  string lerTudo(Arquivos arq, ModosAcesso modo = ModosAcesso.LEITURA);
+  string lerTudo(Arquivos arq, ModoAcesso modo = LEITURA);
 
 
 private:
-  string[4] nomesArqs;
+  string nomesArqs[4];
   ifstream arquivo;
 
-  bool conectar(Arquivos arq, ModosAcesso modo);
+  bool conectar(Arquivos arq, ModoAcesso modo);
 
   bool desconectar();
 
