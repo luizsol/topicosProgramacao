@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 4.0 2017-10-10
+    @version 4.0 2017-10-11
 */
 
 #include "AcessoDados.h"

@@ -3,7 +3,7 @@
     lab6.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @version 1.0 2017-10-01
+    @version 1.0 2017-10-11
 */
 
 
