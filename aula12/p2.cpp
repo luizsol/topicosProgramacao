@@ -133,6 +133,7 @@ void sistema() {
 		case 'S':
 		case 's':
 			aEmpresa->calcularSalarioLiquido();
+			break;
 		case 'X':
 		case 'x':
 			cout << "Digite o ID Pessoal a ser excluido:" << endl;
@@ -142,6 +143,7 @@ void sistema() {
 			if (!ok) {
 				cout<<"Erro ao excluir funcionário" << endl;
 			}
+			break;
 		}
 	}
 }

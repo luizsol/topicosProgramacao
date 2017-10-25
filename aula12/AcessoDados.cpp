@@ -23,8 +23,7 @@ string AcessoDados::lerTudo(Arquivos arq) {
 	}
 	string linha = "";
 	string out = "";
-	while (this->arquivo.good()) {
-		getline(this->arquivo, linha);
+	while (!this->arquivo.eof() && getline(this->arquivo, linha)) {
 		out.append(linha);
 		out.append("\n");
 	}
@@ -98,7 +97,7 @@ string AcessoDados::ler(Arquivos arq, string valChave, Campos chave)
 	string out = "";
 	vector<string> vetorlinha;
 
-	while (getline(this->arquivo, linha) && !this->arquivo.eof()) {
+	while (!this->arquivo.eof() && getline(this->arquivo, linha)) {
 		vetorlinha = splitDado(linha.append("\n"));
 		if (vetorlinha[chave] == valChave) {
 			out.append(linha);
@@ -163,6 +162,9 @@ bool AcessoDados::inserir(Arquivos arq, string registro)
 
 bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave) {
 	string dados = AcessoDados::ler(arq, valChave, chave);
+	if (dados == "") {
+		return false;
+	}
 	vector<string> linhas;
 	linhas = AcessoDados::splitLinha(dados);
 
@@ -173,7 +175,7 @@ bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave) {
 	while (i < linhas.size()) {
 		AcessoDados::conectar(arq, LEITURA);
 		string linha = "";
-		while (getline(this->arquivo, linha) && !this->arquivo.eof()) {
+		while (!this->arquivo.eof() && getline(this->arquivo, linha)) {
 			if (linha != linhas[i]) {
 				arquivoAux << linha << endl;
 			}
@@ -207,6 +209,9 @@ bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave) {
 
 bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string novoValor, Campos campo) {
 	string dados = AcessoDados::ler(arq, valChave, chave);
+	if (dados == "") {
+		return false;
+	}
 	vector<string> linhas;
 	linhas = AcessoDados::splitLinha(dados);
 
@@ -217,7 +222,7 @@ bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string 
 	while (i < linhas.size()) {
 		AcessoDados::conectar(arq, LEITURA);
 		string linha = "";
-		while (getline(this->arquivo, linha) && !this->arquivo.eof()) {
+		while (!this->arquivo.eof() && getline(this->arquivo, linha)) {
 			if (linha != linhas[i]) {
 				arquivoAux << linha << endl;
 			}

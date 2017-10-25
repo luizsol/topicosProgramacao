@@ -35,7 +35,7 @@ Empresa::Empresa(string nome, int maxFuncionarios){
   Empresa::initFuncArray(maxFuncionarios);
   //this->cadastroPessoas.adicionarDadosPessoas();
   Empresa::setNome(nome);
-//  Empresa::iniciarFuncionarios();
+  Empresa::iniciarFuncionarios();
   
 }
 
@@ -65,7 +65,9 @@ void Empresa::setNome(string nome){
     @return true se todos os funcionários foram devidamente contratados
 */
 bool Empresa::iniciarFuncionarios(){
-  vector<string> pessoas = Empresa::getAndSplitPessoas();
+	string dados;
+	dados = this->cadastroPessoas.lerDadosTodasPessoas();
+  vector<string> pessoas = Empresa::SplitPessoas(dados);
 
   for(unsigned long i = 0; i < pessoas.size(); i++){
     vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
@@ -115,7 +117,6 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
                                                   funcao, cargo, faixaSalario,
                                                   gratificacao);
 
-  this->cadastroPessoas.atualizarDadosPessoa(linha);
   this->funcionarios.push_back(Funcionario(idPessoa, idFuncional, nome,
                                            profissao, endereco, funcao, cargo,
                                            faixaSalario));
@@ -343,8 +344,7 @@ string Empresa::calcularSalario(string idFuncional){
 
   string faixaSalario = this->funcionarios[i].getFaixaSalario();
   float salario = this->tabelaSalarial.lerSalario(faixaSalario);
-  if(Empresa::getGratificacaoFuncionario(
-      this->funcionarios[i].getIdFuncional()).compare("1") == 0){
+  if(Empresa::getGratificacaoFuncionario(this->funcionarios[i].getIdFuncional()).compare("1") == 0){
     salario *= 1.01;
   }
 
@@ -373,8 +373,7 @@ void Empresa::calcularSalarioLiquido(){
   float sb = stof(salarioBruto.substr(3, salarioBruto.length()-3));
 
   ContribuicaoSindical contribSindical;
-  float cs = contribSindical.calcularCS(sb,
-                                        this->funcionarios[index].getFuncao());
+  float cs = this->contribuicaoSindical.calcularCS(sb, this->funcionarios[index].getFuncao());
 
   // Ajustando a resolução
   stringstream streamCS;
@@ -387,12 +386,15 @@ void Empresa::calcularSalarioLiquido(){
   // Ajustando a resolução
   stringstream streamSL;
   streamSL << "R$ " << fixed << setprecision(2) << sl;
+  stringstream streamIR;
+  streamIR << "R$ " << fixed << setprecision(2) << ir;
 
   cout << endl << endl << "Id Funcional: \t\t"
     << this->funcionarios[index].getIdFuncional() << endl;
   cout << "Nome:\t\t\t" << this->funcionarios[index].getNome() << endl;
   cout << "Salario Bruto:\t\t" << salarioBruto << endl;
   cout << "Desconto Sindical:\t" << streamCS.str() << endl;
+  cout << "Imposto de Renda:\t" << streamIR.str() << endl;
   cout << "Salario Liquido:\t" << streamSL.str() << endl << endl;
 }
 
@@ -465,9 +467,11 @@ bool Empresa::excluirPessoa(string idPessoal)
     @return a string relativa à gratificação do funcionário
 */
 string Empresa::getGratificacaoFuncionario(string idFuncional){
-  int index = Empresa::buscaIdFuncional(idFuncional);
-  return this->cadastroPessoas.splitDado(this->cadastroPessoas.lerDadosPessoa(
-    this->funcionarios[index].getIdPessoa()))[9];
+	string pessoa;
+	vector <string> vpessoa;
+	pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
+	vpessoa = SplitPessoa(pessoa);
+	return vpessoa[9];
 }
 
 bool Empresa::contratarFuncCadastrado(string idPessoal, string idFuncional)
@@ -485,6 +489,11 @@ bool Empresa::contratarFuncCadastrado(string idPessoal, string idFuncional)
 
 	this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, idFuncional, C_IDFUNC);
 	this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, "1", C_EFUNC);
+
+	vector<string> vfunc;
+	vfunc = this->cadastroPessoas.splitDado(pessoa);
+	this->funcionarios.push_back(Funcionario(idPessoal, idFuncional, vfunc[3],
+		vfunc[4], vfunc[5], vfunc[6], vfunc[7], vfunc[8]));
 
 
 	return false;

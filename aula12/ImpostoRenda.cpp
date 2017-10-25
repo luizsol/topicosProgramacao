@@ -50,7 +50,7 @@ float ImpostoRenda::calcularIR(float salario)
 {
 	float ir = 0.0;
 	string linha = "";
-	string nome = "tabdir.dat";
+	string nome = "tabir.dat";
 	arquivo.open(nome.c_str(), ios::in);
 
 	while (arquivo.good()) {
