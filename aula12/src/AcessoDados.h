@@ -46,4 +46,6 @@ public:
 
 	bool atualizar(Arquivos arq, string valChave, Campos chave, string novoValor, Campos campo);
 
+	bool excluir(Arquivos arq, string valChave, Campos chave);
+
 };

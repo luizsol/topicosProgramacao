@@ -70,7 +70,7 @@ bool AcessoDados::conectar(Arquivos arq, ModoAcesso modo){
                                 "inexistente.");
   }
 
-  if(this->arquivo.bad())  {
+  if(this->arquivo.bad()){
     return false;
   }
 
@@ -161,7 +161,7 @@ bool AcessoDados::inserir(Arquivos arq, string registro)
 	};
 }
 
-bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string novoValor, Campos campo){
+bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave){
 	string dados = AcessoDados::ler(arq, valChave, chave);
 	vector<string> linhas;
 	linhas = AcessoDados::splitLinha(dados);
@@ -176,48 +176,6 @@ bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string 
 		while (getline(this->arquivo, linha) && !this->arquivo.eof()) {
 			if (linha != linhas[i]) {
 				arquivoAux << linha << endl;
-			} else {
-				vector <string> vecLinha = splitDado(linhas[i]);
-				int indice;
-				switch (campo) {
-				case 0:
-					indice = 0;
-					break;
-				case 1:
-					indice = 1;
-					break;
-				case C_EFUNC:
-					indice = 2;
-					break;
-				case 3:
-					indice = 3;
-					break;
-				case 4:
-					indice = 4;
-					break;
-				case 5:
-					indice = 5;
-					break;
-				case 6:
-					indice = 6;
-					break;
-				case 7:
-					indice = 7;
-					break;
-				case 8:
-					indice = 8;
-					break;
-				case 9:
-					indice = 9;
-					break;
-				}
-        cout << "ta lessssgal" << i << endl;
-
-				vecLinha[indice] = novoValor;
-				for (int j = 0; j < int(vecLinha.size()); j++) {
-					arquivoAux << vecLinha[j] << "|";
-				}
-				arquivoAux << endl;
 			}
 		}
 		i++;
@@ -245,4 +203,89 @@ bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string 
 	rename(novoArquivo.c_str(), nomeArq.c_str());
 	desconectar(arq);
 	return true;
+}
+
+bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string novoValor, Campos campo){
+  string dados = AcessoDados::ler(arq, valChave, chave);
+  vector<string> linhas;
+  linhas = AcessoDados::splitLinha(dados);
+
+  unsigned int i = 0;
+  string novoArquivo = "new.dat";
+  arquivoAux.open(novoArquivo, ios::app);
+
+  while (i < linhas.size()) {
+    AcessoDados::conectar(arq, LEITURA);
+    string linha = "";
+    while (getline(this->arquivo, linha) && !this->arquivo.eof()) {
+      if (linha != linhas[i]) {
+        arquivoAux << linha << endl;
+      } else {
+        vector <string> vecLinha = splitDado(linhas[i]);
+        int indice;
+        switch (campo) {
+        case 0:
+          indice = 0;
+          break;
+        case 1:
+          indice = 1;
+          break;
+        case C_EFUNC:
+          indice = 2;
+          break;
+        case 3:
+          indice = 3;
+          break;
+        case 4:
+          indice = 4;
+          break;
+        case 5:
+          indice = 5;
+          break;
+        case 6:
+          indice = 6;
+          break;
+        case 7:
+          indice = 7;
+          break;
+        case 8:
+          indice = 8;
+          break;
+        case 9:
+          indice = 9;
+          break;
+        }
+
+        vecLinha[indice] = novoValor;
+        for (int j = 0; j < int(vecLinha.size()); j++) {
+          arquivoAux << vecLinha[j] << "|";
+        }
+        arquivoAux << endl;
+      }
+    }
+    i++;
+  }
+
+  string nomeArq;
+  switch (arq) {
+  case CAD_PESSOAS:
+    nomeArq = nomesArqs[CAD_PESSOAS];
+    break;
+  case TAB_SALARIAL:
+    nomeArq = nomesArqs[TAB_SALARIAL];
+    break;
+  case IMP_RENDA:
+    nomeArq = nomesArqs[IMP_RENDA];
+    break;
+  case CONTR_SINDICAL:
+    nomeArq = nomesArqs[CONTR_SINDICAL];
+    break;
+  }
+  desconectar(arq);
+  arquivoAux.clear();
+  arquivoAux.close();
+  remove(nomeArq.c_str());
+  rename(novoArquivo.c_str(), nomeArq.c_str());
+  desconectar(arq);
+  return true;
 }
