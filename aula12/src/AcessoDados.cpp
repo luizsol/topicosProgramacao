@@ -23,8 +23,7 @@ string AcessoDados::lerTudo(Arquivos arq){
 	}
 	string linha = "";
 	string out = "";
-	while (this->arquivo.good()) {
-		getline(this->arquivo, linha);
+	while (getline(this->arquivo, linha) && !this->arquivo.eof()) {
 		out.append(linha);
 		out.append("\n");
 	}
