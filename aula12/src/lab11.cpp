@@ -20,7 +20,7 @@ using namespace std;
 void teste() {
 	AcessoDados dados;
 	cout << dados.lerTudo(CAD_PESSOAS);
-	dados.atualizar(CAD_PESSOAS, "0002", C_IDPESSOA, "34", C_EFUNC);
+	dados.atualizar(CAD_PESSOAS, "99902", C_IDPESSOA, "34", C_EFUNC);
 	// dados.inserir(TAB_SALARIAL, "99|666.666|");
 	dados.excluir(TAB_SALARIAL, "666.666", C_SALARIO);
 }

@@ -163,6 +163,10 @@ bool AcessoDados::inserir(Arquivos arq, string registro)
 
 bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave){
 	string dados = AcessoDados::ler(arq, valChave, chave);
+  cout << "dados: " << endl << dados << endl;
+  if(dados == ""){
+    return false;
+  }
 	vector<string> linhas;
 	linhas = AcessoDados::splitLinha(dados);
 
@@ -207,6 +211,9 @@ bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave){
 
 bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave, string novoValor, Campos campo){
   string dados = AcessoDados::ler(arq, valChave, chave);
+  if(dados == ""){
+    return false;
+  }
   vector<string> linhas;
   linhas = AcessoDados::splitLinha(dados);
 
