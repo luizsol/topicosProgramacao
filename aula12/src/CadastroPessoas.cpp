@@ -15,6 +15,9 @@ using namespace std;
 // Construtores da classe CadastroPessoas
 CadastroPessoas::CadastroPessoas(){}
 
+CadastroPessoas::CadastroPessoas(string dados){
+}
+
 // Destrutor da classe CadastroPessoas
 CadastroPessoas::~CadastroPessoas(){
   delete &(this->dadosPessoais);
@@ -252,34 +255,37 @@ string CadastroPessoas::gerarLinha(string idPessoa, string idFuncional,
                                    string profissao, string endereco,
                                    string funcao, string cargo,
                                    string faixaSalarial, string gratificacao){
-
   return idPessoa + "|" + idFuncional + "|" + estadoFuncional + "|" + nome +
          "|" + profissao + "|" + endereco + "|" + funcao + "|" + cargo + "|" +
          faixaSalarial + "|" + gratificacao + "|\n";
 }
 
-string CadastroPessoas::lerDadosPessoas(string valorChave, Campos chave){
+string CadastroPessoas::lerDadosPessoas(string valorChave, Campos chave)
+{
 	return acessoDados.ler(CAD_PESSOAS, valorChave, chave);
 }
 
-string CadastroPessoas::dadosCP(){
+string CadastroPessoas::dadosCP()
+{
 	return 	acessoDados.lerTudo(CAD_PESSOAS);
 }
 
-bool CadastroPessoas::atualizarDadosPessoas(string valChave, Campos chave,
-                                            string novoValor, Campos campo){
+bool CadastroPessoas::atualizarDadosPessoas(string valChave, Campos chave, string novoValor, Campos campo)
+{
 
 	return acessoDados.atualizar(CAD_PESSOAS, valChave,chave, novoValor,campo);
 }
 
-bool CadastroPessoas::inserir(string idPessoal, string idFuncional,
-  string estadoFuncional, string nome, string profissão, string endereço,
-  string função, string cargo, string faixaSalarial, string gratificacao){
+bool CadastroPessoas::inserir(string idPessoal, string idFuncional, string estadoFuncional, string nome, string profissao, string endereco, string funcao, string cargo, string faixaSalarial, string gratificacao)
+{
+	string pessoa = idPessoal + "|" + idFuncional + "|" + estadoFuncional + "|" + nome + "|" + profissao + "|" + endereco + "|" + funcao + "|" + cargo + "|" + faixaSalarial + "|" + gratificacao + "|";
 
-	string pessoa = idPessoal + "|" + idFuncional + "|" + estadoFuncional + "|" +
-    nome + "|" + profissão + "|" + endereço + "|" + função + "|" + cargo + "|" +
-    faixaSalarial + "|" + gratificacao + "|";
+	
+	return this->acessoDados.inserir(CAD_PESSOAS,pessoa);
+}
 
-	return this->acessoDados.inserir(CAD_PESSOAS, pessoa);
+bool CadastroPessoas::excluirPessoa(string idPessoal)
+{
+	return this->acessoDados.excluir(CAD_PESSOAS, idPessoal, C_IDPESSOA);
 }
 

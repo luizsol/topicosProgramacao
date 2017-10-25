@@ -47,6 +47,8 @@ public:
   string getNome();
   void setNome(string nome);
 
+
+
   /**
       Solicita os dados de todas as pessoas cadastradas e contrata aquelas que
       tiverem o estado funcional "empregado" (1)
@@ -129,8 +131,24 @@ public:
 
   string obterDadosArquivo(int idArquivo);
 
+  void obterDadosOrdenadosFunc();
+
   void obterDadosPessoasEspecificas(string valorChave, Campos chave);
 
+  bool contratarFuncCadastrado(string idPessoal, string idFuncional);
+
+  bool inserirPessoaCadastro(string idPessoal, string nome, string profissao, string endereco, string funcao, string cargo, string faixaSalarial);
+
+  string lerDadosTodasPessoas();
+
+  string lerDadosFunc();
+
+  vector<string> SplitPessoas(string in);
+
+  vector<string> SplitPessoa(string in);
+  void displayPessoa(string in);
+
+  bool excluirPessoa(string idPessoal);
 private:
   /**
       Inicializa o array de funcionários.
@@ -186,7 +204,6 @@ private:
   */
   vector<string> getAndSplitPessoas();
 
-  vector<string> SplitPessoas(string in);
 
   /**
       Obtém a gratificação de um determinado funcionário.
@@ -194,9 +211,5 @@ private:
       @return a string relativa à gratificação do funcionário
   */
   string getGratificacaoFuncionario(string idFuncional);
-
-  bool contratarFuncCadastrado(string idPessoal, string idFuncional);
-
-  bool inserirPessoaCadastro(string idPessoal, string nome, string profissão, string endereço, string função, string cargo, string faixaSalarial);
 
 };

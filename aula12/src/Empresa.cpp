@@ -21,10 +21,22 @@ Empresa::Empresa(int maxFuncionarios) : Empresa("Sem Nome", maxFuncionarios) {}
 
 
 Empresa::Empresa(string nome, int maxFuncionarios){
+ /* string l01, l02, l03, l04, l05, l06, lTotal;
+  l01 = "0001|0021|1|Cristiana Souza|Tecnica Administrativa|Rua AA, 154|Secretaria|Pleno|05|0|\n";
+  l02 = "0002|0042|1|Heroldo Teles|Tecnico Eletronico|Rua BB, 32|Suporte|Junior|03|1|\n";
+  l03 = "0003|0000|2|Carlos Peixoto|Engenheiro Eletrico|Alameda ZZ, 187|Engenheiro|Senior|07|0|\n";
+  l04 = "0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|1|\n";
+  l05 = "0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|0|\n";
+  l06 = "0006|0000|2|Ricardo Souza Carvalho|Contador|Praca E, 128|Contador|Pleno|04|0|\n";
+  lTotal = l01 + l02 + l03 + l04 + l05 + l06;
+  */
+
+
   Empresa::initFuncArray(maxFuncionarios);
-  this->cadastroPessoas.adicionarDadosPessoas();
+  //this->cadastroPessoas.adicionarDadosPessoas();
   Empresa::setNome(nome);
   Empresa::iniciarFuncionarios();
+
 }
 
 
@@ -45,6 +57,7 @@ void Empresa::setNome(string nome){
   this->nome = nome;
 }
 
+
 /**
     Solicita os dados de todas as pessoas cadastradas e contrata aquelas que
     tiverem o estado funcional "empregado" (1)
@@ -52,6 +65,7 @@ void Empresa::setNome(string nome){
     @return true se todos os funcionários foram devidamente contratados
 */
 bool Empresa::iniciarFuncionarios(){
+
   vector<string> pessoas = Empresa::getAndSplitPessoas();
 
   for(unsigned long i = 0; i < pessoas.size(); i++){
@@ -176,10 +190,10 @@ bool Empresa::contratarFuncionario(){
     @throw caso o ID Funcional seja inexistente (domain_error)
 */
 bool Empresa::demitirFuncionario(string idFuncional){
-  string pessoa;
-  string idPessoal;
-  pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
-  idPessoal = this->cadastroPessoas.splitDado(pessoa)[0];
+	string pessoa;
+	string idPessoal;
+	pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
+	idPessoal = this->cadastroPessoas.splitDado(pessoa)[0];
 
 
   return this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,"0",C_EFUNC);
@@ -367,7 +381,9 @@ void Empresa::calcularSalarioLiquido(){
   stringstream streamCS;
   streamCS << "R$ " << fixed << setprecision(2) << cs;
 
-  float sl = sb - cs;
+  float ir = this->impostoRenda.calcularIR(sb);
+
+  float sl = sb - cs - ir;
 
   // Ajustando a resolução
   stringstream streamSL;
@@ -402,17 +418,46 @@ vector<string> Empresa::getAndSplitPessoas(){
 }
 
 vector<string> Empresa::SplitPessoas(string in) {
-  vector<string> linhas;
-  string linha;
-  istringstream f(in);
+	vector<string> linhas;
+	string linha;
+	istringstream f(in);
 
-  // Transformando a string de linhas em vetores
-  while (std::getline(f, linha)) {
-    linha.push_back('\n');
-    linhas.push_back(linha);
-  }
+	// Transformando a string de linhas em vetores
+	while (std::getline(f, linha)) {
+		linha.push_back('\n');
+		linhas.push_back(linha);
+	}
 
-  return linhas;
+	return linhas;
+}
+
+vector<string> Empresa::SplitPessoa(string in)
+{
+	vector<string> pessoa;
+	pessoa = this->cadastroPessoas.splitDado(in);
+	return pessoa;
+}
+
+void Empresa::displayPessoa(string in)
+{
+	vector<string> pessoa;
+	pessoa = this->SplitPessoa(in);
+
+	cout << "ID Pessoa: \t\t" << pessoa[0] << endl;
+	cout << "Id Funcional: \t\t" << pessoa[1] << endl;
+	cout << "Estado Funcional:\t" << pessoa[2] << endl;
+	cout << "Nome:\t\t\t" << pessoa[3] << endl;
+	cout << "Endereco:\t\t" << pessoa[4] << endl;
+	cout << "Profissao:\t\t" << pessoa[5] << endl;
+	cout << "Funcao:\t\t\t" << pessoa[6] << endl;
+	cout << "Cargo:\t\t\t" << pessoa[7] << endl;
+	cout << "Faixa Salarial:\t\t" << pessoa[8] << endl;
+	cout << "Gratificacao Salarial:\t" << pessoa[9] << endl << endl;
+}
+
+bool Empresa::excluirPessoa(string idPessoal)
+{
+	return this->cadastroPessoas.excluirPessoa(idPessoal);
 }
 
 /**
@@ -428,71 +473,115 @@ string Empresa::getGratificacaoFuncionario(string idFuncional){
 
 bool Empresa::contratarFuncCadastrado(string idPessoal, string idFuncional)
 {
-  string pessoa;
-  pessoa = this->cadastroPessoas.lerDadosPessoas(idPessoal, C_IDPESSOA);
+	string pessoa;
+	pessoa = this->cadastroPessoas.lerDadosPessoas(idPessoal, C_IDPESSOA);
 
-  string check;
-  check = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
+	string check;
+	check = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
 
-  if (check == "erro") {
-    cout << "Id Funcional ja existente.";
-    return false;
-  }
+	if (check == "erro") {
+		cout << "Id Funcional ja existente.";
+		return false;
+	}
 
-  this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, idFuncional, C_IDFUNC);
-  this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, "1", C_EFUNC);
+	this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, idFuncional, C_IDFUNC);
+	this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, "1", C_EFUNC);
 
 
-  return false;
+	return false;
 }
 
-bool Empresa::inserirPessoaCadastro(string idPessoal, string nome, string profissão, string endereço, string função, string cargo, string faixaSalarial)
+bool Empresa::inserirPessoaCadastro(string idPessoal, string nome, string profissao, string endereco, string funcao, string cargo, string faixaSalarial)
 {
-  string idFuncional = "0000";
-  string estadoFuncional = "2";
-  string gratificacao = "0";
-  return this->cadastroPessoas.inserir(idPessoal, idFuncional, estadoFuncional, nome, profissão, endereço, função, cargo, faixaSalarial, gratificacao);
+	string idFuncional = "0000";
+	string estadoFuncional = "2";
+	string gratificacao = "0";
+	return this->cadastroPessoas.inserir(idPessoal, idFuncional, estadoFuncional, nome, profissao, endereco, funcao, cargo, faixaSalarial, gratificacao);
+}
+
+string Empresa::lerDadosTodasPessoas()
+{
+	return this->cadastroPessoas.lerDadosTodasPessoas();
+}
+
+string Empresa::lerDadosFunc()
+{
+	return this->cadastroPessoas.lerDadosPessoas("1", C_EFUNC);
 }
 
 string Empresa::obterDadosArquivo(int idArquivo)
 {
-  switch (idArquivo) {
-  case 0:
-    return this->cadastroPessoas.dadosCP();
-    break;
-  case 1:
-    return this->tabelaSalarial.dadosTS();
-    break;
-  case 2:
-    return this->contribuicaoSindical.dadosCS();
-    break;
-  case 3:
-    return this->impostoRenda.dadosIR();
-    break;
-  }
-  throw std::invalid_argument("TabelaSalarial::adicionaFaixaSalario:"
-                              " idArquivo invalido.");
+	switch (idArquivo) {
+	case 0:
+		return this->cadastroPessoas.dadosCP();
+		break;
+	case 1:
+		return this->tabelaSalarial.dadosTS();
+		break;
+	case 2:
+		return this->contribuicaoSindical.dadosCS();
+		break;
+	case 3:
+		return this->impostoRenda.dadosIR();
+		break;
+	}
+
 }
 
 void Empresa::obterDadosPessoasEspecificas(string valorChave, Campos chave)
 {
-  string resultado = this->cadastroPessoas.lerDadosPessoas(valorChave, chave);
-  vector<string> pessoas = this->SplitPessoas(resultado);
+	string resultado = this->cadastroPessoas.lerDadosPessoas(valorChave, chave);
+	vector<string> pessoas = this->SplitPessoas(resultado);
 
-  for (unsigned long i = 0; i < pessoas.size(); i++) {
+	for (unsigned long i = 0; i < pessoas.size(); i++) {
 
-    vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
+		vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
 
-    cout << i + 1 << "a pessoa:" << endl;
-    cout << "ID Pessoa: \t\t" << pessoa[0] << endl;
-    cout << "Id Funcional: \t\t" << pessoa[1] << endl;
-    cout << "Estado Funcional:\t" << pessoa[2] << endl;
-    cout << "Nome:\t\t\t" << pessoa[3] << endl;
-    cout << "Endereco:\t\t" << pessoa[4] << endl;
-    cout << "Profissao:\t\t" << pessoa[5] << endl;
-    cout << "Funcao:\t\t\t" << pessoa[6] << endl;
-    cout << "Cargo:\t\t\t" << pessoa[7] << endl;
-    cout << "Faixa Salarial:\t\t" << pessoa[8] << endl;
-    cout << "Gratificacao Salarial:\t" << pessoa[9] << endl << endl;
-  }
+		cout << i + 1 << "a pessoa:" << endl;
+		cout << "ID Pessoa: \t\t" << pessoa[0] << endl;
+		cout << "Id Funcional: \t\t" << pessoa[1] << endl;
+		cout << "Estado Funcional:\t" << pessoa[2] << endl;
+		cout << "Nome:\t\t\t" << pessoa[3] << endl;
+		cout << "Endereco:\t\t" << pessoa[4] << endl;
+		cout << "Profissao:\t\t" << pessoa[5] << endl;
+		cout << "Funcao:\t\t\t" << pessoa[6] << endl;
+		cout << "Cargo:\t\t\t" << pessoa[7] << endl;
+		cout << "Faixa Salarial:\t\t" << pessoa[8] << endl;
+		cout << "Gratificacao Salarial:\t" << pessoa[9] << endl << endl;
+	}
 }
+
+void Empresa::obterDadosOrdenadosFunc() {
+	cout << "Dados de todos os funcionarios ordenados pelo salario:" << endl;
+	cout << "------------------------------------------------------------" << endl
+		<< endl;
+	string dados;
+	dados = this->cadastroPessoas.lerDadosTodasPessoas();
+	vector<string> pessoas = Empresa::SplitPessoas(dados);
+	int n = 1;
+	for (int j = 9; j > 0; j--) {
+		for (unsigned long i = 0; i < pessoas.size()-1; i++) {
+			vector<string> pessoa = this->cadastroPessoas.splitDado(pessoas[i]);
+			if (pessoa[2] == "1") {
+				if (stoi(pessoa[8]) == j) {
+					cout << n << "o Funcionario: " << endl << endl;
+					cout << "Id Pessoa: \t" << pessoa[0] << endl;
+					cout << "Id Funcional: \t" << pessoa[1] << endl;
+					cout << "Nome:\t\t" << pessoa[3] << endl;
+					cout << "Endereco:\t" << pessoa[5] << endl;
+					cout << "Profissao:\t" << pessoa[4] << endl;
+					cout << "Funcao:\t\t" << pessoa[6] << endl;
+					cout << "Cargo:\t\t" << pessoa[7] << endl;
+					cout << "Salario:\t" << Empresa::calcularSalario(pessoa[1])
+						<< endl << endl;
+					cout << endl;
+					n++;
+				}
+			}
+		}
+	}
+	if (this->funcionarios.size() == 0) {
+		cout << "Nenhum funcionario cadastrado." << endl;
+	}
+}
+

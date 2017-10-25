@@ -96,15 +96,12 @@ vector<string> ContribuicaoSindical::splitDado(string dado){
       sindicais (domain_error)
 */
 float ContribuicaoSindical::getPorcentagemCS(string funcao){
-  for(unsigned int i = 0; i < this->tabelaCS.size(); i++){
-    vector<string> record = ContribuicaoSindical::splitDado(this->tabelaCS[i]);
-    if(record[0].compare(funcao) == 0){
-      return stof(record[1])/100.0;
+	string dado;
+	dado = this->acessoDados.ler(CONTR_SINDICAL, funcao, C_CARGO_CS);
+	vector<string> linha;
+	linha = splitDado(dado);
+      return stof(linha[1])/100.0;
     }
-  }
-  throw std::domain_error("ContribuicaoSindical::getPorcentagemCS: "
-                          "Funcao inexistente");
-}
 
 string ContribuicaoSindical::dadosCS()
 {
