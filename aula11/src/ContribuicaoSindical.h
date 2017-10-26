@@ -10,20 +10,25 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
 #include "AcessoDados.h"
 
 using namespace std;
 
 class ContribuicaoSindical{
+  vector<string> tabelaCS;
+  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
+
 public:
   // Construtores da classe CadastroPessoas
   ContribuicaoSindical();
+  ContribuicaoSindical(string cargaInicial);
+
   // Destrutor da classe empresa
   ~ContribuicaoSindical();
 
   // Setters e Getters
   vector<string> getTabelaCS();
+  void setTabelaCS(string TabelaCS);
 
   /**
       Determina a contribuição salarial de um funcionário baseado no seu salário
@@ -34,6 +39,8 @@ public:
       @return a contribuição sindical devida pelo funcionário
   */
   float calcularCS(float salario, string funcao);
+
+  string dadosCS();
 
 private:
   /**
@@ -57,5 +64,6 @@ private:
         sindicais (domain_error)
   */
   float getPorcentagemCS(string funcao);
+
 
 };

@@ -12,4 +12,3 @@ enum ModoAcesso{
   ESCRITA,
   INSERCAO
 };
-

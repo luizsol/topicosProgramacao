@@ -19,6 +19,7 @@ TDIR = test
 SRC = src
 
 # Goals
+<<<<<<< HEAD
 .DEFAULT_GOAL := lab6
 
 # Object files
@@ -52,3 +53,20 @@ lab6: AcessoDados.o Funcionario.o CadastroPessoas.o ContribuicaoSindical.o Impos
 
 clean:
 	rm -f *.o lab6
+=======
+.DEFAULT_GOAL := lab5
+
+# Object files
+ImpostoRenda.o: $(SRC)/ImpostoRenda.cpp $(SRC)/ImpostoRenda.h
+	$(CC) $(CFLAGS) -c $(SRC)/ImpostoRenda.cpp
+
+lab5.o: $(SRC)/lab5.cpp $(SRC)/ImpostoRenda.h
+	$(CC) $(CFLAGS) -c $(SRC)/lab5.cpp
+
+# All
+lab5: ImpostoRenda.o lab5.o
+	$(CC) $(CFLAGS) ImpostoRenda.o lab5.o -o lab5
+
+clean:
+	rm -f *.o lab5
+>>>>>>> p2_new

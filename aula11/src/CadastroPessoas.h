@@ -4,27 +4,33 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 4.0 2017-10-10
+    @version 1.0 2017-10-11
 */
 
 #pragma once
-
 #include <string>
 #include <sstream>
 #include <iostream>
 #include <vector>
-
+#include "Funcionario.h"
 #include "AcessoDados.h"
 
 using namespace std;
 
 class CadastroPessoas{
+  vector<string> dadosPessoais;
+  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
+
 public:
   // Construtores da classe CadastroPessoas
   CadastroPessoas();
+  CadastroPessoas(string cargaInicial);
 
   // Destrutor da classe empresa
   ~CadastroPessoas();
+
+  // Setters e Getters
+  vector<string> getDadosPessoais();
 
   /**
       Valida uma string de dados de cadastro.
@@ -33,6 +39,18 @@ public:
       @return true se a string for válida, false caso contrário
   */
   bool validarDados(string dados);
+
+  /**
+      Adiciona uma string de dados ao array de dados pessoais.
+
+      @param dados (string): a string a ser adicionada
+      @param sobrescrever (bool): true se a adição deve sobrescrever os dados de
+                                  um usuário com o mesmo idPessoa
+      @return true se a string foi adicionada, false caso contrário
+      @throw caso haja a tentativa de sobrescrever um usuário e o argumento
+             'sobrescrever' seja false (domain_error)
+  */
+  bool adicionarDadosPessoa(string dados, bool sobrescrever=true);
 
   /**
       Adiciona uma string contendo várias strings de dados ao array de dados
@@ -45,7 +63,7 @@ public:
       @throw caso sejam passados dados inválidos (invalid_argument)
       @throw caso outro cadastro já possua esse ID Pessoa (domain_error)
   */
-  bool adicionarDadosPessoas(string dados, bool sobrescrever=true);
+  bool adicionarDadosPessoas(bool sobrescrever=true);
 
   /**
       Retorna uma string obtida pela concatenação de todos os dados no vetor de
@@ -57,6 +75,25 @@ public:
   string lerDadosTodasPessoas();
 
   /**
+      Retorna uma string com os dados de uma pessoa.
+
+      @param idPessoa (string): o id da pessoa a ser buscada
+      @return a string contendo os dados da pessoa
+      @throw caso os idPessoa não exista (domain_error)
+  */
+  string lerDadosPessoa(string idPessoa);
+
+  /**
+      Atualiza os dados de uma pessoa.
+
+      @param dados (string): os novos dados a serem atualizados
+      @return true se a operação foi bem sucedida, false caso contrario
+      @throw caso sejam passados dados inválidos (invalid_argument)
+      @throw caso os idPessoa não exista (domain_error)
+  */
+  bool atualizarDadosPessoa(string dados);
+
+  /**
       Retorna um vector de strings contendo os diferentes campos de uma linha de
       dados de pessoa.
 
@@ -66,6 +103,16 @@ public:
       @throw caso o argumento seja inválido (invalid_argument)
   */
   vector<string> splitDado(string dado);
+
+  /**
+      Determina o índice do vector dadosPessoais em que está uma linha contendo
+      os dados de uma determinada pessoa.
+
+      @param idPessoa (string): o id da pessoa a ser localizada
+      @return o índice da string contida no dadosPessoais caso ela exista, -1
+              caso contrário
+  */
+  int getIndicePessoa(string idPessoa);
 
   /**
       Gera uma linha formatada contendo os dados relativos a uma pessoa.
@@ -87,5 +134,12 @@ public:
                     string funcao, string cargo, string faixaSalarial,
                     string gratificacao);
 
+  string lerDadosPessoas(string valorChave, Campos chave);
+
+  string dadosCP();
+
+  bool atualizarDadosPessoas(string valChave, Campos chave, string novoValor, Campos campo);
+
+  bool inserir(string idPessoal,string idFuncional,string estadoFuncional, string  nome, string  profissão, string  endereço, string  função, string  cargo, string  faixaSalarial, string  gratificacao););
+
 private:
-};

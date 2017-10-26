@@ -14,11 +14,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-
 #include "globais.h"
 
 using namespace std;
-
 
 class AcessoDados{
 public:
