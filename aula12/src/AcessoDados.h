@@ -1,5 +1,5 @@
-/**
-PCS2478 - Tópicos de Programação
+ï»¿/**
+PCS2478 - Tï¿½picos de Programaï¿½ï¿½o
 AcessoDados.h
 
 @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
@@ -22,8 +22,7 @@ private:
 	fstream arquivo;
 	fstream arquivoAux;
 	string nomeArquivo;
-	vector<string> nomesArqs = {"cadpessoas.dat", "tabsalarial.dat", "tabir.dat",
-															"tabcs.dat"};
+	vector<string> nomesArqs = { "cadpessoas.dat", "tabsalarial.dat", "tabir.dat" , "tabcs.dat" };
 
 	bool conectar(Arquivos arq, ModoAcesso modo);
 
@@ -45,8 +44,7 @@ public:
 
 	bool inserir(Arquivos arq, string registro);
 
-	bool atualizar(Arquivos arq, string valChave, Campos chave, string novoValor,
-								 Campos campo);
+	bool atualizar(Arquivos arq, string valChave, Campos chave, string novoValor, Campos campo);
 
 	bool excluir(Arquivos arq, string valChave, Campos chave);
 
