@@ -341,7 +341,7 @@ bool AcessoDados::conectar(Arquivos arq, ModoAcesso modo){
     break;
   default:
     throw std::invalid_argument("AcessoDados::conectar: tentativa de "
-      							            "conexao a um arquivo inexistente");
+                                "conexao a um arquivo inexistente");
   }
 
   switch(modo){
