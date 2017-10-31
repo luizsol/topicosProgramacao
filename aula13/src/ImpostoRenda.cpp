@@ -1,24 +1,17 @@
 /**
     PCS2478 - Tópicos de Programação
-    Empresa.cpp
+    ImpostoRenda.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-
-    @version 2.0 2017-11-01
+    @version 13.0 2017-11-01
 */
 
 #include "ImpostoRenda.h"
-#include <iostream>
 
 using namespace std;
 
 // Construtores e Destrutores
-ImpostoRenda::ImpostoRenda(string nomeArquivo){
-  this->nomeArquivo = nomeArquivo;
-  arquivo.open(nomeArquivo.c_str(), ios::app);
-}
-
 ImpostoRenda::ImpostoRenda(){}
 
 ImpostoRenda::~ImpostoRenda(){}
@@ -51,7 +44,6 @@ vector<float> ImpostoRenda::splitDado(string dados){
   return result;
 }
 
-
 /**
     Calcula o imposto de renda a ser pago com base no salário recebido.
 
@@ -60,26 +52,22 @@ vector<float> ImpostoRenda::splitDado(string dados){
     @return o imposto de renda a ser pago.
 */
 float ImpostoRenda::calcularIR(float salario){
-  float ir = 0.0;
   string linha = "";
-  string nome = "tabir.dat";
-  arquivo.open(nome.c_str(), ios::in);
+  istringstream arquivo(ImpostoRenda::dadosIR());
 
-  while (arquivo.good()) {
-    getline(arquivo, linha);
+  while(std::getline(arquivo, linha)) {
     vector<float> vlinha = splitDado(linha);
     if (salario >= vlinha[0]) {
       if (salario <= vlinha[1]) {
-        ir = salario * vlinha[2]/100 - vlinha[3];
+        return salario * vlinha[2]/100 - vlinha[3];
       }
     }
   }
-  return ir;
+  throw std::invalid_argument("ImpostoRenda::calcularIR: "
+                              "Salario invalido.");
 }
 
 // Le todos os dados contidos no arquivo tabir.dat
 string ImpostoRenda::dadosIR(){
   return acessoDados.lerTudo(IMP_RENDA);
 }
-
-

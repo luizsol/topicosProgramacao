@@ -1,15 +1,13 @@
 /**
-PCS2478 - Tópicos de Programação
-p2.cpp
+		PCS2478 - Tópicos de Programação
+		p2.cpp
 
-@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-@version 1.0 2017-10-11
+		@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
+		@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+		@version 1.0 2017-11-01
 */
 
 #include "Empresa.h"
-#include <iostream>
-#include <string>
 
 using namespace std;
 
@@ -26,7 +24,6 @@ void sistema() {
 	Empresa * aEmpresa;
 	string filtro = "";
 	string valorChave = "";
-	Campos chave;
 	try {
 		aEmpresa = new Empresa(nomeEmpresa, atoi(tamanho.c_str()));
 	}
@@ -47,8 +44,8 @@ void sistema() {
 		cout << "[C] Contratar Funcionario" << endl;
 		cout << "[D] Demitir Funcionario" << endl;
 		cout << "[I] Inserir Pessoa" << endl;
-		cout << "[O] Mostrar Funcionarios Ordenados por Salário" << endl;
-		cout << "[S] Verificar Salário Líquido de Funcionários" << endl;
+		cout << "[O] Mostrar Funcionarios Ordenados por Salario" << endl;
+		cout << "[S] Verificar Salario Liquido de Funcionarios" << endl;
 		cout << "[X] Excluir Pessoa" << endl;
 		getline(cin, option);
 		cout << "-------------------------" << endl << endl;
@@ -141,7 +138,7 @@ void sistema() {
 			bool ok;
 			ok = aEmpresa->excluirPessoa(idPessoal);
 			if (!ok) {
-				cout<<"Erro ao excluir funcionário" << endl;
+				cout<<"Erro ao excluir funcionario" << endl;
 			}
 			break;
 		}
@@ -157,7 +154,7 @@ void teste(); {
 }
 */
 
-int main(int argc, char * argv[]) {
+int main() {
 	sistema();
 
 	return 0;

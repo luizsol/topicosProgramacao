@@ -4,47 +4,24 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 3.0 2017-11-01
+    @version 13.0 2017-11-01
 */
 
 #pragma once
-#include <string>
+
 #include <fstream>
-#include <iostream>
+#include <string>
 #include <vector>
+
 #include "globais.h"
 
 using namespace std;
 
 class AcessoDados{
-private:
-  fstream arquivo;
-  fstream arquivoAux;
-  string nomeArquivo;
-  vector<string> nomesArqs = {"cadpessoas.dat", "tabsalarial.dat", "tabir.dat",
-                              "tabcs.dat"};
-
-  /**
-      Realiza a conexão com o arquivo.
-
-      @param arquivo (Arquivos): o enum que descreve o arquivo a ser aberto.
-      @param modo (ModoAcesso): o enum que descreve o modo de acesso do arquivo
-        a ser aberto.
-      @return true se a conexão for realizada com sucesso.
-      @throw caso o arquivo não exista
-      @throw caso o modo de leitura não exista
-      @throw caso não seja possível abrir o arquivo
-  */
-  bool conectar(Arquivos arq, ModoAcesso modo);
-
-  /**
-      Realiza a desconexão do arquivo.
-  */
-  void desconectar();
-
 public:
   // Construtores e destrutores
   AcessoDados();
+
   ~AcessoDados();
 
   /**
@@ -134,4 +111,29 @@ public:
       @return true se pelo menos uma linha for excluida.
   */
   bool excluir(Arquivos arq, string valChave, Campos chave);
+
+private:
+  fstream arquivo;
+  fstream arquivoAux;
+  string nomeArquivo;
+  vector<string> nomesArqs = {"cadpessoas.dat", "tabsalarial.dat", "tabir.dat",
+                              "tabcs.dat"};
+
+  /**
+      Realiza a conexão com o arquivo.
+
+      @param arquivo (Arquivos): o enum que descreve o arquivo a ser aberto.
+      @param modo (ModoAcesso): o enum que descreve o modo de acesso do arquivo
+        a ser aberto.
+      @return true se a conexão for realizada com sucesso.
+      @throw caso o arquivo não exista
+      @throw caso o modo de leitura não exista
+      @throw caso não seja possível abrir o arquivo
+  */
+  bool conectar(Arquivos arq, ModoAcesso modo);
+
+  /**
+      Realiza a desconexão do arquivo.
+  */
+  void desconectar();
 };

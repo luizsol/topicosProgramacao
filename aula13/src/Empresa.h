@@ -1,44 +1,38 @@
 /**
-PCS2478 - Tópicos de Programação
-Empresa.h
+    PCS2478 - Tópicos de Programação
+    Empresa.h
 
-@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-@version 5.0 2017-11-01
+    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+    @version 13.0 2017-11-01
 */
 
 #pragma once
 
-#include <string>
-#include <iomanip>
+#include <iostream>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include "CadastroPessoas.h"
-#include "Funcionario.h"
-#include "TabelaSalarial.h"
 #include "ContribuicaoSindical.h"
+#include "Funcionario.h"
 #include "ImpostoRenda.h"
+#include "TabelaSalarial.h"
 
 using namespace std;
 
 class Empresa{
-  string nome;                      // Nome da empresa
-  vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
-  unsigned long maxFuncionarios;    // Tamanho do array funcionarios
-  CadastroPessoas cadastroPessoas;
-  TabelaSalarial tabelaSalarial;
-  ContribuicaoSindical contribuicaoSindical;
-  ImpostoRenda impostoRenda;
-
 public:
-  // Construtores da classe Empresa
+  // Construtores e destrutores
   Empresa();
+
   Empresa(string nome);
+
   Empresa(int maxFuncionarios);
+
   Empresa(string nome, int maxFuncionarios);
 
-  // Destrutor da classe empresa
   ~Empresa();
 
   // Setters e Getters
@@ -65,16 +59,16 @@ public:
       @param cargo (string): o cargo do funcionário
       @param faixaSalario (string): a faixa salarial do funcionário
       @param gratificação (string): o gratificação salarial do funcionário
-      @return true se o funcionário foi criado e cadastrado, false caso contrário
+      @return true se o funcionário foi criado e cadastrado, false caso
+        contrário
       @throw caso se tente contratar mais funcionários que o limite máximo
              (domain_error)
       @throw caso se tente contratar um funcionário com um ID Funcional já
              existente (domain_error)
   */
   bool contratarFuncionario(string idPessoa, string idFuncional, string nome,
-                            string profissao, string endereco, string funcao,
-                            string cargo, string faixaSalario,
-                            string gratificacao);
+    string profissao, string endereco, string funcao, string cargo,
+    string faixaSalario, string gratificacao);
 
   /**
       Demite e apaga um funcionário da empresa.
@@ -127,7 +121,7 @@ public:
   */
   string obterDadosArquivo(int idArquivo);
 
-  //Imprime os dados de todos os funcionários de forma ordenada.
+  // Imprime os dados de todos os funcionários de forma ordenada.
   void obterDadosOrdenadosFunc();
 
   /**
@@ -150,7 +144,6 @@ public:
   */
   bool contratarFuncCadastrado(string idPessoal, string idFuncional);
 
-
   /**
       Insere uma nova pessoa no arquivo de cadastro de pessoas.
 
@@ -167,8 +160,7 @@ public:
       @return true se a pessoa for inserida com sucesso
   */
   bool inserirPessoaCadastro(string idPessoal, string nome, string profissao,
-                             string endereco, string funcao, string cargo,
-                             string faixaSalarial);
+    string endereco, string funcao, string cargo, string faixaSalarial);
 
   /**
       Retorna todos os dados contidos no arquivo cadpessoas.dat
@@ -219,7 +211,16 @@ public:
       @return true se pelo menos uma linha for excluida.
   */
   bool excluirPessoa(string idPessoal);
+
 private:
+  string nome;                      // Nome da empresa
+  vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
+  unsigned long maxFuncionarios;    // Tamanho do array funcionarios
+  CadastroPessoas cadastroPessoas;
+  TabelaSalarial tabelaSalarial;
+  ContribuicaoSindical contribuicaoSindical;
+  ImpostoRenda impostoRenda;
+
   /**
       Inicializa o array de funcionários.
 
@@ -273,7 +274,6 @@ private:
       @return um vector de strings contendo os dados das pessoas
   */
   vector<string> getAndSplitPessoas();
-
 
   /**
       Obtém a gratificação de um determinado funcionário.

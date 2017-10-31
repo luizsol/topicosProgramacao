@@ -3,32 +3,25 @@
     ContribuicaoSindical.h
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @version 1.0 2017-09-13
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+    @version 13.0 2017-11-01
 */
 
 #pragma once
+
 #include <string>
-#include <sstream>
 #include <vector>
+
 #include "AcessoDados.h"
 
 using namespace std;
 
 class ContribuicaoSindical{
-  vector<string> tabelaCS;
-  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
-
 public:
-  // Construtores da classe CadastroPessoas
+  // Construtores e destrutores
   ContribuicaoSindical();
-  ContribuicaoSindical(string cargaInicial);
 
-  // Destrutor da classe empresa
   ~ContribuicaoSindical();
-
-  // Setters e Getters
-  vector<string> getTabelaCS();
-  void setTabelaCS(string TabelaCS);
 
   /**
       Determina a contribuição salarial de um funcionário baseado no seu salário
@@ -40,9 +33,12 @@ public:
   */
   float calcularCS(float salario, string funcao);
 
+  // Retorna todos os dados contidos no arquivo tabcs.dat
   string dadosCS();
 
 private:
+  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
+
   /**
       Retorna um vector de strings contendo os diferentes campos de uma linha de
       dados de contribuições sindicais.
@@ -64,6 +60,4 @@ private:
         sindicais (domain_error)
   */
   float getPorcentagemCS(string funcao);
-
-
 };

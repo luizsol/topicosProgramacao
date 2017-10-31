@@ -1,10 +1,10 @@
 ﻿/**
     PCS2478 - Tópicos de Programação
-    AcessoDados.h
+    AcessoDados.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 3.0 2017-11-01
+    @version 13.0 2017-11-01
 */
 
 #include "AcessoDados.h"
@@ -15,72 +15,6 @@ using namespace std;
 AcessoDados::AcessoDados(){}
 
 AcessoDados::~AcessoDados(){}
-
-/**
-    Realiza a conexão com o arquivo.
-
-    @param arquivo (Arquivos): o enum que descreve o arquivo a ser aberto.
-    @param modo (ModoAcesso): o enum que descreve o modo de acesso do arquivo
-      a ser aberto.
-    @return true se a conexão for realizada com sucesso.
-    @throw caso o arquivo não exista
-    @throw caso o modo de leitura não exista
-    @throw caso não seja possível abrir o arquivo
-*/
-bool AcessoDados::conectar(Arquivos arq, ModoAcesso modo){
-  string nomeArq;
-
-  switch(arq){
-  case CAD_PESSOAS:
-    nomeArq = this->nomesArqs[CAD_PESSOAS];
-    break;
-  case TAB_SALARIAL:
-    nomeArq = this->nomesArqs[TAB_SALARIAL];
-    break;
-  case IMP_RENDA:
-    nomeArq = this->nomesArqs[IMP_RENDA];
-    break;
-  case CONTR_SINDICAL:
-    nomeArq = this->nomesArqs[CONTR_SINDICAL];
-    break;
-  default:
-    throw std::invalid_argument("AcessoDados::conectar: tentativa de "
-      							            "conexao a um arquivo inexistente");
-  }
-
-  switch(modo){
-  case LEITURA:
-    this->arquivo.open(nomeArq.c_str(), ios::in);
-    break;
-  case ESCRITA:
-    this->arquivo.open(nomeArq.c_str(), ios::out);
-    break;
-  case INSERCAO:
-    this->arquivo.open(nomeArq.c_str(), ios::app);
-    break;
-  default:
-    throw std::invalid_argument("AcessoDados::conectar: tentativa de "
-                                "conexao a um arquivo em modo de de acesso "
-                                "inexistente.");
-  }
-
-  if(this->arquivo.bad()){
-    throw std::invalid_argument("AcessoDados::conectar: tentativa de "
-                                "conexao ao arquivo malsucedida.");
-  }
-
-  this->arquivo.clear();
-
-  return true;
-}
-
-/**
-    Realiza a desconexão do arquivo.
-*/
-void AcessoDados::desconectar(){
-  this->arquivo.clear();
-  this->arquivo.close();
-}
 
 /**
     Lê todos os dados contidos em um determinado arquivo.
@@ -376,4 +310,70 @@ bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave){
   rename(novoArquivo.c_str(), nomeArq.c_str());
   AcessoDados::desconectar();
   return true;
+}
+
+/**
+    Realiza a conexão com o arquivo.
+
+    @param arquivo (Arquivos): o enum que descreve o arquivo a ser aberto.
+    @param modo (ModoAcesso): o enum que descreve o modo de acesso do arquivo
+      a ser aberto.
+    @return true se a conexão for realizada com sucesso.
+    @throw caso o arquivo não exista
+    @throw caso o modo de leitura não exista
+    @throw caso não seja possível abrir o arquivo
+*/
+bool AcessoDados::conectar(Arquivos arq, ModoAcesso modo){
+  string nomeArq;
+
+  switch(arq){
+  case CAD_PESSOAS:
+    nomeArq = this->nomesArqs[CAD_PESSOAS];
+    break;
+  case TAB_SALARIAL:
+    nomeArq = this->nomesArqs[TAB_SALARIAL];
+    break;
+  case IMP_RENDA:
+    nomeArq = this->nomesArqs[IMP_RENDA];
+    break;
+  case CONTR_SINDICAL:
+    nomeArq = this->nomesArqs[CONTR_SINDICAL];
+    break;
+  default:
+    throw std::invalid_argument("AcessoDados::conectar: tentativa de "
+      							            "conexao a um arquivo inexistente");
+  }
+
+  switch(modo){
+  case LEITURA:
+    this->arquivo.open(nomeArq.c_str(), ios::in);
+    break;
+  case ESCRITA:
+    this->arquivo.open(nomeArq.c_str(), ios::out);
+    break;
+  case INSERCAO:
+    this->arquivo.open(nomeArq.c_str(), ios::app);
+    break;
+  default:
+    throw std::invalid_argument("AcessoDados::conectar: tentativa de "
+                                "conexao a um arquivo em modo de de acesso "
+                                "inexistente.");
+  }
+
+  if(this->arquivo.bad()){
+    throw std::invalid_argument("AcessoDados::conectar: tentativa de "
+                                "conexao ao arquivo malsucedida.");
+  }
+
+  this->arquivo.clear();
+
+  return true;
+}
+
+/**
+    Realiza a desconexão do arquivo.
+*/
+void AcessoDados::desconectar(){
+  this->arquivo.clear();
+  this->arquivo.close();
 }

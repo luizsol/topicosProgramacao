@@ -4,11 +4,10 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 2.0 2017-11-01
+    @version 13.0 2017-11-01
 */
 
 #include "CadastroPessoas.h"
-#include <iostream>
 
 using namespace std;
 
@@ -78,7 +77,7 @@ string CadastroPessoas::lerDadosPessoas(string valorChave, Campos chave){
     @return a string contendo todos os dados contidos no arquivo cadpessoas.dat
 */
 string CadastroPessoas::dadosCP(){
-  return  acessoDados.lerTudo(CAD_PESSOAS);
+  return acessoDados.lerTudo(CAD_PESSOAS);
 }
 
 /**
@@ -97,7 +96,7 @@ string CadastroPessoas::dadosCP(){
 */
 bool CadastroPessoas::atualizarDadosPessoas(string valChave, Campos chave,
                                             string novoValor, Campos campo){
-  return acessoDados.atualizar(CAD_PESSOAS, valChave,chave, novoValor,campo);
+  return acessoDados.atualizar(CAD_PESSOAS, valChave, chave, novoValor, campo);
 }
 
 /**
@@ -107,10 +106,8 @@ bool CadastroPessoas::atualizarDadosPessoas(string valChave, Campos chave,
     @return true se a operação for bem sucedida.
 */
 bool CadastroPessoas::inserir(string idPessoal, string idFuncional,
-                              string estadoFuncional, string nome,
-                              string profissao, string endereco, string funcao,
-                              string cargo, string faixaSalarial,
-                              string gratificacao){
+  string estadoFuncional, string nome, string profissao, string endereco,
+  string funcao, string cargo, string faixaSalarial, string gratificacao){
 
   return this->acessoDados.inserir(CAD_PESSOAS, CadastroPessoas::gerarLinha(
     idPessoal, idFuncional, estadoFuncional, nome, profissao, endereco, funcao,
@@ -152,4 +149,3 @@ string CadastroPessoas::gerarLinha(string idPessoal, string idFuncional,
          "|" + profissao + "|" + endereco + "|" + funcao + "|" + cargo + "|" +
          faixaSalarial + "|" + gratificacao + "|";
 }
-

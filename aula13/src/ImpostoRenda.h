@@ -1,11 +1,10 @@
 /**
     PCS2478 - Tópicos de Programação
-    Empresa.cpp
+    ImpostoRenda.h
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-
-    @version 2.0 2017-11-01
+    @version 13.0 2017-11-01
 */
 
 #pragma once
@@ -14,25 +13,17 @@
 #include <iomanip>
 #include <sstream>
 #include <vector>
-#include <fstream>
-#include "AcessoDados.h"
 
-#pragma once
+#include "AcessoDados.h"
 
 using namespace std;
 
 class ImpostoRenda {
-  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
-
-private:
-  fstream arquivo;
-  string nomeArquivo;
-
 public:
-  ImpostoRenda(string nomeArquivo);
+  // Construtores e destrutores
   ImpostoRenda();
-  ~ImpostoRenda();
 
+  ~ImpostoRenda();
 
   /**
       Retorna um vector de strings contendo os diferentes campos de uma linha de
@@ -57,4 +48,7 @@ public:
 
   // Le todos os dados contidos no arquivo tabir.dat
   string dadosIR();
+
+private:
+  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
 };

@@ -4,11 +4,10 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 5.0 2017-09-13
+    @version 13.0 2017-11-01
 */
 
 #include "Funcionario.h"
-#include <iostream>
 
 using namespace std;
 
@@ -16,14 +15,12 @@ using namespace std;
 Funcionario::Funcionario() : Funcionario("", "", "", "", "", "", "", "") {}
 
 Funcionario::Funcionario(vector<string> dados) : Funcionario(dados[0], dados[1],
-                                                             dados[3], dados[4],
-                                                             dados[5], dados[6],
-                                                             dados[7], dados[8])
-{}
+ dados[3], dados[4], dados[5], dados[6], dados[7], dados[8]) {}
 
 Funcionario::Funcionario(string idPessoa, string idFuncional, string nome,
-                         string profissao, string endereco, string funcao,
-                         string cargo, string faixaSalario){
+  string profissao, string endereco, string funcao, string cargo,
+  string faixaSalario){
+
   Funcionario::setIdPessoa(idPessoa);
   Funcionario::setIdFuncional(idFuncional);
   Funcionario::setNome(nome);
@@ -106,5 +103,3 @@ string Funcionario::getFaixaSalario(){
 void Funcionario::setFaixaSalario(string faixaSalario){
   this->faixaSalario = faixaSalario;
 }
-
-

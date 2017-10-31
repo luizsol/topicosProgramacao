@@ -3,49 +3,18 @@
     ContribuicaoSindical.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-    @version 1.0 2017-09-13
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+    @version 13.0 2017-11-01
 */
 
 #include "ContribuicaoSindical.h"
-#include <iostream>
 
 using namespace std;
 
-// Construtores da classe ContribuicaoSindical
-ContribuicaoSindical::ContribuicaoSindical() :
-  ContribuicaoSindical::ContribuicaoSindical(
-    "Administrador|2.0|\n"
-    "Contador|1.5|\n"
-    "Engenheiro|1.5|\n"
-    "Entregador|0.5|\n"
-    "Estudante|0.0|\n"
-    "Secretaria|1.0|\n"
-    "Suporte|0.5|\n"
-  ){}
+// Construtores e destrutores
+ContribuicaoSindical::ContribuicaoSindical(){}
 
-ContribuicaoSindical::ContribuicaoSindical(string cargaInicial){
-  ContribuicaoSindical::setTabelaCS(cargaInicial);
-}
-
-// Destrutor da classe ContribuicaoSindical
 ContribuicaoSindical::~ContribuicaoSindical(){}
-
-// Setters e Getters
-vector<string> ContribuicaoSindical::getTabelaCS(){
-  return this->tabelaCS;
-}
-
-void ContribuicaoSindical::setTabelaCS(string tabelaCS){
-  vector<string> linhas;
-  string linha;
-  istringstream f(tabelaCS);
-
-  // Transformando a string de linhas em vetores
-  while (std::getline(f, linha)) {
-    linha.push_back('\n');
-    this->tabelaCS.push_back(linha);
-  }
-}
 
 /**
     Determina a contribuição salarial de um funcionário baseado no seu salário
@@ -57,6 +26,11 @@ void ContribuicaoSindical::setTabelaCS(string tabelaCS){
 */
 float ContribuicaoSindical::calcularCS(float salario, string funcao){
   return salario * ContribuicaoSindical::getPorcentagemCS(funcao);
+}
+
+// Retorna todos os dados contidos no arquivo tabcs.dat
+string ContribuicaoSindical::dadosCS(){
+  return this->acessoDados.lerTudo(CONTR_SINDICAL);;
 }
 
 /**
@@ -96,14 +70,9 @@ vector<string> ContribuicaoSindical::splitDado(string dado){
       sindicais (domain_error)
 */
 float ContribuicaoSindical::getPorcentagemCS(string funcao){
-	string dado;
-	dado = this->acessoDados.ler(CONTR_SINDICAL, funcao, C_CARGO_CS);
-	vector<string> linha;
-	linha = splitDado(dado);
-      return stof(linha[1])/100.0;
-    }
-
-string ContribuicaoSindical::dadosCS()
-{
-	return	acessoDados.lerTudo(CONTR_SINDICAL);;
+  string dado;
+  dado = this->acessoDados.ler(CONTR_SINDICAL, funcao, C_CARGO_CS);
+  vector<string> linha;
+  linha = splitDado(dado);
+      return stof(linha[1]) / 100.0;
 }

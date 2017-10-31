@@ -4,32 +4,30 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 2.0 2017-11-01
+    @version 13.0 2017-11-01
 */
 
 #pragma once
+
 #include <string>
-#include <sstream>
-#include <iostream>
 #include <vector>
-#include "Funcionario.h"
+
 #include "AcessoDados.h"
 
 using namespace std;
 
 class CadastroPessoas {
-private:
-  AcessoDados acessoDados;  // Objeto de acesso ao acesso dados
-
 public:
   // Construtores e Destrutores
   CadastroPessoas();
+
   ~CadastroPessoas();
 
   /**
       Retorna todos os dados contidos no arquivo cadpessoas.dat
 
-      @return a string contendo todos os dados contidos no arquivo cadpessoas.dat
+      @return a string contendo todos os dados contidos no arquivo
+        cadpessoas.dat
   */
   string lerDadosTodasPessoas();
 
@@ -62,7 +60,8 @@ public:
   /**
       Retorna todos os dados contidos no arquivo cadpessoas.dat
 
-      @return a string contendo todos os dados contidos no arquivo cadpessoas.dat
+      @return a string contendo todos os dados contidos no arquivo
+        cadpessoas.dat
   */
   string dadosCP();
 
@@ -74,10 +73,11 @@ public:
         registros.
       @param chave (Campos): o enum que representa a coluna a ser avaliada na
         busca.
-      @param novoValor (string): o valor que substituirá o valor a ser subscrito.
-      @param campo (Campos): o enum que representa a coluna onde o novo dado será
-        inserido (não precisa ser necessariamente o mesmo que foi utilizado na
-        busca).
+      @param novoValor (string): o valor que substituirá o valor a ser
+        subscrito.
+      @param campo (Campos): o enum que representa a coluna onde o novo dado
+        será inserido (não precisa ser necessariamente o mesmo que foi utilizado
+        na busca).
       @return true se pelo menos uma linha for atualizada.
   */
   bool atualizarDadosPessoas(string valChave, Campos chave, string novoValor,
@@ -90,8 +90,8 @@ public:
       @return true se a operação for bem sucedida.
   */
   bool inserir(string idPessoal, string idFuncional, string estadoFuncional,
-               string nome, string profissao, string endereco, string funcao,
-               string cargo, string faixaSalarial, string gratificacao);
+    string nome, string profissao, string endereco, string funcao, string cargo,
+    string faixaSalarial, string gratificacao);
 
   /**
       Realiza uma busca por uma pessoa contendo um determinado id pessoal e a
@@ -120,4 +120,7 @@ public:
   string gerarLinha(string idPessoal, string idFuncional,
     string estadoFuncional, string nome, string profissao, string endereco,
     string funcao, string cargo, string faixaSalarial, string gratificacao);
+
+private:
+  AcessoDados acessoDados;  // Objeto de acesso ao acesso dados
 };
