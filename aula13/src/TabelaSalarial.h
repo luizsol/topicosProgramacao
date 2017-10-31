@@ -17,20 +17,12 @@
 using namespace std;
 
 class TabelaSalarial{
-  vector<string> faixasSalario; // Vetor contendo as faixas salariais
   AcessoDados acessoDados; // Objeto de acesso ao acesso dados
 
 public:
-  // Construtores da classe TabelaSalarial
+  // Construtore e Destrutor da classe TabelaSalarial
   TabelaSalarial();
-  TabelaSalarial(string faixasSalario);
-
-  // Destrutor da classe TabelaSalarial
   ~TabelaSalarial();
-
-  // Setters e Getters
-  vector<string> getFaixasSalario();
-  void setFaixasSalario(vector<string> faixasSalario);
 
   /**
       Adiciona uma linha de faixa salarial.

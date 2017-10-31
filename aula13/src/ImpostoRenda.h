@@ -1,11 +1,11 @@
 /**
-PCS2478 - Tópicos de Programação
-Empresa.cpp
+    PCS2478 - Tópicos de Programação
+    Empresa.cpp
 
-@author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
-@author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
+    @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
+    @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
 
-@version 1.0 2017-09-20
+    @version 2.0 2017-11-01
 */
 
 #pragma once
@@ -22,24 +22,39 @@ Empresa.cpp
 using namespace std;
 
 class ImpostoRenda {
-	AcessoDados acessoDados;// Objeto de acesso ao acesso dados
+  AcessoDados acessoDados;// Objeto de acesso ao acesso dados
 
 private:
-	fstream arquivo;
-	string nomeArquivo;
+  fstream arquivo;
+  string nomeArquivo;
 
 public:
-	ImpostoRenda();
-
-	~ImpostoRenda();
-
-	ImpostoRenda(string nomeArquivo);
-
-	vector<float> splitDado(string dados);
-
-	float calcularIR(float salario);
-
-	string dadosIR();
+  ImpostoRenda(string nomeArquivo);
+  ImpostoRenda();
+  ~ImpostoRenda();
 
 
+  /**
+      Retorna um vector de strings contendo os diferentes campos de uma linha de
+      dados de pessoa.
+
+      @param dado (string): o dado a ser processado
+      @return o vetor de strings contendo os diferentes campos de uma linha de
+              dados de pessoa
+      @throw caso o argumento seja inválido (invalid_argument)
+  */
+  vector<float> splitDado(string dados);
+
+  /**
+      Calcula o imposto de renda a ser pago com base no salário recebido.
+
+      @param salário (float): o salário a ser utilizado no cálculo do imposto de
+        renda
+      @return o imposto de renda a ser pago.
+  */
+  float calcularIR(float salario);
+
+
+  // Le todos os dados contidos no arquivo tabir.dat
+  string dadosIR();
 };

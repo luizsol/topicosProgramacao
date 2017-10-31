@@ -4,7 +4,7 @@ Empresa.h
 
 @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
 @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-@version 1.0 2017-10-11
+@version 5.0 2017-11-01
 */
 
 #pragma once
@@ -26,12 +26,10 @@ class Empresa{
   string nome;                      // Nome da empresa
   vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
   unsigned long maxFuncionarios;    // Tamanho do array funcionarios
-  CadastroPessoas cadastroPessoas;  // Objeto de acesso ao cadastro de pessoas
-  TabelaSalarial tabelaSalarial;    // A tabela de tradução de faixas salariais
+  CadastroPessoas cadastroPessoas;
+  TabelaSalarial tabelaSalarial;
   ContribuicaoSindical contribuicaoSindical;
   ImpostoRenda impostoRenda;
-
-
 
 public:
   // Construtores da classe Empresa
@@ -47,11 +45,9 @@ public:
   string getNome();
   void setNome(string nome);
 
-
-
   /**
       Solicita os dados de todas as pessoas cadastradas e contrata aquelas que
-      tiverem o estado funcional "empregado" (1)
+      tiverem o estado funcional "empregado" (1).
 
       @return true se todos os funcionários foram devidamente contratados
   */
@@ -60,6 +56,7 @@ public:
   /**
       Cria e cadastra um funcionário na empresa.
 
+      @param idPessoa (string): o ID Pessoal do funcionário
       @param idFuncional (string): o ID Funcional do funcionário
       @param nome (string): o nome do funcionário
       @param endereco (string): o endereço do funcionário
@@ -78,19 +75,6 @@ public:
                             string profissao, string endereco, string funcao,
                             string cargo, string faixaSalario,
                             string gratificacao);
-
-  /**
-      Cadastra um funcionário na empresa de maneira interativa (via CLI)
-      utilizando os dados do cadastroPessoa.
-
-      @return true se o funcionário foi cadastrado, false caso
-              contrário
-      @throw caso não haja funcionario elegivel para contratacao (domain_error)
-      @throw caso o ID Pessoa seja inexistente (domain_error)
-      @throw caso a pessoa não esteja com o status de aguardando vaga
-             (domain_error)
-  */
-  bool contratarFuncionario();
 
   /**
       Demite e apaga um funcionário da empresa.
@@ -115,39 +99,125 @@ public:
   void obterDadosFuncionarios();
 
   /**
-      Imprime os dados de todas as pessoas contidas em cadastroPessoa de forma
-      formatada
-      @param filtro (int): filtra as pessoas a serem apresentadas pelo seu
-                           estado funcional. deve ser -1 para apresentar todos.
+      Imprime os dados de todas as pessoas contidas em cadastroPessoa utilizando
+      um filtro.
+
+      @param filtro (int): o filtro a ser utilizado.
   */
   void obterDadosPessoas(int filtro = -1);
 
   /**
-      Apresenta as informações sobre a remuneração de um determinado funcionário
+      Apresenta as informações sobre a remuneração de um determinado
+      funcionário.
 
       @throw caso não exista o id funcional inserido pelo usuário (domain_error)
   */
   void calcularSalarioLiquido();
 
+  /**
+      Obtém todos os dados contidos em um determinado arquivo.
+
+      0 -> cadastropessoas.dat
+      1 -> tabsalarial.dat
+      2 -> tabcs.dat
+      3 -> tabir.dat
+
+      @return o conteúdo do arquivo selecionado.
+      @throw caso o argumento seja inválido (invalid_argument)
+  */
   string obterDadosArquivo(int idArquivo);
 
+  //Imprime os dados de todos os funcionários de forma ordenada.
   void obterDadosOrdenadosFunc();
 
+  /**
+      Imprime os dados de uma ou mais pessoas registradas no arquivo
+      cadpessoas.dat
+
+      @param valChave (string): o valor a ser buscado na coluna do arquivo de
+        registros.
+      @param chave (Campos): o enum que representa a coluna a ser avaliada.
+  */
   void obterDadosPessoasEspecificas(string valorChave, Campos chave);
 
+  /**
+      Contrata uma pessoa já registrado no arquivo de cadastro de pessoas.
+
+      @param idPessoal (string): o id pessoal da pessoa a ser contratada.
+      @param idFuncional (string): o novo id funcional a ser atribuido à pessoa
+        contratada.
+      @return true se a pessoa for contratada com sucesso.
+  */
   bool contratarFuncCadastrado(string idPessoal, string idFuncional);
 
-  bool inserirPessoaCadastro(string idPessoal, string nome, string profissao, string endereco, string funcao, string cargo, string faixaSalarial);
 
+  /**
+      Insere uma nova pessoa no arquivo de cadastro de pessoas.
+
+      A pessoa inserida terá o idFuncional 0000, estado funcional 2 e a
+      gratificação 0.
+
+      @param idPessoal (string): o id da pessoa
+      @param nome (string): o nome da pessoa
+      @param profissao (string): a profissão da pessoa
+      @param endereco (string): o endereco da pessoa
+      @param funcao (string): a funcao da pessoa
+      @param cargo (string): o cargo da pessoa
+      @param faixaSalarial (string): a faixa salarial da pessoa
+      @return true se a pessoa for inserida com sucesso
+  */
+  bool inserirPessoaCadastro(string idPessoal, string nome, string profissao,
+                             string endereco, string funcao, string cargo,
+                             string faixaSalarial);
+
+  /**
+      Retorna todos os dados contidos no arquivo cadpessoas.dat
+
+      @return a string contendo todos os dados contidos no arquivo
+        cadpessoas.dat
+  */
   string lerDadosTodasPessoas();
 
+  /**
+      Retorna os dados de todos os funcionários listados no arquivo
+      cadpessoas.dat
+
+      @return a concatenação de todas as linhas que representam funcionários.
+  */
   string lerDadosFunc();
 
-  vector<string> SplitPessoas(string in);
+  /**
+      Divide um texto contendo múltiplas linhas em um vector em que cada
+      elemento corresponde a uma linha.
 
-  vector<string> SplitPessoa(string in);
-  void displayPessoa(string in);
+      @param input (string): o texto a ser dividido
+      @return um vector contendo as diferente linhas da entrada
+  */
+  vector<string> SplitPessoas(string input);
 
+  /**
+      Divide uma linha contendo dado de pessoa em um vector contendo os
+      diferentes campos dessa linha.
+
+      @param input (string): a linha a ser dividida
+      @return um vector contendo os diferentes campos da entrada
+  */
+  vector<string> SplitPessoa(string input);
+
+  /**
+      Imprime as informações de uma string contendo os dados de uma pessoa.
+
+      @param input (string): a linha contendo os dados de uma pessoa.
+  */
+  void displayPessoa(string linha);
+
+  /**
+      Realiza uma busca por uma pessoa contendo um determinado id pessoal e a
+      exclui do registro de pessoas.
+
+      @param idPessoal (string): o id pessoa da pessoa a ser excuída.
+      @return true se pelo menos uma linha for excluida.
+  */
   bool excluirPessoa(string idPessoal);
 private:
   /**
@@ -211,5 +281,4 @@ private:
       @return a string relativa à gratificação do funcionário
   */
   string getGratificacaoFuncionario(string idFuncional);
-
 };

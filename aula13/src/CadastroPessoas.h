@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 1.0 2017-10-11
+    @version 2.0 2017-11-01
 */
 
 #pragma once
@@ -18,130 +18,106 @@
 using namespace std;
 
 class CadastroPessoas {
-	vector<string> dadosPessoais;
-	AcessoDados acessoDados;// Objeto de acesso ao acesso dados
+private:
+  AcessoDados acessoDados;  // Objeto de acesso ao acesso dados
 
 public:
-	// Construtores da classe CadastroPessoas
-	CadastroPessoas();
-	CadastroPessoas(string cargaInicial);
+  // Construtores e Destrutores
+  CadastroPessoas();
+  ~CadastroPessoas();
 
-	// Destrutor da classe empresa
-	~CadastroPessoas();
+  /**
+      Retorna todos os dados contidos no arquivo cadpessoas.dat
 
-	// Setters e Getters
-	vector<string> getDadosPessoais();
+      @return a string contendo todos os dados contidos no arquivo cadpessoas.dat
+  */
+  string lerDadosTodasPessoas();
 
-	/**
-		Valida uma string de dados de cadastro.
+  /**
+      Retorna um vector de strings contendo os diferentes campos de uma linha de
+      dados de pessoa.
 
-		@param dados (string): a string a ser validada
-		@return true se a string for válida, false caso contrário
-	*/
-	bool validarDados(string dados);
+      @param dado (string): o dado a ser processado
+      @return o vetor de strings contendo os diferentes campos de uma linha de
+              dados de pessoa
+      @throw caso o argumento seja inválido (invalid_argument)
+  */
+  vector<string> splitDado(string dado);
 
-	/**
-		Adiciona uma string de dados ao array de dados pessoais.
+  /**
+      Realiza uma busca por uma chave em uma determidada coluna do arquivo de
+      cadastro de pessoas.
 
-		@param dados (string): a string a ser adicionada
-		@param sobrescrever (bool): true se a adição deve sobrescrever os dados de
-									um usuário com o mesmo idPessoa
-		@return true se a string foi adicionada, false caso contrário
-		@throw caso haja a tentativa de sobrescrever um usuário e o argumento
-			   'sobrescrever' seja false (domain_error)
-	*/
-	bool adicionarDadosPessoa(string dados, bool sobrescrever = true);
+      Caso o valor da chave seja uma string vazia a pesquisa retornará todo o
+      conteúdo do arquivo.
 
-	/**
-		Adiciona uma string contendo várias strings de dados ao array de dados
-		pessoais.
+      @param valChave (string): o valor a ser buscado na coluna do arquivo de
+        registros.
+      @param chave (Campos): o enum que representa a coluna a ser avaliada.
+      @return a concatenação de todas as linhas que se enquadram no critério da
+        busca.
+  */
+  string lerDadosPessoas(string valorChave, Campos chave);
 
-		@param dados (string): a string dos dados a serem adicionados
-		@param sobrescrever (bool): true se a adição deve sobrescrever os dados de
-									um usuário com o mesmo idPessoa
-		@return true se todos os dados foram adicionados, false caso contrário
-		@throw caso sejam passados dados inválidos (invalid_argument)
-		@throw caso outro cadastro já possua esse ID Pessoa (domain_error)
-	*/
-	bool adicionarDadosPessoas(bool sobrescrever = true);
+  /**
+      Retorna todos os dados contidos no arquivo cadpessoas.dat
 
-	/**
-		Retorna uma string obtida pela concatenação de todos os dados no vetor de
-		dados pessoais.
+      @return a string contendo todos os dados contidos no arquivo cadpessoas.dat
+  */
+  string dadosCP();
 
-		@return a string resultante da concatenação de todos os dados contidos no
-				vetor de dados pessoais
-	*/
-	string lerDadosTodasPessoas();
+  /**
+      Realiza uma busca por uma chave em uma determidada coluna do arquivo de
+      cadastro de pessoas e atualiza as linhas resultantes da busca.
 
-	/**
-		Retorna uma string com os dados de uma pessoa.
+      @param valChave (string): o valor a ser buscado na coluna do arquivo de
+        registros.
+      @param chave (Campos): o enum que representa a coluna a ser avaliada na
+        busca.
+      @param novoValor (string): o valor que substituirá o valor a ser subscrito.
+      @param campo (Campos): o enum que representa a coluna onde o novo dado será
+        inserido (não precisa ser necessariamente o mesmo que foi utilizado na
+        busca).
+      @return true se pelo menos uma linha for atualizada.
+  */
+  bool atualizarDadosPessoas(string valChave, Campos chave, string novoValor,
+                             Campos campo);
 
-		@param idPessoa (string): o id da pessoa a ser buscada
-		@return a string contendo os dados da pessoa
-		@throw caso os idPessoa não exista (domain_error)
-	*/
-	string lerDadosPessoa(string idPessoa);
+  /**
+      Insere uma nova linha no arquivo de cadastro de pessoas.
 
-	/**
-		Atualiza os dados de uma pessoa.
+      @param registro (string): a linha a ser adicionada ao arquivo.
+      @return true se a operação for bem sucedida.
+  */
+  bool inserir(string idPessoal, string idFuncional, string estadoFuncional,
+               string nome, string profissao, string endereco, string funcao,
+               string cargo, string faixaSalarial, string gratificacao);
 
-		@param dados (string): os novos dados a serem atualizados
-		@return true se a operação foi bem sucedida, false caso contrario
-		@throw caso sejam passados dados inválidos (invalid_argument)
-		@throw caso os idPessoa não exista (domain_error)
-	*/
-	bool atualizarDadosPessoa(string dados);
+  /**
+      Realiza uma busca por uma pessoa contendo um determinado id pessoal e a
+      exclui do registro.
 
-	/**
-		Retorna um vector de strings contendo os diferentes campos de uma linha de
-		dados de pessoa.
+      @param idPessoal (string): o id pessoa da pessoa a ser excuída.
+      @return true se pelo menos uma linha for excluida.
+  */
+  bool excluirPessoa(string idPessoal);
 
-		@param dado (string): o dado a ser processado
-		@return o vetor de strings contendo os diferentes campos de uma linha de
-				dados de pessoa
-		@throw caso o argumento seja inválido (invalid_argument)
-	*/
-	vector<string> splitDado(string dado);
+  /**
+      Gera uma linha formatada contendo os dados relativos a uma pessoa.
 
-	/**
-		Determina o índice do vector dadosPessoais em que está uma linha contendo
-		os dados de uma determinada pessoa.
-
-		@param idPessoa (string): o id da pessoa a ser localizada
-		@return o índice da string contida no dadosPessoais caso ela exista, -1
-				caso contrário
-	*/
-	int getIndicePessoa(string idPessoa);
-
-	/**
-		Gera uma linha formatada contendo os dados relativos a uma pessoa.
-
-		@param idPessoa (string): o id da pessoa
-		@param idFuncional (string): o idFuncional da pessoa
-		@param estadoFuncional (string): o estado funcional da pessoa
-		@param nome (string): o nome da pessoa
-		@param profissao (string): a profissão da pessoa
-		@param endereco (string): o endereco da pessoa
-		@param funcao (string): a funcao da pessoa
-		@param cargo (string): o cargo da pessoa
-		@param faixaSalarial (string): a faixa salarial da pessoa
-		@param gratificacao (string): a gratificação salarial da pessoa
-		@return a string formatada contendo os dados da pessoa
-	*/
-	string gerarLinha(string idPessoa, string idFuncional, string estadoFuncional,
-		string nome, string profissao, string endereco,
-		string funcao, string cargo, string faixaSalarial,
-		string gratificacao);
-
-	string lerDadosPessoas(string valorChave, Campos chave);
-
-	string dadosCP();
-
-	bool atualizarDadosPessoas(string valChave, Campos chave, string novoValor, Campos campo);
-
-	bool inserir(string idPessoal, string idFuncional, string estadoFuncional, string  nome, string  profissao, string  endereco, string  funcao, string  cargo, string  faixaSalarial, string  gratificacao);
-
-	bool excluirPessoa(string idPessoal);
-private:
+      @param idPessoal (string): o id da pessoa
+      @param idFuncional (string): o idFuncional da pessoa
+      @param estadoFuncional (string): o estado funcional da pessoa
+      @param nome (string): o nome da pessoa
+      @param profissao (string): a profissão da pessoa
+      @param endereco (string): o endereco da pessoa
+      @param funcao (string): a funcao da pessoa
+      @param cargo (string): o cargo da pessoa
+      @param faixaSalarial (string): a faixa salarial da pessoa
+      @param gratificacao (string): a gratificação salarial da pessoa
+      @return a string formatada contendo os dados da pessoa
+  */
+  string gerarLinha(string idPessoal, string idFuncional,
+    string estadoFuncional, string nome, string profissao, string endereco,
+    string funcao, string cargo, string faixaSalarial, string gratificacao);
 };

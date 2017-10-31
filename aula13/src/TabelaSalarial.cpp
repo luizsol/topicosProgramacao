@@ -13,113 +13,12 @@
 using namespace std;
 
 // Construtores da classe TabelaSalarial
-TabelaSalarial::TabelaSalarial() : TabelaSalarial(
-  "01|390.00|\n"
-  "02|460.00|\n"
-  "03|800.00|\n"
-  "04|1400.00|\n"
-  "05|2300.00|\n"
-  "06|2850.00|\n"
-  "07|4600.00|\n"
-  "08|6000.00|\n"
-  "09|9000.00|\n"
-){}
-
-TabelaSalarial::TabelaSalarial(string faixasSalario){
+TabelaSalarial::TabelaSalarial(){
    TabelaSalarial::adicionaFaixasSalario(faixasSalario);
 }
 
 // Destrutor da classe TabelaSalarial
 TabelaSalarial::~TabelaSalarial(){}
-
-// Setters e Getters
-vector<string> TabelaSalarial::getFaixasSalario(){
-  return this->faixasSalario;
-}
-
-void TabelaSalarial::setFaixasSalario(vector<string> faixasSalario){
-  this->faixasSalario = faixasSalario;
-}
-
-/**
-    Adiciona uma linha de faixa salarial.
-
-    @param linhaFaixaSalario (string): a linha formatada de faixa salarial
-                                       a ser adiciona
-    @throw caso a linhaFaixaSalario seja inválida (invalid_argument)
-*/
-void TabelaSalarial::adicionaFaixaSalario(string linhaFaixaSalario){
-  if(!TabelaSalarial::validaStringFaixaSalario(linhaFaixaSalario)){
-    throw std::invalid_argument("TabelaSalarial::adicionaFaixaSalario:"
-                                  " linha invalida");
-  }
-
-  this->faixasSalario.push_back(linhaFaixaSalario);
-}
-
-/**
-    Adiciona várias linhas de faixa salarial.
-
-    @param linhasFaixaSalario (string): as linhas formatadas de faixas salariais
-                                        a serem adicionas
-    @throw caso uma das linhas de linhasFaixaSalario seja inválida
-           (invalid_argument)
-*/
-void TabelaSalarial::adicionaFaixasSalario(string linhasFaixaSalario){
-  vector<string> linhas;
-  string linha;
-  istringstream f(linhasFaixaSalario);
-
-  // Transformando a string de linhas em vetores
-  while (std::getline(f, linha)) {
-    linha.push_back('\n');
-    linhas.push_back(linha);
-  }
-
-  // Validando as linhas
-  for(unsigned int i = 0; i < linhas.size(); i++){
-    // A linha é válida?
-    if(! TabelaSalarial::validaStringFaixaSalario(linhas[i])){
-      throw std::invalid_argument("TabelaSalarial::adicionaFaixasSalario"
-                                  " dados invalidos");
-    }
-  }
-
-  for(unsigned int i = 0; i < linhas.size(); i++){ // Adicionando as linhas
-    TabelaSalarial::adicionaFaixaSalario(linhas[i]);
-  }
-}
-
-/**
-    Valida uma linha formatada de faixa salarial.
-
-    @param linhaFaixaSalario (string): a linha formatada de faixa salarial
-                                       a ser validada
-    @return true se a linha estiver em um formato válido, false caso contrário
-*/
-bool TabelaSalarial::validaStringFaixaSalario(string linhaFaixaSalario){
-  // Formato padrão:
-  // 01|390.00|\n
-  if(linhaFaixaSalario.at(2) != '|'){
-    return false;
-  }
-
-  if(linhaFaixaSalario.back() != '\n'){
-    return false;
-  }
-
-  if(linhaFaixaSalario.at(linhaFaixaSalario.size()-2) != '|'){
-    return false;
-  }
-
-  try{
-    std::stof(linhaFaixaSalario.substr(3, linhaFaixaSalario.size()-5));
-  } catch(logic_error& ex){
-    return false;
-  }
-
-  return true;
-}
 
 /**
     Divide uma linha formatada de faixa salarial em um vector com seus
@@ -147,6 +46,8 @@ vector<string> TabelaSalarial::splitSalario(unsigned long indice){
   return resultado;
 }
 
+////// TODOOOOOOOOOOO
+
 /**
     Le o valor do salario associado a um determinado código da faixa salarial
 
@@ -166,7 +67,6 @@ float TabelaSalarial::lerSalario(string faixaSalario){
                               " faixa salarial inexistente");
 }
 
-	string TabelaSalarial::dadosTS()
-	{
-		return 	acessoDados.lerTudo(TAB_SALARIAL);;
-	}
+string TabelaSalarial::dadosTS(){
+  return   acessoDados.lerTudo(TAB_SALARIAL);;
+}
