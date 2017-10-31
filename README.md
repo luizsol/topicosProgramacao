@@ -22,3 +22,4 @@ A disciplina consiste em 3 tópicos principais:
 - [Aula6](aula06/): Prova 1.
 - [Aula7](aula07/): Implementação da classe `ImpostoRenda` que acessa o arquivo tabir.dat.
 - [Aula8](aula08/): Inclusão da classe `AcessoDados`. Implementação das estruturas de dados para o acesso de arquivos e das operações `conectar`, `ler` e `lerTudo` apresentadas na aula teórica.
+- [Aula12](aula12/): Prova 2.
