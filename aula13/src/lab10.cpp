@@ -1,6 +1,6 @@
 /**
     PCS2478 - Tópicos de Programação
-    lab11.cpp
+    lab10.cpp
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)

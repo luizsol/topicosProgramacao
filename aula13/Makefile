@@ -19,7 +19,7 @@ TDIR = test
 SRC = src
 
 # Goals
-.DEFAULT_GOAL := lab11
+.DEFAULT_GOAL := lab10
 
 # Object files
 Funcionario.o: $(SRC)/Funcionario.cpp $(SRC)/Funcionario.h
@@ -43,12 +43,12 @@ TabelaSalarial.o: $(SRC)/TabelaSalarial.cpp $(SRC)/TabelaSalarial.h $(SRC)/Acess
 Empresa.o: $(SRC)/Empresa.cpp $(SRC)/Empresa.h $(SRC)/Funcionario.h $(SRC)/CadastroPessoas.h $(SRC)/ContribuicaoSindical.h $(SRC)/ImpostoRenda.h $(SRC)/TabelaSalarial.h
 	$(CC) $(CFLAGS) -c $(SRC)/Empresa.cpp
 
-lab11.o: $(SRC)/lab11.cpp $(SRC)/ImpostoRenda.h $(SRC)/Empresa.h
-	$(CC) $(CFLAGS) -c $(SRC)/lab11.cpp
+lab10.o: $(SRC)/lab10.cpp $(SRC)/ImpostoRenda.h $(SRC)/Empresa.h
+	$(CC) $(CFLAGS) -c $(SRC)/lab10.cpp
 
 # All
-lab11: Funcionario.o AcessoDados.o CadastroPessoas.o ContribuicaoSindical.o ImpostoRenda.o TabelaSalarial.o Empresa.o lab11.o
-	$(CC) $(CFLAGS) Funcionario.o AcessoDados.o CadastroPessoas.o ContribuicaoSindical.o ImpostoRenda.o TabelaSalarial.o Empresa.o lab11.o -o lab11
+lab10: Funcionario.o AcessoDados.o CadastroPessoas.o ContribuicaoSindical.o ImpostoRenda.o TabelaSalarial.o Empresa.o lab10.o
+	$(CC) $(CFLAGS) Funcionario.o AcessoDados.o CadastroPessoas.o ContribuicaoSindical.o ImpostoRenda.o TabelaSalarial.o Empresa.o lab10.o -o lab10
 
 clean:
-	rm -f *.o lab11
+	rm -f *.o lab10
