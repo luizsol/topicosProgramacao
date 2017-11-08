@@ -472,6 +472,41 @@ bool Empresa::excluirPessoa(string idPessoal){
   return this->cadastroPessoas.excluirPessoa(idPessoal);
 }
 
+// Apresenta a folha de pagamento da empresa
+void Empresa::emitirFolhaPagamento(){
+  cout << "Folha de Pagamento da Empresa " << Empresa::getNome() << endl <<
+    endl;
+
+  vector<float> resultAcum({0, 0, 0, 0});
+
+  for(unsigned long i = 0; i < this->funcionarios.size(); i++){
+    vector<float> resultParcial = Empresa::getValoresSalariais(
+        this->funcionarios[i].getIdFuncional());
+        resultAcum[0] += resultParcial[0];
+        resultAcum[1] += resultParcial[1];
+        resultAcum[2] += resultParcial[2];
+        resultAcum[3] += resultParcial[3];
+  }
+
+  stringstream salarioBruto;
+  salarioBruto << "R$ " << fixed << setprecision(2) << resultAcum[0];
+
+  stringstream descontoSindical;
+  descontoSindical << "R$ " << fixed << setprecision(2) << resultAcum[1];
+
+  stringstream impostoRenda;
+  impostoRenda << "R$ " << fixed << setprecision(2) << resultAcum[2];
+
+  stringstream salarioLiquido;
+  salarioLiquido << "R$ " << fixed << setprecision(2) << resultAcum[3];
+
+  cout << endl << "Total de salários brutos:\t" << salarioBruto.str() << endl;
+  cout << "Total de descontos sindicais:\t" << descontoSindical.str() << endl;
+  cout << "Total de impostos de renda:\t" << impostoRenda.str() << endl;
+  cout << "Total de salários liquidos:\t" << salarioLiquido.str() << endl;
+
+}
+
 /**
     Inicializa o array de funcionários.
 
@@ -592,4 +627,51 @@ string Empresa::getGratificacaoFuncionario(string idFuncional){
   pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
   vpessoa = SplitPessoa(pessoa);
   return vpessoa[9];
+}
+
+
+/**
+    Imprime os dados salariais do de um determinado funcionário
+
+    @param idFuncional (string): o ID funcional do funcionário
+*/
+vector<float> Empresa::getValoresSalariais(string idFuncional){
+  int index = Empresa::buscaIdFuncional(idFuncional);
+  if(index == -1){
+    throw std::domain_error("Empresa::calcularSalario: "
+                            "ID Funcional inexistente");
+  }
+  string salarioBruto = Empresa::calcularSalario(idFuncional);
+
+  float sb = stof(salarioBruto.substr(3, salarioBruto.length()-3));
+
+  ContribuicaoSindical contribSindical;
+  float cs = this->contribuicaoSindical.calcularCS(
+    sb, this->funcionarios[index].getFuncao());
+
+  // Ajustando a resolução
+  stringstream streamCS;
+  streamCS << "R$ " << fixed << setprecision(2) << cs;
+
+  float ir = this->impostoRenda.calcularIR(sb);
+
+  float sl = sb - cs - ir;
+
+  // Ajustando a resolução
+  stringstream streamSL;
+  streamSL << "R$ " << fixed << setprecision(2) << sl;
+  stringstream streamIR;
+  streamIR << "R$ " << fixed << setprecision(2) << ir;
+
+  cout << endl << endl << "Id Funcional: \t\t"
+    << this->funcionarios[index].getIdFuncional() << endl;
+  cout << "Nome:\t\t\t" << this->funcionarios[index].getNome() << endl;
+  cout << "Salario Bruto:\t\t" << salarioBruto << endl;
+  cout << "Desconto Sindical:\t" << streamCS.str() << endl;
+  cout << "Imposto de Renda:\t" << streamIR.str() << endl;
+  cout << "Salario Liquido:\t" << streamSL.str() << endl << endl;
+
+  vector<float> resultado({sb, cs, ir, sl});
+
+  return resultado;
 }

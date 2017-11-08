@@ -212,6 +212,9 @@ public:
   */
   bool excluirPessoa(string idPessoal);
 
+  // Apresenta a folha de pagamento da empresa
+  void emitirFolhaPagamento();
+
 private:
   string nome;                      // Nome da empresa
   vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
@@ -281,4 +284,11 @@ private:
       @return a string relativa à gratificação do funcionário
   */
   string getGratificacaoFuncionario(string idFuncional);
+
+  /**
+      Imprime os dados salariais do de um determinado funcionário
+
+      @param idFuncional (string): o ID funcional do funcionário
+  */
+  vector<float> getValoresSalariais(string idFuncional);
 };

@@ -49,6 +49,7 @@ void sistema() {
     cout << "[O] Mostrar Funcionarios Ordenados por Salario" << endl;
     cout << "[S] Verificar Salario Liquido de Funcionarios" << endl;
     cout << "[E] Excluir Pessoa" << endl;
+    cout << "[M] Mostrar Folha de Pagamento" << endl;
     cout << "[X] Sair" << endl;
     cout << LINE << endl << endl;
 
@@ -177,6 +178,16 @@ void sistema() {
         getline(cin, idPessoal);
 
         aEmpresa->excluirPessoa(idPessoal);
+        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
+      } catch (logic_error& ex) {
+        cout << ex.what() << endl;
+        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
+      }
+      break;
+    case 'M':
+    case 'm':
+      try{
+        aEmpresa->emitirFolhaPagamento();
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
       } catch (logic_error& ex) {
         cout << ex.what() << endl;
