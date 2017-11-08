@@ -25,30 +25,18 @@ SRC = src
 Funcionario.o: $(SRC)/Funcionario.cpp $(SRC)/Funcionario.h
 	$(CC) $(CFLAGS) -c $(SRC)/Funcionario.cpp
 
-AcessoDados.o: $(SRC)/AcessoDados.cpp $(SRC)/AcessoDados.h $(SRC)/globais.h
-	$(CC) $(CFLAGS) -c $(SRC)/AcessoDados.cpp
+Mensalista.o: $(SRC)/Mensalista.cpp $(SRC)/Mensalista.h $(SRC)/Funcionario.h
+	$(CC) $(CFLAGS) -c $(SRC)/Mensalista.cpp
 
-CadastroPessoas.o: $(SRC)/CadastroPessoas.cpp $(SRC)/CadastroPessoas.h $(SRC)/AcessoDados.h
-	$(CC) $(CFLAGS) -c $(SRC)/CadastroPessoas.cpp
+Autonomo.o: $(SRC)/Autonomo.cpp $(SRC)/Autonomo.h $(SRC)/Funcionario.h
+	$(CC) $(CFLAGS) -c $(SRC)/Autonomo.cpp
 
-ContribuicaoSindical.o: $(SRC)/ContribuicaoSindical.cpp $(SRC)/ContribuicaoSindical.h $(SRC)/AcessoDados.h
-	$(CC) $(CFLAGS) -c $(SRC)/ContribuicaoSindical.cpp
-
-ImpostoRenda.o: $(SRC)/ImpostoRenda.cpp $(SRC)/ImpostoRenda.h $(SRC)/AcessoDados.h
-	$(CC) $(CFLAGS) -c $(SRC)/ImpostoRenda.cpp
-
-TabelaSalarial.o: $(SRC)/TabelaSalarial.cpp $(SRC)/TabelaSalarial.h $(SRC)/AcessoDados.h
-	$(CC) $(CFLAGS) -c $(SRC)/TabelaSalarial.cpp
-
-Empresa.o: $(SRC)/Empresa.cpp $(SRC)/Empresa.h $(SRC)/Funcionario.h $(SRC)/CadastroPessoas.h $(SRC)/ContribuicaoSindical.h $(SRC)/ImpostoRenda.h $(SRC)/TabelaSalarial.h
-	$(CC) $(CFLAGS) -c $(SRC)/Empresa.cpp
-
-lab11.o: $(SRC)/lab11.cpp $(SRC)/ImpostoRenda.h $(SRC)/Empresa.h
+lab11.o: $(SRC)/lab11.cpp $(SRC)/Funcionario.h $(SRC)/Mensalista.h $(SRC)/Autonomo.h
 	$(CC) $(CFLAGS) -c $(SRC)/lab11.cpp
 
 # All
-lab11: Funcionario.o AcessoDados.o CadastroPessoas.o ContribuicaoSindical.o ImpostoRenda.o TabelaSalarial.o Empresa.o lab11.o
-	$(CC) $(CFLAGS) Funcionario.o AcessoDados.o CadastroPessoas.o ContribuicaoSindical.o ImpostoRenda.o TabelaSalarial.o Empresa.o lab11.o -o lab11
+lab11: Funcionario.o Mensalista.o Autonomo.o lab11.o
+	$(CC) $(CFLAGS) Funcionario.o Mensalista.o Autonomo.o lab11.o -o lab11
 
 clean:
 	rm -f *.o lab11
