@@ -242,8 +242,10 @@ bool AcessoDados::atualizar(Arquivos arq, string valChave, Campos chave,
     nomeArq = nomesArqs[CONTR_SINDICAL];
   case TAB_VALOR:
 	  nomeArq = this->nomesArqs[TAB_VALOR];
+	  break;
   case HORAS_AUTON:
 	  nomeArq = this->nomesArqs[HORAS_AUTON];
+	  break;
   default:
 	  throw std::invalid_argument("AcessoDados::conectar: tentativa de "
 		  "conexao a um arquivo inexistente");
@@ -310,8 +312,10 @@ bool AcessoDados::excluir(Arquivos arq, string valChave, Campos chave){
     nomeArq = nomesArqs[CONTR_SINDICAL];
   case TAB_VALOR:
 	  nomeArq = this->nomesArqs[TAB_VALOR];
+	  break;
   case HORAS_AUTON:
 	  nomeArq = this->nomesArqs[HORAS_AUTON];
+	  break;
   default:
 	  throw std::invalid_argument("AcessoDados::conectar: tentativa de "
 		  "conexao a um arquivo inexistente");
@@ -355,8 +359,10 @@ bool AcessoDados::conectar(Arquivos arq, ModoAcesso modo){
     break;
   case TAB_VALOR:
 	  nomeArq = this->nomesArqs[TAB_VALOR];
+	  break;
   case HORAS_AUTON:
 	  nomeArq = this->nomesArqs[HORAS_AUTON];
+	  break;
   default:
     throw std::invalid_argument("AcessoDados::conectar: tentativa de "
                                 "conexao a um arquivo inexistente");

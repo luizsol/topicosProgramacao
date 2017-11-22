@@ -23,8 +23,4 @@ enum Campos{
   C_LIM_MIN=0, C_LIM_MAX=1,C_PORCENTAGEM=2,C_DEDUCAO=3
 };
 
-enum ModoAcesso{
-  LEITURA,
-  ESCRITA,
-  INSERCAO
-};
+enum ModoAcesso{LEITURA, ESCRITA, INSERCAO};
