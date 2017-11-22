@@ -208,18 +208,37 @@ void sistema() {
 
 int main() {
  // sistema();
+	while (1) {
+		AcessoDados * acessoDados;
+		acessoDados = new AcessoDados();
 
-	AcessoDados * acessoDados;
-	acessoDados = new AcessoDados();
+		string out, mode;
 
-	string valor, horas;
-	valor = acessoDados->lerTudo(TAB_VALOR);
+		cout << "Escolha um arquivo para ler." << endl;
 
-	cout << valor << endl;
+		cout << "[V] Tabela de valor por hora." << endl;
+		cout << "[H] Tabela de horas trabalhadas." << endl;
+		cout << "[C] Tabela de Cadastro Pessoas." << endl;
+		getline(cin, mode);
 
-	horas = acessoDados->lerTudo(HORAS_AUTON);
-
-	cout << horas << endl;
+		switch (mode.at(0)) {
+		case 'V':
+		case 'v':
+			out = acessoDados->lerTudo(TAB_VALOR);
+			cout << out << endl;
+			break;
+		case 'H':
+		case 'h':
+			out = acessoDados->lerTudo(HORAS_AUTON);
+			cout << out << endl;
+			break;
+		case 'C':
+		case 'c':
+			out = acessoDados->lerTudo(CAD_PESSOAS);
+			cout << out << endl;
+			break;
+		}
+	}
 
   return 0;
 }
