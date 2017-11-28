@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 15.0 2017-11-23
+    @version 15.0 2017-11-29
 */
 
 #include "Autonomo.h"
@@ -12,30 +12,29 @@
 using namespace std;
 
 // Construtores da classe Funcionario
-Autonomo::Autonomo(string idFuncional, string nome, float valorHora) :
-  Funcionario(idFuncional, "2", nome) {
-    Autonomo::setValorHora(valorHora);
-}
+Autonomo::Autonomo(string idFuncional) : Funcionario(idFuncional) {}
 
 // Destrutor da classe empresa
 Autonomo::~Autonomo(){}
 
 // Setters e Getters
 float Autonomo::getValorHora(){
-  return this->valorHora;
-}
+  string linha = Autonomo::acessoDados.ler(TAB_VALORHORA,
+                                           Funcionario::getFaixaSalario(),
+                                           C_FAIXASALARIAL);
 
-void Autonomo::setValorHora(float valorHora){
-  this->valorHora = valorHora;
+  vector<string> campos = Autonomo::acessoDados.splitDado(linha);
+
+  return std::stof(campos[C_VALORHORA]);
 }
 
 /**
     Determina o salário do autônomo.
 
-    @param horasTrabalhadas (float): o total de horas trabalhadas pelo
-      funcionário autônomo.
     @return o salário nominal do autônomo.
 */
-float Autonomo::calcularRemuneracao(float horasTrabalhadas){
-  return horasTrabalhadas * Autonomo::getValorHora();
+float Autonomo::calcularRemuneracao(){
+  return Autonomo::getValorHora() *
+    Autonomo::horasTrabalhadas.lerHorasTrabalhadas(
+      Funcionario::getIdFuncional());
 }

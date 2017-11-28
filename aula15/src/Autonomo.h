@@ -4,7 +4,7 @@
 
     @author 8586861 - Luiz Eduardo Sol (luizedusol@gmail.com)
     @author 7576829 - Augusto Ruy Machado (augustormachado@gmail.com)
-    @version 15.0 2017-11-23
+    @version 15.0 2017-11-29
 */
 
 #pragma once
@@ -13,31 +13,30 @@
 #include <iostream>
 
 #include "Funcionario.h"
+#include "HorasTrabalhadas.h"
 
 using namespace std;
 
 class Autonomo : public Funcionario {
 public:
   // Construtores da classe Funcionario
-  Autonomo();
-  Autonomo(string idFuncional, string nome, float valorHora);
+  Autonomo(string idFuncional);
 
   // Destrutor da classe empresa
   ~Autonomo();
 
   // Setters e Getters
   float getValorHora();
-  void setValorHora(float valorHora);
 
   /**
       Determina o salário do autônomo.
 
-      @param horasTrabalhadas (float): o total de horas trabalhadas pelo
-        funcionário autônomo.
       @return o salário nominal do autônomo.
   */
-  float calcularRemuneracao(float horasTrabalhadas);
+  float calcularRemuneracao();
 
 private:
-  float valorHora; // O valor da hora trabalhada do autônomo
+  AcessoDados acessoDados;            // Um AcessoDados para ler o valor da hora
+                                      // trabalhada
+  HorasTrabalhadas horasTrabalhadas;  // O leitor de horas trabalhadas
 };
