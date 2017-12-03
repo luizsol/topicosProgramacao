@@ -124,8 +124,10 @@ bool Empresa::demitirFuncionario(string idFuncional){
   pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
   idPessoal = this->cadastroPessoas.splitDado(pessoa)[0];
 
-  return this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
-                                                     "0", C_EFUNC);
+  return (this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
+                                                     "0", C_EFUNC) &&
+          this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
+                                                     "0", C_TIPOFUNC));
 }
 
 /**
@@ -350,25 +352,32 @@ void Empresa::obterDadosPessoasEspecificas(string valorChave, Campos chave){
     @param idPessoal (string): o id pessoal da pessoa a ser contratada.
     @param idFuncional (string): o novo id funcional a ser atribuido à pessoa
       contratada.
+    @param tipoFuncionario(string): o tipo de funcionário ("1"=Mensalista e
+      "2"=Autônomo)
     @return true se a pessoa for contratada com sucesso.
 */
-bool Empresa::contratarFuncCadastrado(string idPessoal, string idFuncional){
-  string pessoa;
-  pessoa = this->cadastroPessoas.lerDadosPessoas(idPessoal, C_IDPESSOA);
-
-  string check;
-  check = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
-
-  if (check == "erro") {
-    cout << "Id Funcional ja existente.";
-    return false;
+bool Empresa::contratarFuncCadastrado(string idPessoal, string idFuncional,
+                                      string tipoFuncionario){
+  if (this->cadastroPessoas.lerDadosPessoas(idPessoal, C_IDPESSOA) == "") {
+    throw std::domain_error("Empresa::contratarFuncCadastrado: "
+                            "ID Pessoal inexistente");
   }
+
+  if (this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC) != "") {
+    throw std::domain_error("Empresa::contratarFuncCadastrado: "
+                            "ID Funcional em uso");
+  }
+
+  string pessoa = this->cadastroPessoas.lerDadosPessoas(idPessoal, C_IDPESSOA);
 
   this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
                                               idFuncional, C_IDFUNC);
 
   this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, "1",
                                               C_EFUNC);
+
+  this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
+                                              tipoFuncionario, C_TIPOFUNC);
 
   vector<string> npessoa = this->cadastroPessoas.splitDado(pessoa);
 

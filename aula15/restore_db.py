@@ -5,12 +5,10 @@ CAD_PESSOAS = \
 0004|0063|1|Teresa Alves|Engenheiro de Producao|Rua CCC, 501|Engenheiro|Senior|06|1|2|
 0005|0000|2|Eliana Silva|Administrador de Empresa|Rua DD, 735|Administrador|Diretor|09|0|0|
 0006|0000|2|Ricardo Souza Carvalho|Contador|Praca E, 128|Contador|Pleno|04|0|0|
-
 """
 
 HORAS_AUTO = \
 """0063|168|
-
 """
 
 TAB_CS = \
@@ -21,14 +19,12 @@ Entregador|0.5|
 Estudante|0.0|
 Secretaria|1.0|
 Suporte|0.5|
-
 """
 
 TAB_IR = \
 """0.01|1200.00|0.0|0.00|
 1200.01|2200.00|15.0|180.00|
 2200.01|99999.99|25.0|480.00|
-
 """
 
 TAB_SAL = \
@@ -41,7 +37,6 @@ TAB_SAL = \
 07|4600.00|
 08|6000.00|
 09|9000.00|
-
 """
 
 TAB_VAL_HORA = \
@@ -54,7 +49,6 @@ TAB_VAL_HORA = \
 07|26.79|
 08|35.71|
 09|53.57|
-
 """
 
 with open("cadpessoas.dat", "w") as text_file:

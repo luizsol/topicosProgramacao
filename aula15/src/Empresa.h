@@ -145,9 +145,12 @@ public:
       @param idPessoal (string): o id pessoal da pessoa a ser contratada.
       @param idFuncional (string): o novo id funcional a ser atribuido à pessoa
         contratada.
+      @param tipoFuncionario(string): o tipo de funcionário ("1"=Mensalista e
+        "2"=Autônomo)
       @return true se a pessoa for contratada com sucesso.
   */
-  bool contratarFuncCadastrado(string idPessoal, string idFuncional);
+  bool contratarFuncCadastrado(string idPessoal, string idFuncional,
+                               string tipoFuncionario);
 
   /**
       Insere uma nova pessoa no arquivo de cadastro de pessoas.

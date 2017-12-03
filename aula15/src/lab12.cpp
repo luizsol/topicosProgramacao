@@ -49,14 +49,14 @@ void sistema() {
     cout << "[A] Apresentar Conteudo dos Arquivos" << endl;
     cout << "[P] Mostrar Dados Pessoais" << endl;
     cout << "[F] Mostrar Funcionarios Contratados" << endl;
+    cout << "[S] Mostrar Salario Liquido de Funcionarios" << endl;
+    cout << "[M] Mostrar Folha de Pagamento" << endl;
     cout << "[C] Contratar Funcionario" << endl;
     cout << "[D] Demitir Funcionario" << endl;
     cout << "[I] Inserir Pessoa" << endl;
-    cout << "[O] Mostrar Funcionarios Ordenados por Salario" << endl;
-    cout << "[S] Verificar Salario Liquido de Funcionarios" << endl;
     cout << "[E] Excluir Pessoa" << endl;
-    cout << "[M] Mostrar Folha de Pagamento" << endl;
     cout << "[X] Sair" << endl;
+
     cout << LINE << endl << endl;
 
     getline(cin, option);
@@ -104,31 +104,30 @@ void sistema() {
         cout << endl << "ERRO: A operacao falhou!" << endl << endl;
       }
       break;
-    case 'F':
-    case 'f':
-      try{
-        pessoas = aEmpresa->lerDadosFunc();
-        vpessoas = aEmpresa->SplitPessoas(pessoas);
-
-        for (unsigned long i = 0; i < vpessoas.size(); i++) {
-          cout << i + 1 << "a pessoa:" << endl;
-          aEmpresa->displayPessoa(vpessoas[i]);
-        }
-        cout << endl << "Operacao realizada com sucesso!" << endl << endl;
-      } catch (logic_error& ex) {
-        cout << ex.what() << endl;
-        cout << endl << "ERRO: A operacao falhou!" << endl << endl;
-      }
-      break;
     case 'C':
     case 'c':
       try{
+        cout << "Pessoas disponiveis para contratacao:" << endl << endl;
+
+        pessoas = aEmpresa->lerDadosTodasPessoas();
+        vpessoas = aEmpresa->SplitPessoas(pessoas);
+
+        for (unsigned long i = 0; i < vpessoas.size()-1; i++){
+          if(aEmpresa->SplitPessoa(vpessoas[i])[C_EFUNC] == "2"){
+            cout << i + 1 << "a pessoa:" << endl;
+            aEmpresa->displayPessoa(vpessoas[i]);
+          }
+        }
+
         cout << "Digite o idPessoal a ser contratado:" << endl;
         getline(cin, idPessoal);
-
         cout << "Digite o idFuncional do contratado:" << endl;
         getline(cin, idFuncional);
-        aEmpresa->contratarFuncCadastrado(idPessoal, idFuncional);
+        cout << "Digite o tipo de funcionario (1 para mensalista,"
+                " 2 para autonomo): " << endl;
+        getline(cin, tipoFuncionario);
+        aEmpresa->contratarFuncCadastrado(idPessoal, idFuncional,
+                                          tipoFuncionario);
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
       } catch (logic_error& ex) {
         cout << ex.what() << endl;
@@ -138,6 +137,10 @@ void sistema() {
     case 'D':
     case 'd':
       try{
+        cout << "Funcionarios cadastrados:" << endl;
+
+        aEmpresa->obterDadosOrdenadosFunc();
+
         cout << "Digite o idFuncional a ser demitido:" << endl;
         getline(cin, idFuncional);
         aEmpresa->demitirFuncionario(idFuncional);
@@ -183,8 +186,8 @@ void sistema() {
         cout << endl << "ERRO: A operacao falhou!" << endl << endl;
       }
       break;
-    case 'O':
-    case 'o':
+    case 'F':
+    case 'f':
       try {
         aEmpresa->obterDadosOrdenadosFunc();
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
