@@ -86,12 +86,20 @@ public:
   /**
       Insere uma nova linha no arquivo de cadastro de pessoas.
 
-      @param registro (string): a linha a ser adicionada ao arquivo.
+      @param idPessoal (string): o id da pessoa
+      @param nome (string): o nome da pessoa
+      @param profissao (string): a profissão da pessoa
+      @param endereco (string): o endereco da pessoa
+      @param funcao (string): a funcao da pessoa
+      @param cargo (string): o cargo da pessoa
+      @param faixaSalarial (string): a faixa salarial da pessoa
+      @param tipoFuncionario(string): o tipo de funcionário ("1"=Mensalista e
+        "2"=Autônomo)
       @return true se a operação for bem sucedida.
   */
   bool inserir(string idPessoal, string idFuncional, string estadoFuncional,
     string nome, string profissao, string endereco, string funcao, string cargo,
-    string faixaSalarial, string gratificacao);
+    string faixaSalarial, string gratificacao, string tipoFuncionario);
 
   /**
       Realiza uma busca por uma pessoa contendo um determinado id pessoal e a
@@ -115,11 +123,14 @@ public:
       @param cargo (string): o cargo da pessoa
       @param faixaSalarial (string): a faixa salarial da pessoa
       @param gratificacao (string): a gratificação salarial da pessoa
+      @param tipoFuncionario(string): o tipo de funcionário ("1"=Mensalista e
+        "2"=Autônomo)
       @return a string formatada contendo os dados da pessoa
   */
   string gerarLinha(string idPessoal, string idFuncional,
     string estadoFuncional, string nome, string profissao, string endereco,
-    string funcao, string cargo, string faixaSalarial, string gratificacao);
+    string funcao, string cargo, string faixaSalarial, string gratificacao,
+    string tipoFuncionario);
 
 private:
   AcessoDados acessoDados;  // Objeto de acesso ao acesso dados

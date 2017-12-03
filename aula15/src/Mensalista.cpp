@@ -14,16 +14,16 @@ using namespace std;
 // Construtores da classe Funcionario
 Mensalista::Mensalista(string idFuncional) : Funcionario(idFuncional) {}
 
-// Destrutor da classe empresa
-Mensalista::~Mensalista(){}
+Mensalista::Mensalista(string idPessoa, string idFuncional, string nome,
+  string profissao, string endereco, string funcao, string cargo,
+  string faixaSalario, string gratificacao) :
+  Funcionario(idPessoa, idFuncional, nome, profissao, endereco, funcao, cargo,
+    faixaSalario, gratificacao, "1") {}
 
 // Setters e Getters
 float Mensalista::getSalarioNominal(){
-  return this->salarioNominal;
-}
-
-void Mensalista::setSalarioNominal(float salarioNominal){
-  this->salarioNominal = salarioNominal;
+  return this->tabelaSalarial.lerSalarioMensalista(
+    Funcionario::getFaixaSalario());
 }
 
 /**

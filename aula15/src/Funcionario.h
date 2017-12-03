@@ -20,44 +20,40 @@ class Funcionario{
 public:
   // Construtores da classe Funcionario
   Funcionario(string idFuncional);
-
-  // Destrutor da classe empresa
-  ~Funcionario();
+  Funcionario(string idPessoa, string idFuncional, string nome,
+    string profissao, string endereco, string funcao, string cargo,
+    string faixaSalario, string gratificacao, string tipoFuncionario);
 
   // Setters e Getters
-  string getIdPessoa();
-  void setIdPessoa(string idPessoal);
+  string getIdPessoa(bool doArquivo = false);
+  bool setIdPessoa(string idPessoal, bool noArquivo = false);
 
   string getIdFuncional();
-  void setIdFuncional(string idFuncional);
+  bool setIdFuncional(string idFuncional);
 
-  srting getEstadoFuncional();
-  void setEstadoFuncional(string estadoFuncional);
+  string getNome(bool doArquivo = false);
+  bool setNome(string nome, bool noArquivo = false);
 
-  string getNome();
-  void setNome(string nome);
+  string getProfissao(bool doArquivo = false);
+  bool setProfissao(string profissao, bool noArquivo = false);
 
-  string getProfissao();
-  void setProfissao(string profissao);
+  string getEndereco(bool doArquivo = false);
+  bool setEndereco(string endereco, bool noArquivo = false);
 
-  string getEndereco();
-  void setEndereco(string endereco);
+  string getFuncao(bool doArquivo = false);
+  bool setFuncao(string funcao, bool noArquivo = false);
 
-  string getFuncao();
-  void setFuncao(string funcao);
+  string getCargo(bool doArquivo = false);
+  bool setCargo(string cargo, bool noArquivo = false);
 
-  string getCargo();
-  void setCargo(string cargo);
+  string getFaixaSalario(bool doArquivo = false);
+  bool setFaixaSalario(string faixaSalario, bool noArquivo = false);
 
-  string getFaixaSalario();
-  void setFaixaSalario(string faixaSalario);
+  string getGratificacao(bool doArquivo = false);
+  bool setGratificacao(string gratificacao, bool noArquivo = false);
 
-  string getGratificacao();
-  void setGratificacao(string gratificacao);
-
-  // "1" = mensalista, "2" = autônomo
-  string getTipoFuncionario();
-  void setTipoFuncionario(string tipoFuncionario);
+  string getTipoFuncionario(bool doArquivo = false);
+  bool setTipoFuncionario(string tipoFuncionario, bool noArquivo = false);
 
   /**
       Lê a linha no cadastro de pessoas associada a este funcionário.
@@ -83,6 +79,15 @@ public:
   virtual float calcularRemuneracao();
 
 protected:
+  string idPessoal;
   string idFuncional;               // ID Funcional do funcionário
+  string nome;
+  string profissao;
+  string endereco;
+  string funcao;
+  string cargo;
+  string faixaSalario;
+  string gratificacao;
+  string tipoFuncionario;           // "1" = mensalista, "2" = autônomo
   CadastroPessoas cadastroPessoas;  // Objeto de acesso ao cadastro de pessoas
 };

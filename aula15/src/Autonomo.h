@@ -21,9 +21,9 @@ class Autonomo : public Funcionario {
 public:
   // Construtores da classe Funcionario
   Autonomo(string idFuncional);
-
-  // Destrutor da classe empresa
-  ~Autonomo();
+  Autonomo(string idPessoa, string idFuncional, string nome, string profissao,
+    string endereco, string funcao, string cargo, string faixaSalario,
+    string gratificacao);
 
   // Setters e Getters
   float getValorHora();

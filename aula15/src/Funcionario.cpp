@@ -16,17 +16,40 @@ Funcionario::Funcionario(string idFuncional){
   Funcionario::setIdFuncional(idFuncional);
 }
 
-// Destrutor da classe empresa
-Funcionario::~Funcionario(){}
+Funcionario::Funcionario(string idPessoa, string idFuncional, string nome,
+  string profissao, string endereco, string funcao, string cargo,
+  string faixaSalario, string gratificacao, string tipoFuncionario){
 
-// Setters e Getters
-string Funcionario::getIdPessoa(){
-  return Funcionario::getCamposFuncionario()[C_IDPESSOA];
+  Funcionario::setIdFuncional(idFuncional);
+  Funcionario::setIdPessoa(idPessoa);
+  Funcionario::setNome(nome);
+  Funcionario::setProfissao(profissao);
+  Funcionario::setEndereco(endereco);
+  Funcionario::setFuncao(funcao);
+  Funcionario::setCargo(cargo);
+  Funcionario::setFaixaSalario(faixaSalario);
+  Funcionario::setGratificacao(gratificacao);
+  Funcionario::setTipoFuncionario(tipoFuncionario);
 }
 
-bool Funcionario::setIdPessoa(string idPessoal){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, idPessoal, C_IDPESSOA);
+// Setters e Getters
+string Funcionario::getIdPessoa(bool doArquivo){
+  if(doArquivo){
+    this->idPessoal = Funcionario::getCamposFuncionario()[C_IDPESSOA];
+  }
+
+  return this->idPessoal;
+}
+
+bool Funcionario::setIdPessoa(string idPessoal, bool noArquivo){
+  this->idPessoal = idPessoal;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, idPessoal, C_IDPESSOA);
+  }
+
+  return true;
 }
 
 string Funcionario::getIdFuncional(){
@@ -35,88 +58,159 @@ string Funcionario::getIdFuncional(){
 
 bool Funcionario::setIdFuncional(string idFuncional){
   this->idFuncional = idFuncional;
+  return true;
 }
 
-srting Funcionario::getEstadoFuncional(){
-  return Funcionario::getCamposFuncionario()[C_EFUNC];
+string Funcionario::getNome(bool doArquivo){
+  if(doArquivo){
+    this->nome = Funcionario::getCamposFuncionario()[C_NOME];
+  }
+  return this->nome;
 }
 
-bool Funcionario::setEstadoFuncional(string estadoFuncional){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, estadoFuncional, C_EFUNC);
+bool Funcionario::setNome(string nome, bool noArquivo){
+  this->nome = nome;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, nome, C_NOME);
+  }
+
+  return true;
 }
 
-string Funcionario::getNome(){
-  return Funcionario::getCamposFuncionario()[C_NOME];
+string Funcionario::getProfissao(bool doArquivo){
+  if(doArquivo){
+    this->profissao = Funcionario::getCamposFuncionario()[C_PROFISSAO];
+  }
+
+  return this->profissao;
 }
 
-bool Funcionario::setNome(string nome){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, nome, C_NOME);
+bool Funcionario::setProfissao(string profissao, bool noArquivo){
+  this->profissao = profissao;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, profissao, C_PROFISSAO);
+  }
+
+  return true;
 }
 
-string Funcionario::getProfissao(){
-  return Funcionario::getCamposFuncionario()[C_PROFISSAO];
+string Funcionario::getEndereco(bool doArquivo){
+  if(doArquivo){
+    this->endereco = Funcionario::getCamposFuncionario()[C_ENDERECO];
+  }
+  return this->endereco;
 }
 
-bool Funcionario::setProfissao(string profissao){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, profissao, C_PROFISSAO);
+bool Funcionario::setEndereco(string endereco, bool noArquivo){
+  this->endereco = endereco;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, endereco, C_ENDERECO);
+  }
+
+  return true;
 }
 
-string Funcionario::getEndereco(){
-  return Funcionario::getCamposFuncionario()[C_ENDERECO];
+string Funcionario::getFuncao(bool doArquivo){
+  if(doArquivo){
+    this->funcao = Funcionario::getCamposFuncionario()[C_FUNCAO];
+  }
+
+  return this->funcao;
 }
 
-bool Funcionario::setEndereco(string endereco){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, endereco, C_ENDERECO);
+bool Funcionario::setFuncao(string funcao, bool noArquivo){
+  this->funcao = funcao;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, funcao, C_FUNCAO);
+  }
+
+  return true;
 }
 
-string Funcionario::getFuncao(){
-  return Funcionario::getCamposFuncionario()[C_FUNCAO];
+string Funcionario::getCargo(bool doArquivo){
+  if(doArquivo){
+    this->cargo = Funcionario::getCamposFuncionario()[C_CARGO];
+  }
+
+  return this->cargo;
 }
 
-bool Funcionario::setFuncao(string funcao){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, funcao, C_FUNCAO);
+bool Funcionario::setCargo(string cargo, bool noArquivo){
+  this->cargo = cargo;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, cargo, C_CARGO);
+  }
+
+  return true;
 }
 
-string Funcionario::getCargo(){
-  return Funcionario::getCamposFuncionario()[C_CARGO];
+string Funcionario::getFaixaSalario(bool doArquivo){
+  if(doArquivo){
+    this->faixaSalario = Funcionario::getCamposFuncionario()[C_FAIXASALARIAL];
+  }
+
+  return this->faixaSalario;
 }
 
-bool Funcionario::setCargo(string cargo){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, cargo, C_CARGO);
+bool Funcionario::setFaixaSalario(string faixaSalario, bool noArquivo){
+  this->faixaSalario = faixaSalario;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, faixaSalario, C_FAIXASALARIAL);
+  }
+
+  return true;
 }
 
-string Funcionario::getFaixaSalario(){
-  return Funcionario::getCamposFuncionario()[C_FAIXASALARIAL];
+string Funcionario::getGratificacao(bool doArquivo){
+  if(doArquivo){
+    this->gratificacao = Funcionario::getCamposFuncionario()[C_GRATIFICACAO];
+  }
+
+  return this->gratificacao;
 }
 
-bool Funcionario::setFaixaSalario(string faixaSalario){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, faixaSalario, C_FAIXASALARIAL);
-}
+bool Funcionario::setGratificacao(string gratificacao, bool noArquivo){
+  this->gratificacao = gratificacao;
 
-string Funcionario::getGratificacao(){
-  return Funcionario::getCamposFuncionario()[C_GRATIFICACAO];
-}
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, gratificacao, C_GRATIFICACAO);
+  }
 
-bool Funcionario::setGratificacao(string gratificacao){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, gratificacao, C_GRATIFICACAO);
+  return true;
 }
 
 // "1" = mensalista, "2" = autônomo
-string Funcionario::getTipoFuncionario(){
-  return Funcionario::getCamposFuncionario()[C_TIPOFUNC];
+string Funcionario::getTipoFuncionario(bool doArquivo){
+  if(doArquivo){
+    this->tipoFuncionario = Funcionario::getCamposFuncionario()[C_TIPOFUNC];
+  }
+
+  return this->tipoFuncionario;
 }
 
-bool Funcionario::setTipoFuncionario(string tipoFuncionario){
-  return Funcionario::cadastroPessoas.atualizarDadosPessoas(
-    Funcionario::getIdFuncional(), C_IDFUNC, tipoFuncionario, C_TIPOFUNC);
+bool Funcionario::setTipoFuncionario(string tipoFuncionario,
+                                     bool noArquivo){
+  this->tipoFuncionario = tipoFuncionario;
+
+  if(noArquivo){
+    return Funcionario::cadastroPessoas.atualizarDadosPessoas(
+      Funcionario::getIdFuncional(), C_IDFUNC, tipoFuncionario, C_TIPOFUNC);
+  }
+
+  return true;
 }
 
 /**

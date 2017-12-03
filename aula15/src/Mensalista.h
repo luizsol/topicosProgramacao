@@ -12,6 +12,7 @@
 #include <string>
 
 #include "Funcionario.h"
+#include "TabelaSalarial.h"
 
 using namespace std;
 
@@ -19,9 +20,9 @@ class Mensalista : public Funcionario {
 public:
   // Construtores da classe Funcionario
   Mensalista(string idFuncional);
-
-  // Destrutor da classe empresa
-  ~Mensalista();
+  Mensalista(string idPessoa, string idFuncional, string nome, string profissao,
+    string endereco, string funcao, string cargo, string faixaSalario,
+    string gratificacao);
 
   // Setters e Getters
   float getSalarioNominal();
@@ -34,4 +35,5 @@ public:
   float calcularRemuneracao();
 
 private:
+  TabelaSalarial tabelaSalarial;
 };

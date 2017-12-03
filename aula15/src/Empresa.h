@@ -14,10 +14,13 @@
 #include <string>
 #include <vector>
 
+#include "Autonomo.h"
 #include "CadastroPessoas.h"
 #include "ContribuicaoSindical.h"
 #include "Funcionario.h"
+#include "HorasTrabalhadas.h"
 #include "ImpostoRenda.h"
+#include "Mensalista.h"
 #include "TabelaSalarial.h"
 
 using namespace std;
@@ -59,6 +62,8 @@ public:
       @param cargo (string): o cargo do funcionário
       @param faixaSalario (string): a faixa salarial do funcionário
       @param gratificação (string): o gratificação salarial do funcionário
+      @param tipoFuncionario(string): o tipo de funcionário ("1"=Mensalista e
+        "2"=Autônomo)
       @return true se o funcionário foi criado e cadastrado, false caso
         contrário
       @throw caso se tente contratar mais funcionários que o limite máximo
@@ -68,7 +73,7 @@ public:
   */
   bool contratarFuncionario(string idPessoa, string idFuncional, string nome,
     string profissao, string endereco, string funcao, string cargo,
-    string faixaSalario, string gratificacao);
+    string faixaSalario, string gratificacao, string tipoFuncionario);
 
   /**
       Demite e apaga um funcionário da empresa.
@@ -157,10 +162,13 @@ public:
       @param funcao (string): a funcao da pessoa
       @param cargo (string): o cargo da pessoa
       @param faixaSalarial (string): a faixa salarial da pessoa
+      @param tipoFuncionario(string): o tipo de funcionário ("1"=Mensalista e
+        "2"=Autônomo)
       @return true se a pessoa for inserida com sucesso
   */
   bool inserirPessoaCadastro(string idPessoal, string nome, string profissao,
-    string endereco, string funcao, string cargo, string faixaSalarial);
+    string endereco, string funcao, string cargo, string faixaSalarial,
+    string tipoFuncionario);
 
   /**
       Retorna todos os dados contidos no arquivo cadpessoas.dat
@@ -217,12 +225,13 @@ public:
 
 private:
   string nome;                      // Nome da empresa
-  vector<Funcionario> funcionarios; // Vetor contendo os funcionários da emrpesa
+  vector<Funcionario*> funcionarios;// Vetor contendo os funcionários da empresa
   unsigned long maxFuncionarios;    // Tamanho do array funcionarios
   CadastroPessoas cadastroPessoas;
   TabelaSalarial tabelaSalarial;
   ContribuicaoSindical contribuicaoSindical;
   ImpostoRenda impostoRenda;
+  HorasTrabalhadas horasTrabalhadas;
 
   /**
       Inicializa o array de funcionários.

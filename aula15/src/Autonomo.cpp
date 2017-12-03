@@ -13,15 +13,17 @@ using namespace std;
 
 // Construtores da classe Funcionario
 Autonomo::Autonomo(string idFuncional) : Funcionario(idFuncional) {}
-
-// Destrutor da classe empresa
-Autonomo::~Autonomo(){}
+Autonomo::Autonomo(string idPessoa, string idFuncional, string nome,
+  string profissao, string endereco, string funcao, string cargo,
+  string faixaSalario, string gratificacao) :
+  Funcionario(idPessoa, idFuncional, nome, profissao, endereco, funcao, cargo,
+    faixaSalario, gratificacao, "2") {}
 
 // Setters e Getters
 float Autonomo::getValorHora(){
   string linha = Autonomo::acessoDados.ler(TAB_VALORHORA,
                                            Funcionario::getFaixaSalario(),
-                                           C_FAIXASALARIAL);
+                                           C_CATSALARIAL);
 
   vector<string> campos = Autonomo::acessoDados.splitDado(linha);
 
