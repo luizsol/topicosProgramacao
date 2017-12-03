@@ -94,7 +94,7 @@ void sistema() {
         pessoas = aEmpresa->lerDadosTodasPessoas();
         vpessoas = aEmpresa->SplitPessoas(pessoas);
 
-        for (unsigned long i = 0; i < vpessoas.size()-1; i++){
+        for (unsigned long i = 0; i < vpessoas.size(); i++){
           cout << i + 1 << "a pessoa:" << endl;
           aEmpresa->displayPessoa(vpessoas[i]);
         }

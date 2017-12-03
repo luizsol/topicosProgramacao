@@ -119,10 +119,13 @@ bool Empresa::contratarFuncionario(string idPessoa, string idFuncional,
     @throw caso o ID Funcional seja inexistente (domain_error)
 */
 bool Empresa::demitirFuncionario(string idFuncional){
-  string pessoa;
-  string idPessoal;
-  pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
-  idPessoal = this->cadastroPessoas.splitDado(pessoa)[0];
+  string pessoa = this->cadastroPessoas.lerDadosPessoas(idFuncional, C_IDFUNC);
+  if(pessoa == ""){
+    throw std::domain_error("Empresa::demitirFuncionario: "
+                            "ID Funcional inexistente");
+  }
+
+  string idPessoal = this->cadastroPessoas.splitDado(pessoa)[0];
 
   return (this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
                                                      "0", C_EFUNC) &&
@@ -368,16 +371,27 @@ bool Empresa::contratarFuncCadastrado(string idPessoal, string idFuncional,
                             "ID Funcional em uso");
   }
 
+  if(!this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
+                                                  idFuncional, C_IDFUNC)){
+    throw std::domain_error("Empresa::contratarFuncCadastrado: "
+                            "Falha na atualizacao do ID funcional no arquivo");
+  }
+
+  if(!this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, "1",
+                                                  C_EFUNC)){
+    throw std::domain_error("Empresa::contratarFuncCadastrado: "
+                            "Falha na atualizacao do estado funcional no "
+                            "arquivo");
+  }
+
+  if(!this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
+                                                  tipoFuncionario, C_TIPOFUNC)){
+    throw std::domain_error("Empresa::contratarFuncCadastrado: "
+                            "Falha na atualizacao do tipo de funcionario no "
+                            "arquivo");
+  }
+
   string pessoa = this->cadastroPessoas.lerDadosPessoas(idPessoal, C_IDPESSOA);
-
-  this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
-                                              idFuncional, C_IDFUNC);
-
-  this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA, "1",
-                                              C_EFUNC);
-
-  this->cadastroPessoas.atualizarDadosPessoas(idPessoal, C_IDPESSOA,
-                                              tipoFuncionario, C_TIPOFUNC);
 
   vector<string> npessoa = this->cadastroPessoas.splitDado(pessoa);
 
@@ -610,6 +624,7 @@ void Empresa::obterDadosFuncionario(int index){
 */
 string Empresa::calcularSalario(string idFuncional){
   int i = Empresa::buscaIdFuncional(idFuncional);
+
   if(i == -1){
     throw std::domain_error("Empresa::calcularSalario: "
                             "ID Funcional inexistente");
