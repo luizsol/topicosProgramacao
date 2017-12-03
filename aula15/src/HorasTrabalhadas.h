@@ -25,7 +25,22 @@ public:
 
   ~HorasTrabalhadas();
 
+  /**
+      Lê o número de horas trabalhadas por um autônomo.
+
+      @param idFuncional (string): o id funcional do autônomo
+      @return um float representando a quantidade de horas trabalhadas.
+  */
   float lerHorasTrabalhadas(string idFuncional);
+
+  /**
+      Insere um novo registro de horas trabalhadas para um autônomo.
+
+      @param idFuncional (string): o id funcional do autonomo.
+      @param horas (string): a quantidade de horas trabalhadas.
+      @return true se a inserção for realizada com sucesso.
+  */
+  bool insereHorasTrabalhadas(string idFuncional, string horas);
 
 private:
   AcessoDados tabHorasTrabalhadas;

@@ -13,6 +13,12 @@ HorasTrabalhadas::HorasTrabalhadas() {}
 
 HorasTrabalhadas::~HorasTrabalhadas() {}
 
+/**
+    Lê o número de horas trabalhadas por um autônomo.
+
+    @param idFuncional (string): o id funcional do autônomo
+    @return um float representando a quantidade de horas trabalhadas.
+*/
 float HorasTrabalhadas::lerHorasTrabalhadas(string idFuncional){
     string resultado = HorasTrabalhadas::tabHorasTrabalhadas.ler(HORAS_AUTO,
                                                                  idFuncional,
@@ -26,6 +32,18 @@ float HorasTrabalhadas::lerHorasTrabalhadas(string idFuncional){
     vector<string> campos =  HorasTrabalhadas::splitDado(resultado);
 
     return std::stof(campos[C_HORASTRAB]);
+}
+
+/**
+    Insere um novo registro de horas trabalhadas para um autônomo.
+
+    @param idFuncional (string): o id funcional do autonomo.
+    @param horas (string): a quantidade de horas trabalhadas.
+    @return true se a inserção for realizada com sucesso.
+*/
+bool HorasTrabalhadas::insereHorasTrabalhadas(string idFuncional, string horas){
+  return this->tabHorasTrabalhadas.inserir(HORAS_AUTO, idFuncional + "|" +
+                                           horas + "|");
 }
 
 /**

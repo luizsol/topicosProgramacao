@@ -226,6 +226,15 @@ public:
   // Apresenta a folha de pagamento da empresa
   void emitirFolhaPagamento();
 
+  /**
+      Insere um novo registro de horas trabalhadas para um autônomo.
+
+      @param idFuncional (string): o id funcional do autonomo.
+      @param horas (string): a quantidade de horas trabalhadas.
+      @return true se a inserção for realizada com sucesso.
+  */
+  bool insereHorasAuto(string idFuncional, string horas);
+
 private:
   string nome;                      // Nome da empresa
   vector<Funcionario*> funcionarios;// Vetor contendo os funcionários da empresa

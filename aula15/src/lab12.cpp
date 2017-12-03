@@ -64,7 +64,7 @@ void sistema() {
     cout << endl << LINE << endl << endl;
 
     string idPessoal, idFuncional, nome, profissao, endereco, funcao, cargo,
-      faixaSalarial, tipoFuncionario;
+      faixaSalarial, tipoFuncionario, horasTrabalhadas;
 
     string pessoas;
     vector<string> vpessoas;
@@ -112,7 +112,7 @@ void sistema() {
         pessoas = aEmpresa->lerDadosTodasPessoas();
         vpessoas = aEmpresa->SplitPessoas(pessoas);
 
-        for (unsigned long i = 0; i < vpessoas.size()-1; i++){
+        for (unsigned long i = 0; i < vpessoas.size(); i++){
           if(aEmpresa->SplitPessoa(vpessoas[i])[C_EFUNC] == "2"){
             cout << i + 1 << "a pessoa:" << endl;
             aEmpresa->displayPessoa(vpessoas[i]);
@@ -126,6 +126,20 @@ void sistema() {
         cout << "Digite o tipo de funcionario (1 para mensalista,"
                 " 2 para autonomo): " << endl;
         getline(cin, tipoFuncionario);
+
+        if(tipoFuncionario == "2"){
+          cout << "Digite o numero de horas trabalhadas " << endl;
+          getline(cin, horasTrabalhadas);
+          if(!aEmpresa->insereHorasAuto(idFuncional, horasTrabalhadas)){
+            throw std::domain_error("sistema::contratarFuncionario: "
+                                    "Erro ao inserir novo registro na tabela de"
+                                    " horas trabalhadas.");
+          }
+        } else if(tipoFuncionario != "1"){
+          throw std::domain_error("sistema::contratarFuncionario: "
+                                  "Tipo de funcionario inexistente");
+        }
+
         aEmpresa->contratarFuncCadastrado(idPessoal, idFuncional,
                                           tipoFuncionario);
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
@@ -143,7 +157,10 @@ void sistema() {
 
         cout << "Digite o idFuncional a ser demitido:" << endl;
         getline(cin, idFuncional);
-        aEmpresa->demitirFuncionario(idFuncional);
+        if(!aEmpresa->demitirFuncionario(idFuncional)){
+          throw std::domain_error("sistema::demitiFuncionario: "
+                                  "ID Funcional inexistente");
+        }
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
       } catch (logic_error& ex) {
         cout << ex.what() << endl;
@@ -153,32 +170,25 @@ void sistema() {
     case 'I':
     case 'i':
       try{
-        cout << "Digite o idPessoal:";
+        cout << "Digite o idPessoal: ";
         getline(cin, idPessoal);
-        cout <<endl<< "Digite o nome:";
+        cout <<endl<< "Digite o nome: ";
         getline(cin, nome);
-        cout << endl << "Digite a profissao:";
+        cout << endl << "Digite a profissao: ";
         getline(cin, profissao);
-        cout << endl << "Digite o endereco:";
+        cout << endl << "Digite o endereco: ";
         getline(cin, endereco);
-        cout << endl << "Digite a funcao:";
+        cout << endl << "Digite a funcao: ";
         getline(cin, funcao);
-        cout << endl << "Digite o cargo:";
+        cout << endl << "Digite o cargo: ";
         getline(cin, cargo);
-        cout << endl << "Digite a faixa salarial:";
+        cout << endl << "Digite a faixa salarial: ";
         getline(cin, faixaSalarial);
-        cout << endl << "Digite o tipo de funcionario (1 para mensalista,"
-                        " 2 para autonomo): ";
-        getline(cin, tipoFuncionario);
         cout << endl;
-
-        if(tipoFuncionario != "1" && tipoFuncionario != "2"){
-          throw std::invalid_argument("Tipo de funcionario invalido");
-        }
 
         aEmpresa->inserirPessoaCadastro(idPessoal, nome, profissao, endereco,
                                         funcao, cargo, faixaSalarial,
-                                        tipoFuncionario);
+                                        "0");
 
         cout << endl << "Operacao realizada com sucesso!" << endl << endl;
       } catch (logic_error& ex) {
@@ -209,6 +219,16 @@ void sistema() {
     case 'E':
     case 'e':
       try{
+        cout << "Pessoas Cadastradas:" << endl;
+
+        pessoas = aEmpresa->lerDadosTodasPessoas();
+        vpessoas = aEmpresa->SplitPessoas(pessoas);
+
+        for (unsigned long i = 0; i < vpessoas.size(); i++){
+          cout << i + 1 << "a pessoa:" << endl;
+          aEmpresa->displayPessoa(vpessoas[i]);
+        }
+
         cout << "Digite o ID Pessoal a ser excluido:" << endl;
         getline(cin, idPessoal);
 
