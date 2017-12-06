@@ -42,6 +42,8 @@ public:
   */
   bool insereHorasTrabalhadas(string idFuncional, string horas);
 
+  bool apagaHorasTrabalhadas(string idFuncional);
+
 private:
   AcessoDados tabHorasTrabalhadas;
 

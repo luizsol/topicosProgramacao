@@ -125,8 +125,14 @@ bool Empresa::demitirFuncionario(string idFuncional){
     throw std::domain_error("Empresa::demitirFuncionario: "
                             "ID Funcional inexistente");
   }
+  if (this->funcionarios[index]->getTipoFuncionario() == "2") {
+	  Autonomo* fAutonomo = (Autonomo*)(this->funcionarios[index]);
+	  delete fAutonomo;
+  }
+  else {
 
-  delete this->funcionarios[index];
+	  delete this->funcionarios[index];
+  }
 
   this->funcionarios.erase(this->funcionarios.begin() + index);
 
@@ -313,11 +319,16 @@ void Empresa::obterDadosOrdenadosFunc() {
           cout << "Funcao:\t\t" << pessoa[C_FUNCAO] << endl;
           cout << "Cargo:\t\t" << pessoa[C_CARGO] << endl;
           try{
-            salario = Empresa::calcularSalario(pessoa[C_IDFUNC]);
+			  Autonomo* fAutonomo = (Autonomo*)(this->funcionarios[n]);
+         
+			stringstream salarioBrutoAut;
+			salarioBrutoAut << "R$ " << fixed << setprecision(2) << fAutonomo->getValorHora();
+			salario = salarioBrutoAut.str();
           } catch(int e) {
+
             salario = "Nao cadastrado";
           }
-          cout << "Salario:\t" << salario << endl << endl;
+          cout << "Valor da hora:\t" << salario << endl << endl;
           cout << endl;
           n++;
         }

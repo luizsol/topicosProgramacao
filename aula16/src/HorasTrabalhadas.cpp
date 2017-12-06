@@ -46,6 +46,12 @@ bool HorasTrabalhadas::insereHorasTrabalhadas(string idFuncional, string horas){
                                            horas + "|");
 }
 
+bool HorasTrabalhadas::apagaHorasTrabalhadas(string idFuncional)
+{
+	this->tabHorasTrabalhadas.excluir(HORAS_AUTO, idFuncional, C_IDFUNCHORAS);
+	return false;
+}
+
 /**
     Retorna um vector de strings contendo os diferentes campos de uma linha.
 

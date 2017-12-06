@@ -19,6 +19,10 @@ Autonomo::Autonomo(string idPessoa, string idFuncional, string nome,
   Funcionario(idPessoa, idFuncional, nome, profissao, endereco, funcao, cargo,
     faixaSalario, "2") {}
 
+Autonomo::~Autonomo() {
+	this->horasTrabalhadas.apagaHorasTrabalhadas(getIdFuncional());
+}
+
 // Setters e Getters
 float Autonomo::getValorHora(){
   string linha = Autonomo::acessoDados.ler(TAB_VALORHORA,

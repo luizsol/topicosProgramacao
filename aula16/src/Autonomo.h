@@ -23,6 +23,7 @@ public:
   Autonomo(string idFuncional);
   Autonomo(string idPessoa, string idFuncional, string nome, string profissao,
     string endereco, string funcao, string cargo, string faixaSalario);
+  ~Autonomo();
 
   // Setters e Getters
   float getValorHora();
